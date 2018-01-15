@@ -1,10 +1,5 @@
 package enamel;
 
-//testing push
-//test again
-//hi,i'm testing too, ignore
-//another change
-
 public class AudioPlayer extends Player {
 	
 	
