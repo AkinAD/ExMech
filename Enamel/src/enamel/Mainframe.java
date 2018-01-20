@@ -21,11 +21,12 @@ public class Mainframe {
 		
 		//This is the main dialogue that shows when you hit run. 
 
-		Main_Frame = new JFrame();
+		Main_Frame = new JFrame("Scenario Picker"); //Akin made  change here to test nvda
 		Main_Frame.setVisible(true);
 		Main_Frame.setSize(500, 200);
 
 		JPanel Main_Panel = new JPanel();
+		Main_Panel.getAccessibleContext().setAccessibleDescription("Scenario file picker");
 		JButton File_Dialog = new JButton("Read File Name");
 
 		File_Dialog.addActionListener(new ActionListener() {
@@ -36,7 +37,7 @@ public class Mainframe {
 		
 		
 		Main_Panel.add(File_Dialog);
-
+		
 		Main_Frame.add(Main_Panel);
 		Main_Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -48,6 +49,7 @@ public class Mainframe {
 		
 		JFileChooser File_Chooser = new JFileChooser();
 		File_Chooser.setDialogTitle("VoiceOver Demo");
+		File_Chooser.getAccessibleContext().setAccessibleDescription("Displays list of system files");
 		File_Chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
 		int returnVal = File_Chooser.showDialog(null, "Read Name");
