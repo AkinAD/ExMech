@@ -1,5 +1,6 @@
 package enamel;
 //this is a conflict!
+// conflict testing!
 public class AudioPlayer extends Player {
 	
 	
