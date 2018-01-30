@@ -32,6 +32,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class Mainframe {
 	
 	public JFrame frmAuthoringApp;
@@ -124,10 +126,17 @@ public class Mainframe {
 				JFileChooser save = new JFileChooser("FactoryScenarios/");
 				int retrunVal = save.showSaveDialog(frmAuthoringApp);
 				if (retrunVal == JFileChooser.APPROVE_OPTION) {
-					try {
-						BufferedWriter bf = new BufferedWriter(new FileWriter(save.getSelectedFile().getPath()));
+					try {	
+						File file = save.getSelectedFile();
+						if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("txt")) {
+						    // filename is OK as-is
+						} else {
+						    file = new File(file.toString() + ".txt");  // append .txt if "foo.jpg.txt" is OK
+						    file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".txt"); // ALTERNATIVELY: remove the extension (if any) and replace it with ".xml"
+						BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
 						bf.write(textArea.getText());
 						bf.close();
+						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
