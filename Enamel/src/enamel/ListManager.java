@@ -1,6 +1,7 @@
 package enamel;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ListManager {
 
@@ -48,14 +49,22 @@ public class ListManager {
 			System.out.println("End of List!");
 			return;
 		}
-
-		if (currentList.get(index + 1).keyPhrase.equals("#JUNCTION")) {
-			// redirect to next list
-			System.out.println("start junction stuff");
+		index++;
+		if (currentList.get(index).keyPhrase.equals("#JUNCTION")) {
+			//Choose the next branch
+			Scanner reader = new Scanner(System.in);  // Reading from System.in
+			System.out.println("Enter the button number: ");
+			int n = reader.nextInt(); // Scans the next token of the input as an int.
+			currentList = currentList.get(index).getButtons().get(n);
+			index = 0;
+			
+			reader.close();
+			System.out.println("Switched to Node(junction): " + currentList.get(index).getKeyPhrase() + " "
+					+ currentList.get(index).getData());
+			
 			return;
 		}
 
-		index++;
 		System.out.println("Switched to Node(next): " + currentList.get(index).getKeyPhrase() + " "
 				+ currentList.get(index).getData());
 		return;
@@ -112,7 +121,9 @@ public class ListManager {
 		}
 		currentList.add(index + 1, new Node(buttons));
 	}
-
+	
+	
+	
 	public static void main(String[] args) {
 		ListManager derp = new ListManager(3, 6);
 		

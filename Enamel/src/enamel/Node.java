@@ -51,4 +51,8 @@ public class Node {
 	public String getData() {
 		return this.data;
 	}
+	
+	public ArrayList<ArrayList<Node>> getButtons(){
+		return buttons;
+	}
 }
