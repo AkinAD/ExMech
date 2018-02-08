@@ -26,6 +26,7 @@ public class ListManager {
 
 	public void addNext(String k, String d) {
 		// Creates node next to current position. SWITCHES TO NODE!
+		
 		currentList.add(index + 1, new Node(k, d));
 		index++;
 		System.out.println(
@@ -53,13 +54,13 @@ public class ListManager {
 		if (currentList.get(index).keyPhrase.equals("#JUNCTION")) {
 			//Choose the next branch
 			Scanner reader = new Scanner(System.in);  // Reading from System.in
-			System.out.println("Enter the button number: ");
+			System.out.println("At a JUNCTION. Enter a button number: ");
 			int n = reader.nextInt(); // Scans the next token of the input as an int.
 			currentList = currentList.get(index).getButtons().get(n);
 			index = 0;
 			
 			reader.close();
-			System.out.println("Switched to Node(junction): " + currentList.get(index).getKeyPhrase() + " "
+			System.out.println("Switched from Junction to node: " + currentList.get(index).getKeyPhrase() + " "
 					+ currentList.get(index).getData());
 			
 			return;
@@ -70,21 +71,26 @@ public class ListManager {
 		return;
 	}
 
-	public String prev() {
+	public void prev() {	
+		//check if index is valid.
 		if (index - 1 < 0) {
 			System.out.println("Already at root node!");
-			return "END OF LIST!";
+			return;
 		}
-
-		if (currentList.get(index - 1).keyPhrase.equals("#JUNCTION")) {
-			// redirect to next list
-			return "doing the junction things.";
-		}
-
 		index--;
+		
+		//Move from button to node before JUNCTION.
+		if (currentList.get(index).keyPhrase.equals("#BUTTON")) {
+			currentList = currentList.get(index).prevList;
+			index = currentList.size() - 2;
+			System.out.println("Switched from Button to node: " + currentList.get(index).getKeyPhrase() + " "
+					+ currentList.get(index).getData());
+			
+			return;
+		}
 		System.out.println("Switched to Node(prev): " + currentList.get(index).getKeyPhrase() + " "
 				+ currentList.get(index).getData());
-		return "Switched to Prev Node";
+		return;
 	}
 
 	public String getKeyPhrase() {
@@ -97,6 +103,7 @@ public class ListManager {
 
 	public void createJunction(String[] s) {
 		// takes an input of strings for button choices. NULL means button does nothing.
+		
 		if (currentList.get(0).getKeyPhrase().equals("#BUTTON")) {
 			System.out.println("You cannot create another junction within a button branch!");
 			return;
@@ -156,8 +163,11 @@ public class ListManager {
 		
 		derp.addNext("/~pause", "3");
 		derp.createJunction(s);
-		System.out.println(derp.getKeyPhrase());
 		derp.next();
+		derp.addNext("#TEXT", "im inside the button");
+		derp.prev();
+		derp.prev();
+
 	}
 
 }
