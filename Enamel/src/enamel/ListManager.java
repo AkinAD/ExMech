@@ -41,7 +41,7 @@ public class ListManager {
 		currentList.add(index + 1, new Node(k, d));
 		index++;
 		System.out.println(
-				"Created Node: " + getNode().getKeyPhrase() + " " + getNode().getData());
+				"Created Node: " + getNode().getKeyPhrase() + " "+ '"' + getNode().getData()+ '"');
 	}
 
 	public void remove() {
@@ -80,13 +80,13 @@ public class ListManager {
 			currentList = getNode().getButtons().get(n);
 			index = 0;
 			reader.close();
-			System.out.println("Switched from Junction to node: " + getNode().getKeyPhrase() + " "
-					+ getNode().getData());
+			System.out.println("Switched from Junction to node: " + getNode().getKeyPhrase() + " "+ '"' +
+					 getNode().getData() + '"');
 			return;
 		}
 
-		System.out.println("Switched to Node(next): " + getNode().getKeyPhrase() + " "
-				+ getNode().getData());
+		System.out.println("Switched to Node(next): " + getNode().getKeyPhrase() + " "+ '"' +
+				 getNode().getData() + '"');
 		return;
 	}
 
@@ -102,14 +102,14 @@ public class ListManager {
 		if (getNode().keyPhrase.equals("#BUTTON")) {
 			currentList = getNode().prevList;
 			index = currentList.size() - 2;
-			System.out.println("Switched from Button to node: " + getNode().getKeyPhrase() + " "
-					+ getNode().getData());
+			System.out.println("Switched from Button to node: " + getNode().getKeyPhrase() + " "+ '"' +
+					 getNode().getData() + '"');
 			
 			return;
 		}
 		
-		System.out.println("Switched to Node(prev): " + getNode().getKeyPhrase() + " "
-				+ getNode().getData());
+		System.out.println("Switched to Node(prev): " + getNode().getKeyPhrase() + " "+ '"' +
+				 getNode().getData() + '"');
 		return;
 	}
 
@@ -172,7 +172,7 @@ public class ListManager {
 	
 	//This is for console testing
 	public void printString() {
-		System.out.println("CURRENT Node: " + getNode().getKeyPhrase() + "    Data: " + getNode().getData()); 
+		System.out.println("CURRENT Node: " + getNode().getKeyPhrase() + " "+ '"' + getNode().getData() + '"'); 
 	}
 	
 	//TEMPORARY. Delete this later...
