@@ -7,67 +7,86 @@ public class ListManager {
 
 	ArrayList<Node> currentList;
 	int index;
-
 	int cells;
 	int buttons;
+	
+	/* #############################################################################
+	 * CONSTRUCTORS
+	 * #############################################################################*/
 
 	public ListManager() {
 	}
 
 	public ListManager(int c, int b) {
+		//Constructor for List manager given cell and button sizes as data
 		this.cells = c;
 		this.buttons = b;
-		// constructs default ROOT node given cell and button sizes as data.
 		currentList = new ArrayList<Node>();
 		Node root = new Node("#HEAD", "cell " + cells + "\nbutton " + buttons);
 		currentList.add(root);
 		index = 0;
 	}
 
+	private Node getNode() {
+		return currentList.get(index);
+	}
+	
+	/* #############################################################################
+	 * MUTATORS
+	 * #############################################################################*/
+	
+	
 	public void addNext(String k, String d) {
-		// Creates node next to current position. SWITCHES TO NODE!
-		
+		// Creates node next to current position. Index increases to that node!
 		currentList.add(index + 1, new Node(k, d));
 		index++;
 		System.out.println(
-				"Created Node: " + currentList.get(index).getKeyPhrase() + " " + currentList.get(index).getData());
+				"Created Node: " + getNode().getKeyPhrase() + " " + getNode().getData());
+	}
+
+	public void remove() {
+		//Removes node as long as it is not a JUNCTION or BUTTON
+		if(!getNode().keyPhrase.equals("#JUNCTION") && !getNode().keyPhrase.equals("#BUTTON")) {
+			currentList.remove(index);
+		}
 	}
 
 	/*
-	 * Not using this yet because it might add confusion. public void addLast(String
-	 * k, String d) { currentList.add(new Node(k,d));
+	 * Not using this yet because it might add confusion. 
+	 * public void addLast(String k, String d) { currentList.add(new Node(k,d));
 	 * System.out.println("Created Node: " +
 	 * currentList.get(currentList.size()-1).getKeyPhrase() + " " +
 	 * currentList.get(currentList.size()-1).getData()); }
 	 */
-
-	public void remove() {
-
-	}
-
+	
+	/* #############################################################################
+	 * NAVIGATION
+	 * #############################################################################*/
+	
 	public void next() {
+		//Check index is valid
 		if (index + 1 > currentList.size() - 1) {
 			System.out.println("End of List!");
 			return;
 		}
 		index++;
-		if (currentList.get(index).keyPhrase.equals("#JUNCTION")) {
+		
+		//Handles branching from JUNCTION
+		if (getNode().keyPhrase.equals("#JUNCTION")) {
 			//Choose the next branch
 			Scanner reader = new Scanner(System.in);  // Reading from System.in
 			System.out.println("At a JUNCTION. Enter a button number: ");
 			int n = reader.nextInt(); // Scans the next token of the input as an int.
-			currentList = currentList.get(index).getButtons().get(n);
+			currentList = getNode().getButtons().get(n);
 			index = 0;
-			
 			reader.close();
-			System.out.println("Switched from Junction to node: " + currentList.get(index).getKeyPhrase() + " "
-					+ currentList.get(index).getData());
-			
+			System.out.println("Switched from Junction to node: " + getNode().getKeyPhrase() + " "
+					+ getNode().getData());
 			return;
 		}
 
-		System.out.println("Switched to Node(next): " + currentList.get(index).getKeyPhrase() + " "
-				+ currentList.get(index).getData());
+		System.out.println("Switched to Node(next): " + getNode().getKeyPhrase() + " "
+				+ getNode().getData());
 		return;
 	}
 
@@ -79,40 +98,48 @@ public class ListManager {
 		}
 		index--;
 		
-		//Move from button to node before JUNCTION.
-		if (currentList.get(index).keyPhrase.equals("#BUTTON")) {
-			currentList = currentList.get(index).prevList;
+		//Handles moving from BUTTON back to JUNCTION
+		if (getNode().keyPhrase.equals("#BUTTON")) {
+			currentList = getNode().prevList;
 			index = currentList.size() - 2;
-			System.out.println("Switched from Button to node: " + currentList.get(index).getKeyPhrase() + " "
-					+ currentList.get(index).getData());
+			System.out.println("Switched from Button to node: " + getNode().getKeyPhrase() + " "
+					+ getNode().getData());
 			
 			return;
 		}
-		System.out.println("Switched to Node(prev): " + currentList.get(index).getKeyPhrase() + " "
-				+ currentList.get(index).getData());
+		
+		System.out.println("Switched to Node(prev): " + getNode().getKeyPhrase() + " "
+				+ getNode().getData());
 		return;
 	}
 
 	public String getKeyPhrase() {
-		return currentList.get(index).getKeyPhrase();
+		return getNode().getKeyPhrase();
 	}
 
 	public String getData() {
-		return currentList.get(index).getData();
+		return getNode().getData();
 	}
+	
+	/* #############################################################################
+	 * JUNCTION
+	 * #############################################################################*/
 
 	public void createJunction(String[] s) {
-		// takes an input of strings for button choices. NULL means button does nothing.
+		// takes an input of strings for button choices. Order of string array matters! Each element corresponds to a button!
 		
+		//Limit JUNCTION creation when inside a button branch.
 		if (currentList.get(0).getKeyPhrase().equals("#BUTTON")) {
 			System.out.println("You cannot create another junction within a button branch!");
 			return;
 		}
-
+		
+		//Check if there are enough buttons
 		if (s.length > buttons) {
 			throw new IndexOutOfBoundsException("There are more branches than the buttons set for this scenario!");
 		}
 
+		//JUNCTION Creation.
 		System.out.println("Creating junction...");
 		ArrayList<ArrayList<Node>> buttons = new ArrayList<ArrayList<Node>>();
 		for (String name : s) {
@@ -131,6 +158,24 @@ public class ListManager {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	/* #############################################################################
+	 * TESTING STUFF
+	 * #############################################################################*/
+	
+	
+	//This is for console testing
+	public void printString() {
+		System.out.println("CURRENT Node: " + getNode().getKeyPhrase() + "    Data: " + getNode().getData()); 
+	}
+	
+	//TEMPORARY. Delete this later...
 	public static void main(String[] args) {
 		ListManager derp = new ListManager(3, 6);
 		
@@ -159,12 +204,13 @@ public class ListManager {
 		poop.add("three");
 		System.out.println(poop);
 		*/
-		String[] s = {"apple", "banana",null, "chocolate"};
+		String[] s = {"apple", "banana", null, "chocolate"};
 		
 		derp.addNext("/~pause", "3");
 		derp.createJunction(s);
 		derp.next();
 		derp.addNext("#TEXT", "im inside the button");
+		derp.printString();
 		derp.prev();
 		derp.prev();
 
