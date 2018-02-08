@@ -79,9 +79,10 @@ public class ListManager {
 			int n = reader.nextInt(); // Scans the next token of the input as an int.
 			currentList = getNode().getButtons().get(n);
 			index = 0;
-			reader.close();
+
 			System.out.println("Switched from Junction to node: " + getNode().getKeyPhrase() + " "+ '"' +
 					 getNode().getData() + '"');
+			
 			return;
 		}
 
@@ -138,22 +139,30 @@ public class ListManager {
 		if (s.length > buttons) {
 			throw new IndexOutOfBoundsException("There are more branches than the buttons set for this scenario!");
 		}
+		
+		//NEXTT creation
+		ArrayList<Node> nextt = new ArrayList<Node>();
+		Node nexttHead = Node.prev("/~NEXTT", currentList);
+		nextt.add(nexttHead);
+		
 
 		//JUNCTION Creation.
 		System.out.println("Creating junction...");
 		ArrayList<ArrayList<Node>> buttons = new ArrayList<ArrayList<Node>>();
 		for (String name : s) {
-			
+			Node buttonTail = Node.next(currentList);
 			if (name != null) {
 				ArrayList<Node> newList = new ArrayList<Node>();
-				Node buttonHead = new Node(name, currentList);
+				Node buttonHead = Node.prev(name, currentList);
 				newList.add(buttonHead);
+				newList.add(buttonTail);
 				buttons.add(newList);
 			} else if (name == null){
 				buttons.add(null);
 			}
 		}
 		currentList.add(index + 1, new Node(buttons));
+		
 	}
 	
 	
@@ -213,7 +222,19 @@ public class ListManager {
 		derp.printString();
 		derp.prev();
 		derp.prev();
-
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.addNext("/~Sound", "trumpets.wav");
+		derp.addNext("#TEXT", "The end!");
+		derp.prev();
+		derp.prev();
+		derp.next();
+		derp.next();
+		derp.next();
 	}
 
 }

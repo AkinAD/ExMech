@@ -6,6 +6,7 @@ public class Node {
 	String keyPhrase;
 	String data;
 	
+	ArrayList<Node> nextList;
 	ArrayList<Node> prevList;
 	ArrayList<ArrayList<Node>> buttons;
 	
@@ -27,12 +28,22 @@ public class Node {
 		
 	}
 	
-	Node(String name, ArrayList<Node> prev){
+	public static Node prev(String name, ArrayList<Node> prev){
+		Node a = new Node();
 		//Constructor for BUTTON head.
-		this.keyPhrase = "#BUTTON";
-		this.data = name;
-		this.prevList = prev;
+		a.keyPhrase = "#BUTTON";
+		a.data = name;
+		a.prevList = prev;
 		System.out.println("-new Button: " + name);
+		return a;
+	}
+	
+	public static Node next(ArrayList<Node> next){
+		Node a = new Node();
+		//Constructor for NEXT head.
+		a.keyPhrase = "/~NEXTT";
+		a.nextList = next;
+		return a;
 	}
 	
 
