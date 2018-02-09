@@ -38,12 +38,21 @@ public class Node {
 		return a;
 	}
 	
+	public static Node prev(String keyPhrase, String name, ArrayList<Node> prev){
+		Node a = new Node();
+		//Constructor for BUTTON head.
+		a.keyPhrase = keyPhrase;
+		a.data = name;
+		a.prevList = prev;
+		System.out.println("-new Button: " + name);
+		return a;
+	}
+	
 	public static Node next(ArrayList<Node> next){
 		Node a = new Node();
 		//Constructor for NEXT head.
-		a.keyPhrase = "/~NEXTT";
+		a.keyPhrase = "/~skip:NEXTT";
 		a.nextList = next;
-		System.out.println("nextestet");
 		return a;
 	}
 	

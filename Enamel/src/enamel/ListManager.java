@@ -81,7 +81,15 @@ public class ListManager {
 		}
 	
 		
+		
+		
 		index++;
+		
+		if(getNode().keyPhrase.equals("/~skip:NEXTT")) {
+			currentList = getNode().nextList;
+			index = 0;
+			return;
+		}
 		
 		if (getNode().keyPhrase.equals("#JUNCTION")) {
 			System.out.println("You are currently on a junction, hit next again to choose your path.");
@@ -101,6 +109,11 @@ public class ListManager {
 				System.out.println("You are currently on a junction, hit next again to choose your path.");
 			}
 			return;
+		}
+		
+		if(getNode().keyPhrase.equals("/~NEXTT")) {
+			currentList = getNode().prevList;
+			index = currentList.size();
 		}
 		
 		//check if index is valid
@@ -149,7 +162,7 @@ public class ListManager {
 		
 		//NEXTT creation
 		ArrayList<Node> nextt = new ArrayList<Node>();
-		Node nexttHead = Node.prev("/~NEXTT", currentList);
+		Node nexttHead = Node.prev("/~NEXTT", "" , currentList);
 		nextt.add(nexttHead);
 		
 
@@ -157,7 +170,7 @@ public class ListManager {
 		System.out.println("Creating junction...");
 		ArrayList<ArrayList<Node>> buttons = new ArrayList<ArrayList<Node>>();
 		for (String name : s) {
-			Node buttonTail = Node.next(currentList);
+			Node buttonTail = Node.next(nextt);
 			if (name != null) {
 				ArrayList<Node> newList = new ArrayList<Node>();
 				Node buttonHead = Node.prev(name, currentList);
