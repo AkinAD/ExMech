@@ -37,11 +37,16 @@ public class ListManager {
 	
 	
 	public void addNext(String k, String d) {
+		//Cannot AddNext on JUNCTIONS
+		if(getNode().getKeyPhrase().equals("#JUNCTION")) {
+			System.out.println("Error: Can Not add nodes on JUNCTIONS! You are currently on a JUNCTION.");
+			return;
+		}
+		
 		// Creates node next to current position. Index increases to that node!
 		currentList.add(index + 1, new Node(k, d));
 		index++;
-		System.out.println(
-				"Created Node: " + getNode().getKeyPhrase() + " "+ '"' + getNode().getData()+ '"');
+		printString("Created node:");
 	}
 
 	public void remove() {
@@ -64,30 +69,25 @@ public class ListManager {
 	 * #############################################################################*/
 	
 	public void next() {
+		//Handles branching from JUNCTION
+		if (getNode().keyPhrase.equals("#JUNCTION")) {
+			junctionInput();
+			return;
+		}
 		//Check index is valid
 		if (index + 1 > currentList.size() - 1) {
 			System.out.println("End of List!");
 			return;
 		}
+	
+		
 		index++;
 		
-		//Handles branching from JUNCTION
 		if (getNode().keyPhrase.equals("#JUNCTION")) {
-			//Choose the next branch
-			Scanner reader = new Scanner(System.in);  // Reading from System.in
-			System.out.println("At a JUNCTION. Enter a button number: ");
-			int n = reader.nextInt(); // Scans the next token of the input as an int.
-			currentList = getNode().getButtons().get(n);
-			index = 0;
-
-			System.out.println("Switched from Junction to node: " + getNode().getKeyPhrase() + " "+ '"' +
-					 getNode().getData() + '"');
-			
-			return;
+			System.out.println("You are currently on a junction, hit next again to choose your path.");
 		}
-
-		System.out.println("Switched to Node(next): " + getNode().getKeyPhrase() + " "+ '"' +
-				 getNode().getData() + '"');
+		
+		printString("Switched to node(next):");
 		return;
 	}
 
@@ -102,15 +102,16 @@ public class ListManager {
 		//Handles moving from BUTTON back to JUNCTION
 		if (getNode().keyPhrase.equals("#BUTTON")) {
 			currentList = getNode().prevList;
-			index = currentList.size() - 2;
-			System.out.println("Switched from Button to node: " + getNode().getKeyPhrase() + " "+ '"' +
-					 getNode().getData() + '"');
-			
+			index = currentList.size() - 1;
+			printString("Switched from button to node:");
+			if (getNode().keyPhrase.equals("#JUNCTION")) {
+				System.out.println("You are currently on a junction, hit next again to choose your path.");
+			}
 			return;
 		}
 		
-		System.out.println("Switched to Node(prev): " + getNode().getKeyPhrase() + " "+ '"' +
-				 getNode().getData() + '"');
+		printString("Switched to node(prev):");
+		
 		return;
 	}
 
@@ -128,6 +129,13 @@ public class ListManager {
 
 	public void createJunction(String[] s) {
 		// takes an input of strings for button choices. Order of string array matters! Each element corresponds to a button!
+		
+		//Only allow JUNCTION creation on the last Node
+		if (index != currentList.size() - 1) {
+			System.out.println("Can't create JUNCTION unless you are on the last node!");
+			
+			return;
+		}
 		
 		//Limit JUNCTION creation when inside a button branch.
 		if (currentList.get(0).getKeyPhrase().equals("#BUTTON")) {
@@ -162,9 +170,28 @@ public class ListManager {
 			}
 		}
 		currentList.add(index + 1, new Node(buttons));
+		index++;
 		
 	}
 	
+	public void junctionGoto(int n) {
+		currentList = getNode().getButtons().get(n);
+		index = 0;
+
+		printString("Switched from Junction to node:");
+	}
+	
+	//Choosing branch when inside JUNCTION
+	private void junctionInput() {
+		//Choose the next branch
+		Scanner reader = new Scanner(System.in);  // Reading from System.in
+		System.out.println("At a JUNCTION. Enter a button number: ");
+		int n = reader.nextInt(); // Scans the next token of the input as an int.
+		currentList = getNode().getButtons().get(n);
+		index = 0;
+
+		printString("Switched from Junction to node:");
+	}
 	
 	
 	
@@ -182,6 +209,9 @@ public class ListManager {
 	//This is for console testing
 	public void printString() {
 		System.out.println("CURRENT Node: " + getNode().getKeyPhrase() + " "+ '"' + getNode().getData() + '"'); 
+	}
+	public void printString(String s) {
+		System.out.println(s + " " + getNode().getKeyPhrase() + " "+ '"' + getNode().getData() + '"'); 
 	}
 	
 	//TEMPORARY. Delete this later...
@@ -213,25 +243,19 @@ public class ListManager {
 		poop.add("three");
 		System.out.println(poop);
 		*/
-		String[] s = {"apple", "banana", null, "chocolate"};
+		String[] s = {"apple", "banana", "chocolate"};
 		
-		derp.addNext("/~pause", "3");
+		derp.addNext("#TEXT", "this is under the root.");
 		derp.createJunction(s);
+		derp.printString();
 		derp.next();
-		derp.addNext("#TEXT", "im inside the button");
+		derp.addNext("#TEXT", "This is inside a branch");
+		derp.next();
+		derp.next();
 		derp.printString();
 		derp.prev();
 		derp.prev();
 		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.addNext("/~Sound", "trumpets.wav");
-		derp.addNext("#TEXT", "The end!");
-		derp.prev();
-		derp.prev();
 		derp.next();
 		derp.next();
 		derp.next();

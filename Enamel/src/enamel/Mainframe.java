@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -39,21 +40,113 @@ public class Mainframe {
 	public JFrame frmAuthoringApp;
 	private JTextArea textArea = new JTextArea();
 	private File selectedFile;
+	private JLabel currentNode;
 	
 	public Mainframe() {
 		frmAuthoringApp = new JFrame();
 		frmAuthoringApp.setTitle("Authoring App");
-		frmAuthoringApp.setBounds(100, 100, 450, 300);
+		frmAuthoringApp.setBounds(100, 100, 470, 300);
 		frmAuthoringApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAuthoringApp.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(6, 19, 320, 220);
+		scrollPane.setBounds(6, 20, 320, 220);
 		frmAuthoringApp.getContentPane().add(scrollPane);
 		
 		scrollPane.setColumnHeaderView(textArea);
+		
+		
+		//Generating basic graph manually to test...
+		ListManager derp = new ListManager(3, 6);
+		derp.addNext("#TEXT", "this is under the root.");
+		derp.addNext("#TEXT", "one");
+		derp.addNext("#TEXT", "two");
+		derp.addNext("#TEXT", "three");
+		derp.addNext("#TEXT", "four");
+		derp.prev();
+		derp.prev();
+		derp.prev();
+		derp.prev();
+		derp.prev();
+
+		
+		currentNode = new JLabel("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+		currentNode.setBounds(10, 0, 500, 15);
+		frmAuthoringApp.getContentPane().add(currentNode);
+		
+		JButton btnPrev = new JButton("Previous");
+		btnPrev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				derp.prev();
+				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+			}
+		});
+		btnPrev.setBounds(327, 60, 117, 29);
+		frmAuthoringApp.getContentPane().add(btnPrev);
+		
+		JButton btnNext = new JButton("Next");
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				derp.next();
+				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+			}
+		});
+		btnNext.setBounds(327, 90, 117, 29);
+		frmAuthoringApp.getContentPane().add(btnNext);
+		
+		
+		JButton btnBranch = new JButton("Branch it!");
+		btnBranch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String[] stuff = {"apple", "banana", "chocolate"};
+				derp.createJunction(stuff);
+				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+				
+				if(derp.getKeyPhrase().equals("#JUNCTION")) {
+					String s = (String)JOptionPane.showInputDialog(
+							frmAuthoringApp,
+					                    "Choose a branch, dont fuck up:\n"
+					                    + "\"Computer, please bring me to...\"",
+					                    "Customized Dialog",
+					                    JOptionPane.PLAIN_MESSAGE,
+					                    null,
+					                    stuff,
+					                    "apple");
+
+					//If a string was returned, say so.
+					if ((s != null) && (s.length() > 0)) {
+					    derp.junctionGoto(Arrays.asList(stuff).indexOf(s));
+					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+					    return;
+					}
+
+
+				}
+			}
+		});
+		btnBranch.setBounds(327, 140, 117, 29);
+		frmAuthoringApp.getContentPane().add(btnBranch);
+		
+		
+		JButton btnAdd = new JButton("Add Text");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textArea.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(frmAuthoringApp,
+						    "Type something before you hit this button again...",
+						    "Inane error",
+						    JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				derp.addNext("#TEXT", textArea.getText());
+				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+			}
+		});
+		btnAdd.setBounds(327, 170, 117, 29);
+		frmAuthoringApp.getContentPane().add(btnAdd);
+		
 		
 		//Sample button: Adds "Sample Text" to the text field.
 		JButton btnSample = new JButton("Sample");

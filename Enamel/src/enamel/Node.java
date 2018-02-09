@@ -43,6 +43,7 @@ public class Node {
 		//Constructor for NEXT head.
 		a.keyPhrase = "/~NEXTT";
 		a.nextList = next;
+		System.out.println("nextestet");
 		return a;
 	}
 	
