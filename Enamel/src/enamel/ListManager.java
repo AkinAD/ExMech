@@ -92,13 +92,6 @@ public class ListManager {
 	}
 
 	public void prev() {	
-		//check if index is valid.
-		if (index - 1 < 0) {
-			System.out.println("Already at root node!");
-			return;
-		}
-		index--;
-		
 		//Handles moving from BUTTON back to JUNCTION
 		if (getNode().keyPhrase.equals("#BUTTON")) {
 			currentList = getNode().prevList;
@@ -110,6 +103,12 @@ public class ListManager {
 			return;
 		}
 		
+		//check if index is valid
+		if (index - 1 < 0) {
+			System.out.println("Already at root node!");
+			return;
+		}
+		index--;
 		printString("Switched to node(prev):");
 		
 		return;

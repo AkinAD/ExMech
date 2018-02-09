@@ -70,6 +70,7 @@ public class Mainframe {
 		derp.prev();
 		derp.prev();
 		derp.prev();
+		String[] stuff = {"apple", "banana", "chocolate"};
 
 		
 		currentNode = new JLabel("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
@@ -80,6 +81,7 @@ public class Mainframe {
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				derp.prev();
+				
 				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 			}
 		});
@@ -90,6 +92,24 @@ public class Mainframe {
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				derp.next();
+				if(derp.getKeyPhrase().equals("#JUNCTION")) {
+					String s = (String)JOptionPane.showInputDialog(
+							frmAuthoringApp,
+					                    "Choose a branch, dont fuck up:\n"
+					                    + "\"Computer, please bring me to...\"",
+					                    "Customized Dialog",
+					                    JOptionPane.PLAIN_MESSAGE,
+					                    null,
+					                    stuff,
+					                    "apple");
+
+					//If a string was returned, say so.
+					if ((s != null) && (s.length() > 0)) {
+					    derp.junctionGoto(Arrays.asList(stuff).indexOf(s));
+					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+					    return;
+					}
+				}
 				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 			}
 		});
@@ -100,7 +120,7 @@ public class Mainframe {
 		JButton btnBranch = new JButton("Branch it!");
 		btnBranch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[] stuff = {"apple", "banana", "chocolate"};
+				
 				derp.createJunction(stuff);
 				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 				
@@ -121,8 +141,6 @@ public class Mainframe {
 					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 					    return;
 					}
-
-
 				}
 			}
 		});
