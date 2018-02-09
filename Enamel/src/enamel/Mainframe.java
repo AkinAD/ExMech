@@ -91,7 +91,7 @@ public class Mainframe {
 		JButton btnNext = new JButton("Next");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				derp.next();
+				
 				if(derp.getKeyPhrase().equals("#JUNCTION")) {
 					String s = (String)JOptionPane.showInputDialog(
 							frmAuthoringApp,
@@ -110,6 +110,7 @@ public class Mainframe {
 					    return;
 					}
 				}
+				derp.next();
 				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 			}
 		});
