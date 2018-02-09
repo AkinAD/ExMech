@@ -128,7 +128,7 @@ public class Mainframe {
 				if(derp.getKeyPhrase().equals("#JUNCTION")) {
 					String s = (String)JOptionPane.showInputDialog(
 							frmAuthoringApp,
-					                    "Choose a branch, dont fuck up:\n"
+					                    "Choose a branch:\n"
 					                    + "\"Computer, please bring me to...\"",
 					                    "Customized Dialog",
 					                    JOptionPane.PLAIN_MESSAGE,
@@ -154,7 +154,7 @@ public class Mainframe {
 			public void actionPerformed(ActionEvent e) {
 				if(textArea.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(frmAuthoringApp,
-						    "Type something before you hit this button again...",
+						    "Type something in the text box before add.",
 						    "Inane error",
 						    JOptionPane.ERROR_MESSAGE);
 					return;

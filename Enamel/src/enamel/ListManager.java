@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class ListManager {
 
 	ArrayList<Node> currentList;
+	ArrayList<Node> prevList;
 	int index;
 	int cells;
 	int buttons;
@@ -69,23 +70,15 @@ public class ListManager {
 	 * #############################################################################*/
 	
 	public void next() {
-		//Handles branching from JUNCTION
-		if (getNode().keyPhrase.equals("#JUNCTION")) {
-			junctionInput();
-			return;
-		}
 		//Check index is valid
 		if (index + 1 > currentList.size() - 1) {
 			System.out.println("End of List!");
 			return;
 		}
-	
-		
-		
 		
 		index++;
-		
 		if(getNode().keyPhrase.equals("/~skip:NEXTT")) {
+			prevList = currentList;
 			currentList = getNode().nextList;
 			index = 0;
 			return;
@@ -93,6 +86,7 @@ public class ListManager {
 		
 		if (getNode().keyPhrase.equals("#JUNCTION")) {
 			System.out.println("You are currently on a junction, hit next again to choose your path.");
+			return;
 		}
 		
 		printString("Switched to node(next):");
@@ -105,15 +99,13 @@ public class ListManager {
 			currentList = getNode().prevList;
 			index = currentList.size() - 1;
 			printString("Switched from button to node:");
-			if (getNode().keyPhrase.equals("#JUNCTION")) {
-				System.out.println("You are currently on a junction, hit next again to choose your path.");
-			}
 			return;
 		}
 		
 		if(getNode().keyPhrase.equals("/~NEXTT")) {
-			currentList = getNode().prevList;
-			index = currentList.size();
+			currentList = prevList;
+			index = currentList.size() - 2;
+			return;
 		}
 		
 		//check if index is valid
@@ -121,9 +113,9 @@ public class ListManager {
 			System.out.println("Already at root node!");
 			return;
 		}
+		
 		index--;
 		printString("Switched to node(prev):");
-		
 		return;
 	}
 
@@ -162,7 +154,7 @@ public class ListManager {
 		
 		//NEXTT creation
 		ArrayList<Node> nextt = new ArrayList<Node>();
-		Node nexttHead = Node.prev("/~NEXTT", "" , currentList);
+		Node nexttHead = Node.prev("/~NEXTT", "Begins back on Main Path" , currentList);
 		nextt.add(nexttHead);
 		
 
@@ -192,18 +184,7 @@ public class ListManager {
 
 		printString("Switched from Junction to node:");
 	}
-	
-	//Choosing branch when inside JUNCTION
-	private void junctionInput() {
-		//Choose the next branch
-		Scanner reader = new Scanner(System.in);  // Reading from System.in
-		System.out.println("At a JUNCTION. Enter a button number: ");
-		int n = reader.nextInt(); // Scans the next token of the input as an int.
-		currentList = getNode().getButtons().get(n);
-		index = 0;
 
-		printString("Switched from Junction to node:");
-	}
 	
 	
 	
@@ -226,51 +207,5 @@ public class ListManager {
 		System.out.println(s + " " + getNode().getKeyPhrase() + " "+ '"' + getNode().getData() + '"'); 
 	}
 	
-	//TEMPORARY. Delete this later...
-	public static void main(String[] args) {
-		ListManager derp = new ListManager(3, 6);
-		
-
-		/*
-		System.out.println(derp.getKeyPhrase());
-		System.out.println(derp.getData());
-		derp.addNext("/~sound", "wooop.wav");
-		derp.addNext("/~delay", "1");
-		derp.addNext("#TEXT", "You enter a mage's castle and wear a wizard's hat.");
-
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-
-		ArrayList<String> poop = new ArrayList<String>();
-		poop.add("one");
-		poop.add(null);
-		poop.add("three");
-		System.out.println(poop);
-		*/
-		String[] s = {"apple", "banana", "chocolate"};
-		
-		derp.addNext("#TEXT", "this is under the root.");
-		derp.createJunction(s);
-		derp.printString();
-		derp.next();
-		derp.addNext("#TEXT", "This is inside a branch");
-		derp.next();
-		derp.next();
-		derp.printString();
-		derp.prev();
-		derp.prev();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-	}
 
 }
