@@ -4,8 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -38,7 +43,7 @@ import org.apache.commons.io.FilenameUtils;
 public class Mainframe {
 	
 	public JFrame frmAuthoringApp;
-	private JTextArea textArea = new JTextArea();
+	private JTextArea textArea;
 	private File selectedFile;
 	private JLabel currentNode;
 	
@@ -50,13 +55,15 @@ public class Mainframe {
 		frmAuthoringApp.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(6, 20, 320, 220);
 		frmAuthoringApp.getContentPane().add(scrollPane);
 		
-		scrollPane.setColumnHeaderView(textArea);
-		
+		textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		textArea.setEditable(false);
+
 		
 		//Generating basic graph manually to test...
 		ListManager derp = new ListManager(3, 6);
@@ -78,6 +85,7 @@ public class Mainframe {
 		frmAuthoringApp.getContentPane().add(currentNode);
 		
 		JButton btnPrev = new JButton("Previous");
+		btnPrev.addKeyListener(enter);
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				derp.prev();
@@ -89,6 +97,7 @@ public class Mainframe {
 		frmAuthoringApp.getContentPane().add(btnPrev);
 		
 		JButton btnNext = new JButton("Next");
+		btnNext.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -119,6 +128,7 @@ public class Mainframe {
 		
 		
 		JButton btnBranch = new JButton("Branch it!");
+		btnBranch.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnBranch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -150,6 +160,7 @@ public class Mainframe {
 		
 		
 		JButton btnAdd = new JButton("Add Text");
+		btnAdd.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(textArea.getText().isEmpty()) {
@@ -169,6 +180,7 @@ public class Mainframe {
 		
 		//Sample button: Adds "Sample Text" to the text field.
 		JButton btnSample = new JButton("Sample");
+		btnSample.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnSample.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textArea.getText().equals("")) {
@@ -205,6 +217,7 @@ public class Mainframe {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));	// Shortcut: Control + O
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textArea.setText("");
@@ -226,6 +239,7 @@ public class Mainframe {
 		mnFile.add(mntmOpen);
 		
 		JMenuItem mntmClear = new JMenuItem("Clear");
+		mntmClear.setAccelerator(KeyStroke.getKeyStroke('C', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));	// Shortcut: Control + C
 		mntmClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textArea.setText("");
@@ -233,6 +247,7 @@ public class Mainframe {
 		});
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));	// Shortcut: Control + S
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser save = new JFileChooser("FactoryScenarios/");
@@ -258,6 +273,15 @@ public class Mainframe {
 		mnFile.add(mntmSave);
 		mnFile.add(mntmClear);
 	}
+	
+	public KeyListener enter = new KeyAdapter() {
+		@Override
+		public void keyTyped(KeyEvent e) {
+			if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+				((JButton) e.getComponent()).doClick();
+			}
+		}
+	};
 
 	public File getSelectedFile() {
 		return selectedFile;
