@@ -20,15 +20,16 @@ public class Node {
 		this.data = d;
 	}
 	
-	Node(ArrayList<ArrayList<Node>> buttons){
+	Node(ArrayList<ArrayList<Node>> buttons, ArrayList<Node> nextt){
 		//Constructor for junction. Takes a list of button names.
 		this.keyPhrase = "#JUNCTION";
 		this.buttons = buttons;
+		this.nextList = nextt;
 		System.out.println("Created new Junction!");
 		
 	}
 	
-	public static Node prev(String name, ArrayList<Node> prev){
+	public static Node button(String name, ArrayList<Node> prev){
 		Node a = new Node();
 		//Constructor for BUTTON head.
 		a.keyPhrase = "#BUTTON";
@@ -38,7 +39,7 @@ public class Node {
 		return a;
 	}
 	
-	public static Node prev(String keyPhrase, String name, ArrayList<Node> prev){
+	public static Node button(String keyPhrase, String name, ArrayList<Node> prev){
 		Node a = new Node();
 		//Constructor for BUTTON head.
 		a.keyPhrase = keyPhrase;
@@ -48,7 +49,7 @@ public class Node {
 		return a;
 	}
 	
-	public static Node next(ArrayList<Node> next){
+	public static Node head(ArrayList<Node> next){
 		Node a = new Node();
 		//Constructor for NEXT head.
 		a.keyPhrase = "/~skip:NEXTT";

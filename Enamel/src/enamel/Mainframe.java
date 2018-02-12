@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -77,7 +78,10 @@ public class Mainframe {
 		derp.prev();
 		derp.prev();
 		derp.prev();
-		String[] stuff = {"apple", "banana", "chocolate"};
+		ArrayList<String> stuff = new ArrayList<String>();
+		stuff.add("apple");
+		stuff.add("banana");
+		stuff.add("chocolate");
 
 		
 		currentNode = new JLabel("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
@@ -104,17 +108,17 @@ public class Mainframe {
 				if(derp.getKeyPhrase().equals("#JUNCTION")) {
 					String s = (String)JOptionPane.showInputDialog(
 							frmAuthoringApp,
-					                    "Choose a branch, dont fuck up:\n"
+					                    "Choose a branch,:\n"
 					                    + "\"Computer, please bring me to...\"",
 					                    "Customized Dialog",
 					                    JOptionPane.PLAIN_MESSAGE,
 					                    null,
-					                    stuff,
+					                    stuff.toArray(),
 					                    "apple");
 
 					//If a string was returned, say so.
 					if ((s != null) && (s.length() > 0)) {
-					    derp.junctionGoto(Arrays.asList(stuff).indexOf(s));
+						derp.junctionGoto(stuff.indexOf(s));
 					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 					    return;
 					}
@@ -143,12 +147,12 @@ public class Mainframe {
 					                    "Customized Dialog",
 					                    JOptionPane.PLAIN_MESSAGE,
 					                    null,
-					                    stuff,
+					                    stuff.toArray(),
 					                    "apple");
 
 					//If a string was returned, say so.
 					if ((s != null) && (s.length() > 0)) {
-					    derp.junctionGoto(Arrays.asList(stuff).indexOf(s));
+					    derp.junctionGoto(stuff.indexOf(s));
 					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 					    return;
 					}

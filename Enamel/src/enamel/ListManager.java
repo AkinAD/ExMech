@@ -7,6 +7,7 @@ public class ListManager {
 
 	ArrayList<Node> currentList;
 	ArrayList<Node> prevList;
+	ArrayList<Node> home;
 	int index;
 	int cells;
 	int buttons;
@@ -23,6 +24,7 @@ public class ListManager {
 		this.cells = c;
 		this.buttons = b;
 		currentList = new ArrayList<Node>();
+		home = currentList;
 		Node root = new Node("#HEAD", "cell " + cells + "\nbutton " + buttons);
 		currentList.add(root);
 		index = 0;
@@ -127,11 +129,20 @@ public class ListManager {
 		return getNode().getData();
 	}
 	
+	public void goHome() {
+		currentList = home;
+		index = 0;
+	}
+	
+	public ArrayList<Node> getNextList(){
+		return getNode().nextList;
+	}
+	
 	/* #############################################################################
 	 * JUNCTION
 	 * #############################################################################*/
 
-	public void createJunction(String[] s) {
+	public void createJunction(ArrayList<String> s) {
 		// takes an input of strings for button choices. Order of string array matters! Each element corresponds to a button!
 		
 		//Only allow JUNCTION creation on the last Node
@@ -148,13 +159,13 @@ public class ListManager {
 		}
 		
 		//Check if there are enough buttons
-		if (s.length > buttons) {
+		if (s.size() > buttons) {
 			throw new IndexOutOfBoundsException("There are more branches than the buttons set for this scenario!");
 		}
 		
 		//NEXTT creation
 		ArrayList<Node> nextt = new ArrayList<Node>();
-		Node nexttHead = Node.prev("/~NEXTT", "Begins back on Main Path" , currentList);
+		Node nexttHead = Node.button("/~NEXTT", "Begins back on Main Path" , currentList);
 		nextt.add(nexttHead);
 		
 
@@ -162,10 +173,10 @@ public class ListManager {
 		System.out.println("Creating junction...");
 		ArrayList<ArrayList<Node>> buttons = new ArrayList<ArrayList<Node>>();
 		for (String name : s) {
-			Node buttonTail = Node.next(nextt);
+			Node buttonTail = Node.head(nextt);
 			if (name != null) {
 				ArrayList<Node> newList = new ArrayList<Node>();
-				Node buttonHead = Node.prev(name, currentList);
+				Node buttonHead = Node.button(name, currentList);
 				newList.add(buttonHead);
 				newList.add(buttonTail);
 				buttons.add(newList);
@@ -173,7 +184,7 @@ public class ListManager {
 				buttons.add(null);
 			}
 		}
-		currentList.add(index + 1, new Node(buttons));
+		currentList.add(index + 1, new Node(buttons,nextt));
 		index++;
 		
 	}
