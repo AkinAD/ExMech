@@ -10,6 +10,7 @@ public class ListParser {
     
     ListManager aList;
     ArrayList<String> output = new ArrayList<String>();
+    
     ListParser(ListManager List)
     {    	
     	this.aList = List;        
@@ -21,13 +22,39 @@ public class ListParser {
     	{ 
     		String key = s.getKeyPhrase();
     		String data = s.getData();
+    		String jKey = "";
+    		String jData = "";
+    		
     		if(key == "#HEAD" | key == "#TAIL"| key == "#BUTTON" |key == "#TEXT")
     		{
     			sb.append(data); //assumes it is simply text
     		}
     		else if (key == "#JUNCTION" )
     		{
-    			//will work on 
+    			for(ArrayList<Node> p :s.buttons)
+    			{
+    				for(int i=0; i< p.size(); i++)
+    	    		{
+    	    			jData = p.get(i).data;
+    	    			jKey = "/~skip-button:";    	    			
+    	    			sb.append(jKey+i+ " " + jData);
+    	    		}
+    			}
+
+    			jKey = "/~user-input";
+    			sb.append(jKey);
+    			for(ArrayList<Node> p :s.buttons)
+    			{
+    				for(int i=0; i< p.size(); i++)
+    			
+	    		{
+    			
+    			aList.junctionGoto(i);
+    			// now create the other parts of the scenario post junction
+    			
+	    		}
+    				
+    			}
     		}
     		else
     		{

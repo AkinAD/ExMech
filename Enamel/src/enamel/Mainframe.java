@@ -173,7 +173,7 @@ public class Mainframe {
 		
 		
 		JButton btnAdd = new JButton("Add Text");
-		btnAdd.getAccessibleContext().setAccessibleName("Add Text");
+		//btnAdd.getAccessibleContext().setAccessibleName("Add Text");
 		btnAdd.getAccessibleContext().setAccessibleDescription("Input new text into editor text box");
 		btnAdd.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnAdd.addActionListener(new ActionListener() {
@@ -195,7 +195,7 @@ public class Mainframe {
 		
 		//Sample button: Adds "Sample Text" to the text field.
 		JButton btnSample = new JButton("Sample");
-		btnSample.getAccessibleContext().setAccessibleName("Sample");
+		//btnSample.getAccessibleContext().setAccessibleName("Sample");
 		btnSample.getAccessibleContext().setAccessibleDescription("Adds sample text to editor text  box");
 		btnSample.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnSample.addActionListener(new ActionListener() {
@@ -236,7 +236,7 @@ public class Mainframe {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
-		mntmOpen.getAccessibleContext().setAccessibleName("Open");
+		//mntmOpen.getAccessibleContext().setAccessibleName("Open");
 		mntmOpen.getAccessibleContext().setAccessibleDescription("Imports existing text file for editing in editor text box");
 		textArea.getAccessibleContext().setAccessibleName("Text box");
 		textArea.getAccessibleContext().setAccessibleDescription("Type Text here");
