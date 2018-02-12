@@ -207,11 +207,13 @@ public class ListManager {
 	
 	public void junctionGoto(int n) {
 		if (getNode().getKeyPhrase().equals("#JUNCTION")) {
-			if (n > 0 && n < getNode().buttons.size()) {
+			if (n >= 0 && n < buttons) {
 				currentList = getNode().getButtons().get(n);
 				index = 0;
 
 				printString("Switched from Junction to node:");
+			} else {
+				System.out.println("junctionGoTo Error: Out of Bounds");
 			}
 		}
 
