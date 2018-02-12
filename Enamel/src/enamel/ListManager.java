@@ -58,7 +58,7 @@ public class ListManager {
 		// Creates node next to current position. Index increases to that node!
 		currentList.add(index + 1, new Node(k, d));
 		index++;
-		printString("Created node:");
+		printString("Added node:");
 	}
 
 	public void remove() {
@@ -96,7 +96,7 @@ public class ListManager {
 		}
 		
 		if (getNode().keyPhrase.equals("#JUNCTION")) {
-			System.out.println("You are currently on a junction, hit next again to choose your path.");
+			System.out.println("You are currently on a junction... choose a branch to proceed.");
 			return;
 		}
 		
@@ -147,6 +147,12 @@ public class ListManager {
 		return getNode().nextList;
 	}
 	
+	public void setIndex(int i) {
+		if(i >= 0 && i < currentList.size()) {
+			this.index = i;
+		}
+	}
+	
 	/* #############################################################################
 	 * JUNCTION
 	 * #############################################################################*/
@@ -172,14 +178,15 @@ public class ListManager {
 			throw new IndexOutOfBoundsException("There are more branches than the buttons set for this scenario!");
 		}
 		
+		System.out.println("CREATING JUNCTION...");
+		
 		//NEXTT creation
 		ArrayList<Node> nextt = new ArrayList<Node>();
-		Node nexttHead = Node.button("/~NEXTT", "Begins back on Main Path" , currentList);
+		Node nexttHead = Node.button("/~NEXTT", "NEXTT path" , currentList);
 		nextt.add(nexttHead);
 		
 
 		//JUNCTION Creation.
-		System.out.println("Creating junction...");
 		ArrayList<ArrayList<Node>> buttons = new ArrayList<ArrayList<Node>>();
 		for (String name : s) {
 			Node buttonTail = Node.head(nextt);
@@ -199,10 +206,17 @@ public class ListManager {
 	}
 	
 	public void junctionGoto(int n) {
-		currentList = getNode().getButtons().get(n);
-		index = 0;
+		if (getNode().getKeyPhrase().equals("#JUNCTION")) {
+			if (n >= 0 && n < buttons) {
+				currentList = getNode().getButtons().get(n);
+				index = 0;
 
-		printString("Switched from Junction to node:");
+				printString("Switched from Junction to node:");
+			} else {
+				System.out.println("junctionGoTo Error: Out of Bounds");
+			}
+		}
+
 	}
 
 	
