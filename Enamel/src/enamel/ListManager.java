@@ -58,7 +58,7 @@ public class ListManager {
 		// Creates node next to current position. Index increases to that node!
 		currentList.add(index + 1, new Node(k, d));
 		index++;
-		printString("Created node:");
+		printString("Added node:");
 	}
 
 	public void remove() {
