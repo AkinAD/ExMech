@@ -18,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -79,10 +80,10 @@ public class Mainframe {
 		derp.prev();
 		derp.prev();
 		derp.prev();
-		ArrayList<String> stuff = new ArrayList<String>();
-		stuff.add("apple");
-		stuff.add("banana");
-		stuff.add("chocolate");
+		HashMap<Integer, String> stuff = new HashMap<Integer, String>();
+		stuff.put(1,"apple");
+		stuff.put(2,"banana");
+		stuff.put(3,"chocolate");
 
 		
 		currentNode = new JLabel("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
@@ -120,12 +121,13 @@ public class Mainframe {
 					                    "Customized Dialog",
 					                    JOptionPane.PLAIN_MESSAGE,
 					                    null,
-					                    stuff.toArray(),
+					                    stuff.values().toArray(),
 					                    "apple");
 
 					//If a string was returned, say so.
 					if ((s != null) && (s.length() > 0)) {
-						derp.junctionGoto(stuff.indexOf(s));
+						
+						derp.junctionGoto(derp.junctionSearch(s));
 					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 					    return;
 					}
@@ -156,12 +158,12 @@ public class Mainframe {
 					                    "Customized Dialog",
 					                    JOptionPane.PLAIN_MESSAGE,
 					                    null,
-					                    stuff.toArray(),
+					                    stuff.values().toArray(),
 					                    "apple");
 
 					//If a string was returned, say so.
 					if ((s != null) && (s.length() > 0)) {
-					    derp.junctionGoto(stuff.indexOf(s));
+						derp.junctionGoto(derp.junctionSearch(s));
 					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
 					    return;
 					}

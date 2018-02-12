@@ -1,6 +1,7 @@
 package enamel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Node {
 	String keyPhrase;
@@ -8,7 +9,8 @@ public class Node {
 	
 	ArrayList<Node> nextList;
 	ArrayList<Node> prevList;
-	ArrayList<ArrayList<Node>> buttons;
+	HashMap<Integer, ArrayList<Node>> buttons;
+	HashMap<Integer, String> buttonsNames;
 	
 	Node(){
 		
@@ -20,12 +22,15 @@ public class Node {
 		this.data = d;
 	}
 	
-	Node(ArrayList<ArrayList<Node>> buttons, ArrayList<Node> nextt){
+	public static Node junction(HashMap<Integer, ArrayList<Node>> buttons, HashMap<Integer, String> buttonsNames, ArrayList<Node> nextt){
 		//Constructor for junction. Takes a list of button names.
-		this.keyPhrase = "#JUNCTION";
-		this.buttons = buttons;
-		this.nextList = nextt;
-		System.out.println("Created new Junction!");
+		Node a = new Node();
+		a.keyPhrase = "#JUNCTION";
+		a.buttons = buttons;
+		a.buttonsNames = buttonsNames;
+		a.nextList = nextt;
+		//System.out.println("Created new Junction!");
+		return a;
 		
 	}
 	
@@ -74,7 +79,7 @@ public class Node {
 		return this.data;
 	}
 	
-	public ArrayList<ArrayList<Node>> getButtons(){
+	public HashMap<Integer, ArrayList<Node>> getButtons(){
 		return buttons;
 	}
 }
