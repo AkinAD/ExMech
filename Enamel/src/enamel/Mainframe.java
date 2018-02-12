@@ -89,7 +89,7 @@ public class Mainframe {
 		currentNode.setBounds(10, 0, 500, 15);
 		frmAuthoringApp.getContentPane().add(currentNode);
 		
-		ListParser parse = new ListParser(derp); //Akin
+		ScenarioComposer Compose = new ScenarioComposer(derp); //Akin
 		
 		JButton btnPrev = new JButton("Previous");
 		btnPrev.getAccessibleContext().setAccessibleName("Previous");
@@ -285,7 +285,7 @@ public class Mainframe {
 						    file = new File(file.toString() + ".txt");  // append .txt if "foo.jpg.txt" is OK
 						    file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".txt"); // ALTERNATIVELY: remove the extension (if any) and replace it with ".xml"
 						BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
-						bf.write(parse.returnStringFile()); //Akin
+						bf.write(Compose.returnStringFile()); //Akin
 						bf.close();
 						}
 					} catch (IOException e1) {

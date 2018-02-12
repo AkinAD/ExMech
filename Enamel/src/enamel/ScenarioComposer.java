@@ -1,17 +1,14 @@
 package enamel;
 
-
 import java.util.ArrayList;
 
-
-
-public class ListParser {
+public class ScenarioComposer {
 	String text = "";
     
     ListManager aList;
     ArrayList<String> output = new ArrayList<String>();
     
-    ListParser(ListManager List)
+    ScenarioComposer(ListManager List)
     {    	
     	this.aList = List;        
     }
