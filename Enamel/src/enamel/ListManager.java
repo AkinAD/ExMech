@@ -34,12 +34,12 @@ public class ListManager {
 		this.buttons = b;
 		currentList = new ArrayList<Node>();
 		home = currentList;
-		Node root = new Node("#HEAD", "cell " + cells + "\nbutton " + buttons);
+		Node root = new Node("#HEAD", "Cells " + cells + "\nButton " + buttons);
 		currentList.add(root);
 		index = 0;
 	}
 
-	private Node getNode() {
+	public Node getNode() {
 		return currentList.get(index);
 	}
 	
