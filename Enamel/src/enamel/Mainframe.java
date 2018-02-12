@@ -140,7 +140,7 @@ public class Mainframe {
 		
 		JButton btnBranch = new JButton("Branch it!");
 		btnBranch.getAccessibleContext().setAccessibleName("Branch");
-		btnBranch.getAccessibleContext().setAccessibleDescription("Creates a new Branch from current list ");
+		btnBranch.getAccessibleContext().setAccessibleDescription("Creates a new Branch from current list");
 		btnBranch.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnBranch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
