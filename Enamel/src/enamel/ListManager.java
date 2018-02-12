@@ -18,6 +18,15 @@ public class ListManager {
 
 	public ListManager() {
 	}
+	
+	public ListManager(ListManager copy) {
+		this.currentList = copy.home;
+		this.prevList = null;
+		this.home = copy.home;
+		this.index = 0;
+		this.cells = copy.cells;
+		this.buttons = copy.buttons;
+	}
 
 	public ListManager(int c, int b) {
 		//Constructor for List manager given cell and button sizes as data
