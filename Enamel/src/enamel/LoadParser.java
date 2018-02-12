@@ -21,17 +21,21 @@ public class LoadParser {
 		int buttons = -1;
 		
 		try {
+			//read the text file
 			FileReader fileReader = new FileReader(scenarioFile);
 			bufferedReader = new BufferedReader(fileReader);
 			
 			System.out.println("## LOADING SCENARIO FILE ##");
+			System.out.println("Loading: '" + scenarioFile+ "'");
 			
 			//Get cells and buttons sizes from the first two lines.
 			for (int i = 0; i < 2; i++) {
 					nextLine();
+					//split the line into fields: keyPhrase, data
 					String[] lineSplit = line.split(" ", 2);		
 					String first = lineSplit[0];
 					String rest = lineSplit[1];
+					//Set cell and button values
 					if (first.equals("Cell")) {
 						cells = Integer.parseInt(rest);
 					} else if (first.equals("Button")) {
@@ -43,12 +47,13 @@ public class LoadParser {
 					
 				
 			}
+			//Create new ListManager using the extracted cell and button numbers.
 			result = new ListManager(cells, buttons);
 			
-			//Add nodes based on key phrases
+			//Add nodes:
 			while ((nextLine()) != null) {
 				line.trim();
-				
+				//Handle keyPhrases
 				if(line.startsWith("/~")) {
 					String[] lineSplit = line.split(":", 2);
 					if(lineSplit.length > 1) {
@@ -60,7 +65,7 @@ public class LoadParser {
 							junction(result);
 						} else {
 						
-						//Takes keyPhrase and rest as data.
+						//Add generic keyPhrase & data node.
 						result.addNext(first, rest);
 						}
 					}else {
@@ -68,7 +73,8 @@ public class LoadParser {
 						result.addNext(line, "THIS IS A LABEL!!!!!!!!!!!!!!!!!!!!!");
 					}
 				}else if(!line.isEmpty() && !line.equals(" ")){
-					result.addNext("#TEXT", line);
+					//add line of text (no keyPhrase detected)
+					result.addNext("#TEXT", line.trim());
 				}
 			}
 			
@@ -87,8 +93,9 @@ public class LoadParser {
 	}
 	
 	private void junction(ListManager result) {
-
+		//Handles cases where a junction is required
 		ArrayList<String> buttonList = new ArrayList<String>();
+		//Get all the button names and set them in an array list.
 		while (line.startsWith("/~skip-button")) {
 			String[] lineSplit = line.split(":", 2);
 			String[] values = lineSplit[1].split(" ");
@@ -112,16 +119,17 @@ public class LoadParser {
 		ArrayList<Node> juncList = result.currentList;
 		ArrayList<Node> juncNext = result.getNextList();
 
-		
+			//Add nodes under each of the 'branches' under the Junction
 			while ((nextLine()) != null && !line.trim().equals(" ")) {
 				if (line.startsWith("/~NEXTT")) {
-					//set current position to next node.
+					//Case for loading nodes is done. Set current position to NEXTT node. exit.
 					result.currentList = juncNext;
 					result.index = 0;
 					System.out.println("Switched to NEXTT path...");
 					break;
 				}
 				
+				//Switch to the relevant 'branch' to add nodes.
 				if (line.startsWith("/~")) {
 					String buttonName = line.substring(2, line.length()).trim();
 					int index = buttonList.indexOf(buttonName);
@@ -130,13 +138,14 @@ public class LoadParser {
 								"loading failed: start of branch does not match list of buttons!");
 					}
 
-					// Navigate to list to add stuff
+					// Navigate to list after verifying it exists
 					result.junctionGoto(index);
 
 					// Read text until you reach /~skip:NEXTT
 					while ((nextLine()) != null) {
 						line.trim();
-
+						
+						//Add nodes until /~skip is reached.
 						if (line.startsWith("/~")) {
 							String[] lineSplit = line.split(":", 2);
 							if (lineSplit.length > 1) {
@@ -150,12 +159,13 @@ public class LoadParser {
 									break;
 								}
 								
-								// Takes keyPhrase and rest as data.
+								//Add generic keyPhrase & data node.
 								result.addNext(first, rest);
 							
 								
 							}
 						} else if (!line.isEmpty() && !line.equals(" ")) {
+							//add line of text (no keyPhrase detected)
 							result.addNext("#TEXT", line);
 						}
 					}
@@ -173,7 +183,7 @@ public class LoadParser {
 	}
 
 	private String nextLine() {
-		
+		//made this into a method to clean up the code a bit.
 		try {
 			line = bufferedReader.readLine();
 		} catch (IOException e) {
@@ -183,6 +193,8 @@ public class LoadParser {
 		
 		return line;
 	}
+	
+	
 	
 	/* #############################################################################
 	 * TESTING // Delete later.
