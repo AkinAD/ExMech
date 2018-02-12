@@ -64,7 +64,7 @@ public class Mainframe {
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
-
+		
 		
 		//Generating basic graph manually to test...
 		ListManager derp = new ListManager(3, 6);
@@ -73,6 +73,7 @@ public class Mainframe {
 		derp.addNext("#TEXT", "two");
 		derp.addNext("#TEXT", "three");
 		derp.addNext("#TEXT", "four");
+		derp.addNext("/~pause:", "five"); //Akin
 		derp.prev();
 		derp.prev();
 		derp.prev();
@@ -88,7 +89,11 @@ public class Mainframe {
 		currentNode.setBounds(10, 0, 500, 15);
 		frmAuthoringApp.getContentPane().add(currentNode);
 		
+		ListParser parse = new ListParser(derp); //Akin
+		
 		JButton btnPrev = new JButton("Previous");
+		btnPrev.getAccessibleContext().setAccessibleName("Previous");
+		btnPrev.getAccessibleContext().setAccessibleDescription("Navigates current list back to previous node");
 		btnPrev.addKeyListener(enter);
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -101,6 +106,8 @@ public class Mainframe {
 		frmAuthoringApp.getContentPane().add(btnPrev);
 		
 		JButton btnNext = new JButton("Next");
+		btnNext.getAccessibleContext().setAccessibleName("Next");
+		btnNext.getAccessibleContext().setAccessibleDescription("Navigates current list back to next node");
 		btnNext.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -132,6 +139,8 @@ public class Mainframe {
 		
 		
 		JButton btnBranch = new JButton("Branch it!");
+		btnBranch.getAccessibleContext().setAccessibleName("Branch");
+		btnBranch.getAccessibleContext().setAccessibleDescription("Creates a new Branch from current list");
 		btnBranch.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnBranch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -164,6 +173,8 @@ public class Mainframe {
 		
 		
 		JButton btnAdd = new JButton("Add Text");
+		btnAdd.getAccessibleContext().setAccessibleName("Add Text");
+		btnAdd.getAccessibleContext().setAccessibleDescription("Input new text into editor text box");
 		btnAdd.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -184,6 +195,8 @@ public class Mainframe {
 		
 		//Sample button: Adds "Sample Text" to the text field.
 		JButton btnSample = new JButton("Sample");
+		btnSample.getAccessibleContext().setAccessibleName("Sample");
+		btnSample.getAccessibleContext().setAccessibleDescription("Adds sample text to editor text  box");
 		btnSample.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnSample.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -215,12 +228,18 @@ public class Mainframe {
 		frmAuthoringApp.getContentPane().add(btnSample);
 		
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.getAccessibleContext().setAccessibleName("Menu Bar");
+		menuBar.getAccessibleContext().setAccessibleDescription("Contains options relevant to program");
 		frmAuthoringApp.setJMenuBar(menuBar);
 		
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen.getAccessibleContext().setAccessibleName("Open");
+		mntmOpen.getAccessibleContext().setAccessibleDescription("Imports existing text file for editing in editor text box");
+		textArea.getAccessibleContext().setAccessibleName("Text box");
+		textArea.getAccessibleContext().setAccessibleDescription("Type Text here");
 		mntmOpen.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));	// Shortcut: Control + O
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -258,14 +277,15 @@ public class Mainframe {
 				int retrunVal = save.showSaveDialog(frmAuthoringApp);
 				if (retrunVal == JFileChooser.APPROVE_OPTION) {
 					try {	
-						File file = save.getSelectedFile();
+						File file = save.getSelectedFile(); 
+						
 						if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("txt")) {
 						    // filename is OK as-is
 						} else {
 						    file = new File(file.toString() + ".txt");  // append .txt if "foo.jpg.txt" is OK
 						    file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".txt"); // ALTERNATIVELY: remove the extension (if any) and replace it with ".xml"
 						BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
-						bf.write(textArea.getText());
+						bf.write(parse.returnStringFile()); //Akin
 						bf.close();
 						}
 					} catch (IOException e1) {
