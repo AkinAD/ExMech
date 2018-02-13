@@ -74,7 +74,7 @@ public class Mainframe {
 		derp.addNext("#TEXT", "two");
 		derp.addNext("#TEXT", "three");
 		derp.addNext("#TEXT", "four");
-		derp.addNext("/~pause:", "five"); //Akin
+		derp.addNext("/~pause:", "5"); //Akin
 		derp.prev();
 		derp.prev();
 		derp.prev();
