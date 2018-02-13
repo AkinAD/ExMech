@@ -67,7 +67,7 @@ public class LoadParser {
 						} else {
 						
 						//Add generic keyPhrase & data node.
-						result.addNext(first + ":", rest);
+						result.addNext(first, rest);
 						}
 					}else {
 						//do stuff with labels here! Possibly remove this!
@@ -176,7 +176,7 @@ public class LoadParser {
 								}
 
 								// Add generic keyPhrase & data node.
-								result.addNext(first + ":", rest);
+								result.addNext(first, rest);
 
 							}
 						} else if (!line.isEmpty() && !line.equals(" ")) {
