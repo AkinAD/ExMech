@@ -26,6 +26,7 @@ public class ScenarioComposer {
     		if(key == "#HEAD" | key == "#TAIL"| key == "#BUTTON" |key == "#TEXT")
     		{
     			sb.append(data); //assumes it is simply text
+    			sb.append("\n");
     		}
     		else if (key == "#JUNCTION" )
     		{
@@ -34,10 +35,12 @@ public class ScenarioComposer {
     					jData = p.get(x).data;
     	    			jKey = "/~skip-button:";    	    			
     	    			sb.append(jKey+ jData);
+    	    			sb.append("\n");
     	    			x++;
     			}
     			jKey = "/~user-input";
     			sb.append(jKey);
+    			sb.append("\n");
     			//Now inside one of the Junctions 
     				for(int i : s.buttons.keySet())
     				{				//For all the list of nodes in Junction (now itterating through via index rater than name 
@@ -50,19 +53,23 @@ public class ScenarioComposer {
     								if(jKey == "#BUTTON" )
     								{	jKey = "/~";
     								jData = t.getData();
-    								sb.append(jKey + jData);  //append List name 
+    								sb.append(jKey + jData);
+    								sb.append("\n");//append List name 
     								}    		
 	    							else if (jKey == "#TEXT")
 	    							{
-	    								sb.append(jData); //assumes it is simply text
+	    								sb.append(jData);
+	    								sb.append("\n");//assumes it is simply text
 	    							}
 	    							else if (jKey == "/~skip:NEXTT")
 	    							{
 	    								sb.append(jKey);
+	    								sb.append("\n");
 	    							}
 	    							else
 	    				    		{
-	    				    			sb.append(jKey + jData);    // this code assumes that every node is in the proper order readable by the braile cell
+	    				    			sb.append(jKey + jData);
+	    				    			sb.append("\n");// this code assumes that every node is in the proper order readable by the braile cell
 	    				    									// and simply places txt as they would be in the array list
 	    				    		}
     							}
@@ -77,10 +84,12 @@ public class ScenarioComposer {
     		else if(data== null)
     		{// for elements like /~repeat that have no data value but just the key
     			sb.append(key);
+    			sb.append("\n");
     		}
     		else
     		{
-    			sb.append(key + data);    // this code assumes that every node is in the proper order readable by the braile cell
+    			sb.append(key + data); 
+    			sb.append("\n");// this code assumes that every node is in the proper order readable by the braile cell
     									// and simply places txt as they would be in the array list
     		}
     		sb.append("\n");
