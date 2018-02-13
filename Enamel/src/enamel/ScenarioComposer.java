@@ -21,7 +21,7 @@ public class ScenarioComposer {
     		String data = s.getData();
     		String jKey = "";
     		String jData = "";
-    		int x = 0;
+    		int x=0;
     		
     		if(key == "#HEAD" | key == "#TAIL"| key == "#BUTTON" |key == "#TEXT")
     		{
@@ -33,7 +33,7 @@ public class ScenarioComposer {
     			{		
     					jData = p.get(x).data;
     	    			jKey = "/~skip-button:";    	    			
-    	    			sb.append(jKey+x+ " " + jData);
+    	    			sb.append(jKey+ jData);
     	    			x++;
     			}
     			jKey = "/~user-input";
@@ -52,13 +52,13 @@ public class ScenarioComposer {
     								jData = t.getData();
     								sb.append(jKey + jData);  //append List name 
     								}    		
-	    							else if (key == "#TEXT")
+	    							else if (jKey == "#TEXT")
 	    							{
 	    								sb.append(jData); //assumes it is simply text
 	    							}
-	    							else if (x == 0)
-	    							{// incomplete
-	    								// if on the last branch of node then go to /~NEXTT
+	    							else if (jKey == "/~skip:NEXTT")
+	    							{
+	    								sb.append(jKey);
 	    							}
 	    							else
 	    				    		{
@@ -74,6 +74,10 @@ public class ScenarioComposer {
     	
     		//Junction code ends here
     				}
+    		else if(data== null)
+    		{// for elements like /~repeat that have no data value but just the key
+    			sb.append(key);
+    		}
     		else
     		{
     			sb.append(key + data);    // this code assumes that every node is in the proper order readable by the braile cell
