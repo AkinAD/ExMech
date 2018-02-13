@@ -21,6 +21,7 @@ public class ScenarioComposer {
     		String data = s.getData();
     		String jKey = "";
     		String jData = "";
+    		int x = 0;
     		
     		if(key == "#HEAD" | key == "#TAIL"| key == "#BUTTON" |key == "#TEXT")
     		{
@@ -28,46 +29,48 @@ public class ScenarioComposer {
     		}
     		else if (key == "#JUNCTION" )
     		{
-    			for(ArrayList<Node> p :s.buttons)
-    			{
-    				for(int i=0; i< p.size(); i++)
-    	    		{
-    	    			jData = p.get(i).data;
+    			for(ArrayList<Node> p :s.buttons.values())
+    			{		
+    					jData = p.get(x).data;
     	    			jKey = "/~skip-button:";    	    			
-    	    			sb.append(jKey+i+ " " + jData);
-    	    		}
+    	    			sb.append(jKey+x+ " " + jData);
+    	    			x++;
     			}
-
     			jKey = "/~user-input";
     			sb.append(jKey);
-    			//Now inside the Junction 
-    				for(ArrayList<Node> p :s.buttons)
-    				{ //For all the list of nodes in Junction 
-    					for(int i=0; i< p.size(); i++) //for all the 'nodes' contained in Junction
-    					{     aList.junctionGoto(i);   			//go to specific junction, execute a sequence of tasks
-    						for (Node t : aList.currentList)	
+    			//Now inside one of the Junctions 
+    				for(int i : s.buttons.keySet())
+    				{				//For all the list of nodes in Junction (now itterating through via index rater than name 
+    					aList.junctionGoto(i); // Changes to a new branch per itteration
+    					//Now on a new list
+    						for (Node t : aList.currentList)	 // for every node t in the current list(branch)
     						{ 
-    							if(key == "#BUTTON" )
-    							{	jKey = "/~";
+    							jKey = t.getKeyPhrase();
+    							jData = t.getData();
+    								if(jKey == "#BUTTON" )
+    								{	jKey = "/~";
     								jData = t.getData();
     								sb.append(jKey + jData);  //append List name 
-    							}    		
-    							else if (key == "#TEXT")
-    							{
-    								sb.append(jData); //assumes it is simply text
+    								}    		
+	    							else if (key == "#TEXT")
+	    							{
+	    								sb.append(jData); //assumes it is simply text
+	    							}
+	    							else if (x == 0)
+	    							{// incomplete
+	    								// if on the last branch of node then go to /~NEXTT
+	    							}
+	    							else
+	    				    		{
+	    				    			sb.append(jKey + jData);    // this code assumes that every node is in the proper order readable by the braile cell
+	    				    									// and simply places txt as they would be in the array list
+	    				    		}
     							}
-    							else
-    				    		{
-    				    			sb.append(jKey + jData);    // this code assumes that every node is in the proper order readable by the braile cell
-    				    									// and simply places txt as they would be in the array list
-    				    		}
-    							//add /~nextt
-    							// now create the other parts of the scenario post junction
-    			
-    						}
     					}
-    				//For loop iterating through separate new junction nodes ends here
-    				}
+    				
+    					     			//go to specific junction, execute a sequence of tasks
+    						
+       				//For loop iterating through separate new junction nodes ends here
     	
     		//Junction code ends here
     				}
