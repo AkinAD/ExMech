@@ -225,47 +225,56 @@ public class LoadParser {
 		// TODO Auto-generated method stub
 		
 		LoadParser parser = new LoadParser();
-		ListManager derp = parser.fromText("FactoryScenarios/Scenario_1.txt");
+		ListManager derp = parser.fromText("FactoryScenarios/Scenario_3.txt");
 		
 		System.out.println();
 		System.out.println("##### TESTING #####");
 		System.out.println();
 		
+//		derp.goHome();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.junctionGoto(0);
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.junctionGoto(0);
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.junctionGoto(0);
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+//		derp.next();
+		
+		
+		System.out.println();
+		System.out.println();
+		System.out.println("Composing.....");
 		derp.goHome();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.junctionGoto(0);
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.junctionGoto(0);
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.junctionGoto(0);
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
-		derp.next();
+		ScenarioComposer comp = new ScenarioComposer(derp);
+		System.out.println(comp.returnStringFile());
+		
 	}
 }
