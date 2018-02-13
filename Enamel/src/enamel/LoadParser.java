@@ -67,7 +67,7 @@ public class LoadParser {
 						} else {
 						
 						//Add generic keyPhrase & data node.
-						result.addNext(first, rest);
+						result.addNext(first + ":", rest);
 						}
 					}else {
 						//do stuff with labels here! Possibly remove this!
@@ -159,7 +159,7 @@ public class LoadParser {
 						if (line.startsWith("/~")) {
 							String[] lineSplit = line.split(":", 2);
 							if (lineSplit.length > 1) {
-								String first = lineSplit[0];
+								String first = lineSplit[0] ;
 								String rest = lineSplit[1];
 
 								// break if /~skip shows up
@@ -176,7 +176,7 @@ public class LoadParser {
 								}
 
 								// Add generic keyPhrase & data node.
-								result.addNext(first, rest);
+								result.addNext(first + ":", rest);
 
 							}
 						} else if (!line.isEmpty() && !line.equals(" ")) {
