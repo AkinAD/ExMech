@@ -8,11 +8,11 @@ public class ScenarioComposer {
     ListManager aList;
     ArrayList<String> output = new ArrayList<String>();
     
-    ScenarioComposer(ListManager List)
+    ScenarioComposer()
     {    	
-    	this.aList = List;        
+    	this.aList = null;        
     }
-    public String returnStringFile()
+    public String returnStringFile(ListManager aList)
     {
     	StringBuilder sb = new StringBuilder();
     	for (Node s : aList.currentList)

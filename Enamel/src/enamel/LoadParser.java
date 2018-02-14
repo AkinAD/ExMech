@@ -100,7 +100,7 @@ public class LoadParser {
 			return;
 		}
 		// Handles cases where a junction is required
-		HashMap<Integer, String> buttonList = new HashMap<Integer, String>();
+		ArrayList<String> buttonList = new ArrayList<String>();
 		// Get all the button names and set them in an array list.
 		while (line.startsWith("/~skip-button")) {
 			String[] lineSplit = line.split(":", 2);
@@ -108,7 +108,7 @@ public class LoadParser {
 			if (values.length > 1) {
 				int button = Integer.parseInt(values[0]);
 				String buttonName = values[1];
-				buttonList.put(button, buttonName);
+				buttonList.add(button, buttonName);
 			} else {
 				throw new IllegalArgumentException("loading failed: skip-button does not contain enough variables.");
 			}
@@ -121,6 +121,12 @@ public class LoadParser {
 
 		// create the junction with the above buttonNames
 		result.createJunction(buttonList);
+		int buttonListSize  = 0;
+		for(String s: buttonList) {
+			if(s != null) {
+				buttonListSize++;
+			}
+		}
 		int juncIndex = result.index;
 		ArrayList<Node> juncList = result.currentList;
 		ArrayList<Node> juncNext = result.getNextList();
@@ -142,7 +148,7 @@ public class LoadParser {
 				// Switch to the relevant 'branch' to add nodes.
 				if (line.startsWith("/~")) {
 					String buttonName = line.substring(2, line.length()).trim();
-					int index = ListManager.mapSearch(buttonList, buttonName);
+					int index = result.junctionSearch(buttonName);
 					if (index < 0) {
 						throw new IllegalArgumentException(
 								"loading failed: start of branch does not match list of buttons!");
@@ -170,7 +176,7 @@ public class LoadParser {
 								}
 
 								// Case when there is only one button
-								if (line.startsWith("/~skip-button:") && buttonList.size() == 1) {
+								if (line.startsWith("/~skip-button:") && buttonListSize == 1) {
 									//System.out.println("detected only 1 button");
 									break;
 								}
@@ -185,7 +191,7 @@ public class LoadParser {
 						}
 					}
 
-					if (buttonList.size() == 1) {
+					if (buttonListSize == 1) {
 						// Case for when there is only one button.
 						result.currentList = juncNext;
 						result.index = 0;
@@ -231,50 +237,49 @@ public class LoadParser {
 		System.out.println("##### TESTING #####");
 		System.out.println();
 		
-//		derp.goHome();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.junctionGoto(0);
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.junctionGoto(0);
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.junctionGoto(0);
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
-//		derp.next();
+		derp.goHome();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.junctionGoto(0);
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.junctionGoto(0);
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.junctionGoto(0);
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
+		derp.next();
 		
 		
 		System.out.println();
 		System.out.println();
 		System.out.println("Composing.....");
-		derp.goHome();
-		ScenarioComposer comp = new ScenarioComposer(derp);
-		System.out.println(comp.returnStringFile());
+		ScenarioComposer comp = new ScenarioComposer();
+		System.out.println(comp.returnStringFile(derp));
 		
 	}
 }
