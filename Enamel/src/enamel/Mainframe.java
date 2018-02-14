@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -147,27 +148,7 @@ public class Mainframe {
 		btnBranch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				derp.createJunction(stuff);
-				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
-				
-				if(derp.getKeyPhrase().equals("#JUNCTION")) {
-					String s = (String)JOptionPane.showInputDialog(
-							frmAuthoringApp,
-					                    "Choose a branch:\n"
-					                    + "\"Computer, please bring me to...\"",
-					                    "Customized Dialog",
-					                    JOptionPane.PLAIN_MESSAGE,
-					                    null,
-					                    stuff.values().toArray(),
-					                    "apple");
-
-					//If a string was returned, say so.
-					if ((s != null) && (s.length() > 0)) {
-						derp.junctionGoto(derp.junctionSearch(s));
-					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
-					    return;
-					}
-				}
+				createJunction(derp);
 			}
 		});
 		btnBranch.setBounds(327, 140, 117, 29);
@@ -298,6 +279,55 @@ public class Mainframe {
 		});
 		mnFile.add(mntmSave);
 		mnFile.add(mntmClear);
+	}
+	
+	public void createJunction(ListManager derp) {
+		HashMap<Integer,String> buttonsNames = new HashMap<Integer,String>();
+		
+		ArrayList<JTextField> textFields = new ArrayList<JTextField>();
+		for(int i = 0; i < derp.buttons; i++) {
+			textFields.add(new JTextField());
+		}
+		
+		JComponent[] inputs;
+		
+		for(int i = 0; i < derp.buttons; i++) {
+			inputs[i] = textFields.get(i);
+		}
+		
+		int result = JOptionPane.showConfirmDialog(null, inputs, "My custom dialog", JOptionPane.PLAIN_MESSAGE);
+		if( result == JOptionPane.OK_OPTION) {
+			for(int i = 0; i < derp.buttons; i++) {
+				textFields.add(new JTextField());
+			}
+			
+		}else {
+			System.out.println("User Cancelled createJunction");
+			return;
+		}
+		
+		
+		derp.createJunction(buttonsNames);
+		currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+		
+		if(derp.getKeyPhrase().equals("#JUNCTION")) {
+			String s = (String)JOptionPane.showInputDialog(
+					frmAuthoringApp,
+			                    "Choose a branch:\n"
+			                    + "\"Computer, please bring me to...\"",
+			                    "Customized Dialog",
+			                    JOptionPane.PLAIN_MESSAGE,
+			                    null,
+			                    buttonsNames.values().toArray(),
+			                    null);
+
+			//If a string was returned, say so.
+			if ((s != null) && (s.length() > 0)) {
+				derp.junctionGoto(derp.junctionSearch(s));
+			    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+			    return;
+			}
+		}
 	}
 	
 	public KeyListener enter = new KeyAdapter() {
