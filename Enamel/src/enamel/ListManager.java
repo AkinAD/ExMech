@@ -163,7 +163,7 @@ public class ListManager {
 	 * JUNCTION
 	 * #############################################################################*/
 
-	public void createJunction(HashMap<Integer, String> s) {
+	public void createJunction(ArrayList<String> s) {
 		// takes an input of strings for button choices. Order of string array matters! Each element corresponds to a button!
 		
 		//Only allow JUNCTION creation on the last Node
@@ -192,15 +192,16 @@ public class ListManager {
 		
 
 		//JUNCTION Creation.
-		HashMap<Integer, ArrayList<Node>> buttons = new HashMap<Integer, ArrayList<Node>>();
-		for (Entry<Integer, String> n : s.entrySet()) {
-			Node buttonTail = Node.tail(nextt);
-			if (n.getValue() != null) {
+		ArrayList<ArrayList<Node>> buttons = new ArrayList<ArrayList<Node>>();
+		for (int i = 0; i < s.size(); i++) {
+			if (s.get(i) != null) {
+				Node buttonTail = Node.tail(nextt);
 				ArrayList<Node> newList = new ArrayList<Node>();
-				Node buttonHead = Node.button(n.getValue(), currentList);
+				Node buttonHead = Node.button(s.get(i), currentList);
 				newList.add(buttonHead);
 				newList.add(buttonTail);
-				buttons.put(n.getKey(),newList);
+				buttons.add(i,newList);
+				
 			}
 		}
 		currentList.add(index + 1, Node.junction(buttons, s, nextt));
@@ -225,28 +226,19 @@ public class ListManager {
 	public int junctionSearch(String s) {
 		//Searches the current junction for value and gives it's key.
 		if (getNode().getKeyPhrase().equals("#JUNCTION")) {
-			HashMap<Integer,String> map = getNode().buttonsNames;
-		    for (Entry<Integer, String> entry : map.entrySet()) {
-		        if (s.equals(entry.getValue())) {
-		            return entry.getKey();
-		        }
-		    }
+			int index = getNode().buttonsNames.indexOf(s);
+			if(index != -1) {
+				return index;
+			}else {
+
 		    System.out.println("Error junctionSearch: string not found in junction");
 		    return -1;
+			}
 		}
 		System.out.println("Error junctionSearch: you are not on a Junction!");
 		return -2;
 	}
-	public static int mapSearch(HashMap<Integer,String> map, String string) {
-		//static method that searchs the value of the map and gives it's key.
-		    for (Entry<Integer, String> entry : map.entrySet()) {
-		        if (string.equals(entry.getValue())) {
-		            return entry.getKey();
-		        }
-		    }
-		    System.out.println("Error junctionSearch: string not found in junction");
-		    return -1;
-	}
+
 		
 	
 

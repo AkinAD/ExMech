@@ -9,8 +9,8 @@ public class Node {
 	
 	ArrayList<Node> nextList;
 	ArrayList<Node> prevList;
-	HashMap<Integer, ArrayList<Node>> buttons;
-	HashMap<Integer, String> buttonsNames;
+	ArrayList<ArrayList<Node>> buttons;
+	ArrayList<String> buttonsNames;
 	
 	Node(){
 		
@@ -22,7 +22,7 @@ public class Node {
 		this.data = d;
 	}
 	
-	public static Node junction(HashMap<Integer, ArrayList<Node>> buttons, HashMap<Integer, String> buttonsNames, ArrayList<Node> nextt){
+	public static Node junction(ArrayList<ArrayList<Node>> buttons, ArrayList<String> buttonsNames, ArrayList<Node> nextt){
 		//Constructor for junction. Takes a list of button names.
 		Node a = new Node();
 		a.keyPhrase = "#JUNCTION";
@@ -79,7 +79,7 @@ public class Node {
 		return this.data;
 	}
 	
-	public HashMap<Integer, ArrayList<Node>> getButtons(){
+	public ArrayList<ArrayList<Node>> getButtons(){
 		return buttons;
 	}
 }

@@ -99,7 +99,7 @@ public class Mainframe {
 		currentNode.setBounds(10, 0, 500, 15);
 		frmAuthoringApp.getContentPane().add(currentNode);
 		
-		ScenarioComposer Compose = new ScenarioComposer(derp); //Akin
+		ScenarioComposer Compose = new ScenarioComposer(); //Akin
 		
 		JButton btnPrev = new JButton("Previous");
 		btnPrev.getAccessibleContext().setAccessibleName("Previous");
@@ -263,7 +263,7 @@ public class Mainframe {
 						    file = new File(file.toString() + ".txt");  // append .txt if "foo.jpg.txt" is OK
 						    file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".txt"); // ALTERNATIVELY: remove the extension (if any) and replace it with ".xml"
 						BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
-						bf.write(Compose.returnStringFile()); //Akin
+						bf.write(Compose.returnStringFile(derp)); //Akin
 						bf.close();
 						}
 					} catch (IOException e1) {
@@ -277,7 +277,7 @@ public class Mainframe {
 	}
 	
 	public void createJunction(ListManager derp) {
-		HashMap<Integer, String> buttonsNames = new HashMap<Integer, String>();
+		ArrayList<String> buttonsNames = new ArrayList<String>();
 		JPanel p = new JPanel(new GridLayout(0, 2));
 
 		// create checkboxes based on number of buttons
@@ -328,12 +328,12 @@ public class Mainframe {
 				// add textFields to buttonsNames
 				for (int i = 0; i < derp.buttons; i++) {
 					if (checkBoxes.get(i).isSelected()) {
-						buttonsNames.put(i, textFields.get(i).getText());
+						buttonsNames.add(i, textFields.get(i).getText());
 					}
 				}
 				// check if names are unique
-				for (String s : buttonsNames.values()) {
-					int count = Collections.frequency(buttonsNames.values(), s);
+				for (String s : buttonsNames) {
+					int count = Collections.frequency(buttonsNames, s);
 					System.out.println(count);
 					if (count != 1 || s.isEmpty()) {
 						JOptionPane.showMessageDialog(p, "Button names must be unique!", "Error",
@@ -360,11 +360,11 @@ public class Mainframe {
 	public void chooseButton(ListManager derp) {
 		if (derp.getKeyPhrase().equals("#JUNCTION")) {
 			// Get the buttonNames and create a dialog box to choose where to navigate to
-			HashMap<Integer, String> buttons = derp.getNode().buttonsNames;
+			ArrayList<String> buttons = derp.getNode().buttonsNames;
 			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button", JOptionPane.PLAIN_MESSAGE, 0, null,
-					buttons.values().toArray(), buttons.values().toArray()[0]);
+					buttons.toArray(), buttons.toArray()[0]);
 			// Goto the selected branch based on the button press
-			String s = buttons.values().toArray()[i].toString();
+			String s = buttons.toArray()[i].toString();
 			derp.junctionGoto(derp.junctionSearch(s));
 			currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 			return;
