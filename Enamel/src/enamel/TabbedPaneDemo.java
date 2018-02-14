@@ -15,12 +15,12 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
 
-public class tabbedPaneDemo {
+public class TabbedPaneDemo {
 
 	public JFrame frame;
 	public JTextArea textArea;
 
-	public tabbedPaneDemo() {
+	public TabbedPaneDemo() {
 		frame = new JFrame("DEMO");
 		frame.setBounds(100, 100, 650, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,7 +87,7 @@ public class tabbedPaneDemo {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					tabbedPaneDemo window = new tabbedPaneDemo();
+					TabbedPaneDemo window = new TabbedPaneDemo();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
