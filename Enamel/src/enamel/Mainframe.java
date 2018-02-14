@@ -75,7 +75,6 @@ public class Mainframe {
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
 		
-		
 		//Generating basic graph manually to test...
 		ListManager derp = new ListManager(3, 6);
 		derp.addNext("#TEXT", "this is under the root.");
@@ -102,9 +101,10 @@ public class Mainframe {
 		ScenarioComposer Compose = new ScenarioComposer(); //Akin
 		
 		JButton btnPrev = new JButton("Previous");
+		btnPrev.addKeyListener(enter);	
 		btnPrev.getAccessibleContext().setAccessibleName("Previous");
 		btnPrev.getAccessibleContext().setAccessibleDescription("Navigates current list back to previous node");
-		btnPrev.addKeyListener(enter);
+		btnPrev.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				derp.prev();
