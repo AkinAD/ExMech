@@ -54,7 +54,7 @@ public class Node {
 		return a;
 	}
 	
-	public static Node head(ArrayList<Node> next){
+	public static Node tail(ArrayList<Node> next){
 		Node a = new Node();
 		//Constructor for NEXT head.
 		a.keyPhrase = "/~skip:NEXTT";

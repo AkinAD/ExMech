@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class ListManager {
 
 	ArrayList<Node> currentList;
-	ArrayList<Node> prevList;
 	ArrayList<Node> home;
 	int index;
 	int cells;
@@ -24,7 +23,6 @@ public class ListManager {
 	
 	public ListManager(ListManager copy) {
 		this.currentList = copy.home;
-		this.prevList = null;
 		this.home = copy.home;
 		this.index = 0;
 		this.cells = copy.cells;
@@ -43,7 +41,11 @@ public class ListManager {
 	}
 
 	public Node getNode() {
-		return currentList.get(index);
+		if(index < currentList.size()) {
+			return currentList.get(index);
+		}else {
+			throw new IllegalArgumentException("getNode index is out of bounds!");
+		}
 	}
 	
 	/* #############################################################################
@@ -92,9 +94,10 @@ public class ListManager {
 		
 		index++;
 		if(getNode().keyPhrase.equals("/~skip:NEXTT")) {
-			prevList = currentList;
+			ArrayList<Node> oldList = currentList;
 			currentList = getNode().nextList;
 			index = 0;
+			getNode().prevList = oldList;
 			return;
 		}
 		
@@ -117,7 +120,7 @@ public class ListManager {
 		}
 		
 		if(getNode().keyPhrase.equals("/~NEXTT")) {
-			currentList = prevList;
+			currentList = getNode().prevList;
 			index = currentList.size() - 2;
 			return;
 		}
@@ -191,7 +194,7 @@ public class ListManager {
 		//JUNCTION Creation.
 		HashMap<Integer, ArrayList<Node>> buttons = new HashMap<Integer, ArrayList<Node>>();
 		for (Entry<Integer, String> n : s.entrySet()) {
-			Node buttonTail = Node.head(nextt);
+			Node buttonTail = Node.tail(nextt);
 			if (n.getValue() != null) {
 				ArrayList<Node> newList = new ArrayList<Node>();
 				Node buttonHead = Node.button(n.getValue(), currentList);

@@ -3,10 +3,14 @@ package enamel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -18,10 +22,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -112,28 +121,12 @@ public class Mainframe {
 		btnNext.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				if(derp.getKeyPhrase().equals("#JUNCTION")) {
-					String s = (String)JOptionPane.showInputDialog(
-							frmAuthoringApp,
-					                    "Choose a branch,:\n"
-					                    + "\"Computer, please bring me to...\"",
-					                    "Customized Dialog",
-					                    JOptionPane.PLAIN_MESSAGE,
-					                    null,
-					                    stuff.values().toArray(),
-					                    "apple");
-
-					//If a string was returned, say so.
-					if ((s != null) && (s.length() > 0)) {
-						
-						derp.junctionGoto(derp.junctionSearch(s));
-					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
-					    return;
-					}
-				}
+				chooseButton(derp);
+				}else {
 				derp.next();
 				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
+				}
 			}
 		});
 		btnNext.setBounds(327, 90, 117, 29);
@@ -146,27 +139,10 @@ public class Mainframe {
 		btnBranch.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnBranch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				derp.createJunction(stuff);
-				currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
-				
-				if(derp.getKeyPhrase().equals("#JUNCTION")) {
-					String s = (String)JOptionPane.showInputDialog(
-							frmAuthoringApp,
-					                    "Choose a branch:\n"
-					                    + "\"Computer, please bring me to...\"",
-					                    "Customized Dialog",
-					                    JOptionPane.PLAIN_MESSAGE,
-					                    null,
-					                    stuff.values().toArray(),
-					                    "apple");
-
-					//If a string was returned, say so.
-					if ((s != null) && (s.length() > 0)) {
-						derp.junctionGoto(derp.junctionSearch(s));
-					    currentNode.setText("Current Position: " + derp.getKeyPhrase() + " "+ '"' + derp.getData() + '"');
-					    return;
-					}
+				if(derp.index == derp.currentList.size() - 1) {
+					createJunction(derp);
+				}else{
+					System.out.println("ERROR: Can only create junction at the end of list!");
 				}
 			}
 		});
@@ -298,6 +274,102 @@ public class Mainframe {
 		});
 		mnFile.add(mntmSave);
 		mnFile.add(mntmClear);
+	}
+	
+	public void createJunction(ListManager derp) {
+		HashMap<Integer, String> buttonsNames = new HashMap<Integer, String>();
+		JPanel p = new JPanel(new GridLayout(0, 2));
+
+		// create checkboxes based on number of buttons
+		ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
+		for (int i = 0; i < derp.buttons; i++) {
+			checkBoxes.add(new JCheckBox("Button " + i, false));
+		}
+
+		// create textFields based on number of buttons
+		ArrayList<JTextField> textFields = new ArrayList<JTextField>();
+		for (int i = 0; i < derp.buttons; i++) {
+			textFields.add(new JTextField());
+		}
+
+		// add items to panel
+		for (int i = 0; i < derp.buttons; i++) {
+			p.add(checkBoxes.get(i));
+			textFields.get(i).setVisible(false);
+			p.add(textFields.get(i));
+		}
+
+		// add listener to checkBoxes
+		for (int i = 0; i < derp.buttons; i++) {
+			final int x = i;
+			checkBoxes.get(x).addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() == ItemEvent.SELECTED) {// checkbox has been selected
+						textFields.get(x).setVisible(true);
+						p.revalidate();
+						p.repaint();
+					} else {// checkbox has been deselected
+						textFields.get(x).setVisible(false);
+						p.revalidate();
+						p.repaint();
+					}
+					;
+				}
+			});
+		}
+
+		// show dialog
+		boolean skip = false;
+		while (skip == false) {
+			int result = JOptionPane.showConfirmDialog(null, p, "My custom dialog", JOptionPane.PLAIN_MESSAGE);
+			if (result == JOptionPane.OK_OPTION) {
+
+				// add textFields to buttonsNames
+				for (int i = 0; i < derp.buttons; i++) {
+					if (checkBoxes.get(i).isSelected()) {
+						buttonsNames.put(i, textFields.get(i).getText());
+					}
+				}
+				// check if names are unique
+				for (String s : buttonsNames.values()) {
+					int count = Collections.frequency(buttonsNames.values(), s);
+					System.out.println(count);
+					if (count != 1 || s.isEmpty()) {
+						JOptionPane.showMessageDialog(p, "Button names must be unique!", "Error",
+								JOptionPane.WARNING_MESSAGE);
+						break;
+					} else {
+						// Can now continue after verifications
+						skip = true;
+					}
+				}
+
+			} else {
+				System.out.println("User Cancelled createJunction");
+				return;
+			}
+		}
+		// create the junction
+		derp.createJunction(buttonsNames);
+		currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
+		// navigate
+		chooseButton(derp);
+	}
+
+	public void chooseButton(ListManager derp) {
+		if (derp.getKeyPhrase().equals("#JUNCTION")) {
+			// Get the buttonNames and create a dialog box to choose where to navigate to
+			HashMap<Integer, String> buttons = derp.getNode().buttonsNames;
+			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button", JOptionPane.PLAIN_MESSAGE, 0, null,
+					buttons.values().toArray(), buttons.values().toArray()[0]);
+			// Goto the selected branch based on the button press
+			String s = buttons.values().toArray()[i].toString();
+			derp.junctionGoto(derp.junctionSearch(s));
+			currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
+			return;
+
+		}
 	}
 	
 	public KeyListener enter = new KeyAdapter() {
