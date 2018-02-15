@@ -14,11 +14,37 @@ public class ListManager {
 	int cells;
 	int buttons;
 	
+	ListManager derp;
+	HashMap<Integer, String> stuff;
+	
 	/* #############################################################################
 	 * CONSTRUCTORS
 	 * #############################################################################*/
 
 	public ListManager() {
+		derp = new ListManager(3, 6);
+		derp.addNext("#TEXT", "this is under the root.");
+		derp.addNext("#TEXT", "one");
+		derp.addNext("#TEXT", "two");
+		derp.addNext("#TEXT", "three");
+		derp.addNext("#TEXT", "four");
+		derp.addNext("#TEXT", "five");
+		derp.addNext("#TEXT", "six");
+		derp.addNext("#TEXT", "seven");
+		derp.addNext("/~pause:", "HALT"); //Akin
+		derp.prev();
+		derp.prev();
+		derp.prev();
+		derp.prev();
+		derp.prev();
+		derp.prev();
+		derp.prev();
+		derp.prev();
+		
+		stuff = new HashMap<Integer, String>();
+		stuff.put(1,"apple");
+		stuff.put(2,"banana");
+		stuff.put(3,"chocolate");
 	}
 	
 	public ListManager(ListManager copy) {
@@ -27,6 +53,9 @@ public class ListManager {
 		this.index = 0;
 		this.cells = copy.cells;
 		this.buttons = copy.buttons;
+		
+		ListManager derp = new ListManager(this.cells, this.buttons);
+
 	}
 
 	public ListManager(int c, int b) {
@@ -157,6 +186,16 @@ public class ListManager {
 		if(i >= 0 && i < currentList.size()) {
 			this.index = i;
 		}
+	}
+	
+	public int getIndex(){
+		return this.index;
+	}
+	
+	public void returnToRoot(ListManager list) {
+		for (int i = 0; i < list.currentList.size() - 2; i++) {
+			list.prev();
+	      }
 	}
 	
 	/* #############################################################################
