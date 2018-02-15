@@ -37,11 +37,8 @@ public class Controller {
 		this.listSize = list.derp.currentList.size();
 	}
 	
-	public void viewInitialize() {
-		for (int i = 0; i < listSize - 1; i++) {
-			view.textArea.append(list.derp.getData() + "\n");
-			list.derp.next();
-	      }
+	public void initializeList() {
+		displayList();
 		list.returnToRoot(list.derp);
 		view.currentNode.setText("Current Position: " + list.derp.getKeyPhrase() + " "+ '"' + list.derp.getData() + '"');
 		for (int i = 0; i < view.label.length; i++) {
@@ -50,9 +47,49 @@ public class Controller {
 	        view.panel_1B.add(view.label[i]);
 	        list.derp.next();
 	      }
-	    list.derp.prev();
-	    list.derp.prev();
-	    list.derp.prev();
+		list.returnToRoot(list.derp);
+	}
+	
+	public void updateLabels() {
+		view.currentNode.setText("Current Position: " + list.derp.getKeyPhrase() + " "+ '"' + list.derp.getData() + '"' + " " + highlightPosition);
+		for (int k = 0; k < view.label.length; k++) {
+			if (view.label[k].getBorder() == view.bevel) {
+				highlightPosition = k;
+			}
+		}
+		if (highlightPosition == 0) {
+			for (int i = 0; i < view.label.length; i++) {
+				view.label[i].setText(list.derp.getData());
+		        list.derp.next();
+		      }
+			list.derp.prev();
+			list.derp.prev();
+			list.derp.prev();
+		} else if (highlightPosition == 1) {
+			for (int i = 1; i < view.label.length; i++) {
+				view.label[i].setText(list.derp.getData());
+		        list.derp.next();
+		      }
+			list.derp.prev();
+			list.derp.prev();
+		} else if (highlightPosition == 2) {
+			nextButton();
+		}
+		
+		
+	}
+	
+	public void displayList() {
+		int currentListPos = list.derp.index;
+		list.returnToRoot(list.derp);
+		view.textArea.setText("");
+		for (int i = 0; i < list.derp.currentList.size() - 1; i++) {
+			view.textArea.append(list.derp.getData() + "\n");
+			list.derp.next();
+	      }
+		for (int j = list.derp.currentList.size(); j > currentListPos; j--) {
+			list.derp.prev();
+	      }
 	}
 	
 	public void newMenuItem() {
@@ -112,7 +149,7 @@ public class Controller {
 			index++;
     	    list.derp.next();
 			String text = view.label[highlightPosition].getText();
-    	    System.out.println("Selected Node: " + text + ", Positon: " + highlightPosition + ", Data Type: " + list.derp.getData() + ", Index: " + index);
+    	    System.out.println("Positon: " + highlightPosition + ", Data Type: " + list.derp.getData() + ", Index: " + index + " " + listSize);
     		view.currentNode.setText("Current Position: " + list.derp.getKeyPhrase() + " "+ '"' + list.derp.getData() + '"');
 		} else {
 			if (listSize - 1 > view.label.length) {
@@ -125,7 +162,7 @@ public class Controller {
 				listSize--;
 				index++;
 				String text = view.label[highlightPosition].getText();
-        	    System.out.println("Selected Node: " + text + ", Positon: " + highlightPosition + ", Data Type: " + list.derp.getData() + ", Index: " + index);
+        	    System.out.println("Positon: " + highlightPosition + ", Data Type: " + list.derp.getData() + ", Index: " + index + " " + listSize);
         		view.currentNode.setText("Current Position: " + list.derp.getKeyPhrase() + " "+ '"' + list.derp.getData() + '"');
 			} else {
 				System.out.println("Listed has ended");
@@ -148,7 +185,7 @@ public class Controller {
 			index--;
     	    list.derp.prev();
 			String text = view.label[highlightPosition].getText();
-    	    System.out.println("Selected Node: " + text + ", Positon: " + highlightPosition + ", Data Type: " + list.derp.getData() + ", Index: " + index);
+    	    System.out.println("Positon: " + highlightPosition + ", Data Type: " + list.derp.getData() + ", Index: " + index + " " + listSize);
     		view.currentNode.setText("Current Position: " + list.derp.getKeyPhrase() + " "+ '"' + list.derp.getData() + '"');
 		} else {
 			if (highlightPosition == 0 && index > 0) {
@@ -161,7 +198,7 @@ public class Controller {
 			    listSize++;
 			    index--;
 				String text = view.label[highlightPosition].getText();
-        	    System.out.println("Selected Node: " + text + ", Positon: " + highlightPosition + ", Data Type: " + list.derp.getData() + ", Index: " + index);
+        	    System.out.println("Positon: " + highlightPosition + ", Data Type: " + list.derp.getData() + ", Index: " + index + " " + listSize);
         		view.currentNode.setText("Current Position: " + list.derp.getKeyPhrase() + " "+ '"' + list.derp.getData() + '"');
 			} else {
 				System.out.println("Already at root");
@@ -190,29 +227,34 @@ public class Controller {
 	}
 	
 	public void sampleButton() {
-		if (view.textArea.getText().equals("")) {
-			view.textArea.append("Sample Text");
-		} else {
-			int caretOffset;
-			int lineNumber;
-			int startOffset;
-			int endOffset;
-			try {
-				caretOffset = view.textArea.getCaretPosition();
-				lineNumber = view.textArea.getLineOfOffset(caretOffset);
-				startOffset = view.textArea.getLineStartOffset(lineNumber);
-				endOffset = view.textArea.getLineEndOffset(lineNumber);
-				if (startOffset == endOffset) {
-					view.textArea.replaceRange("Sample Text", startOffset, endOffset);
-				} else {
-					view.textArea.append("\n" + "Sample Text");
-				}
-			} catch (BadLocationException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+		list.derp.addNext("#TEXT", "Sample");
+		this.listSize++;
+		displayList();
+		updateLabels();
+		
+//		if (view.textArea.getText().equals("")) {
+//			view.textArea.append("Sample Text");
+//		} else {
+//			int caretOffset;
+//			int lineNumber;
+//			int startOffset;
+//			int endOffset;
+//			try {
+//				caretOffset = view.textArea.getCaretPosition();
+//				lineNumber = view.textArea.getLineOfOffset(caretOffset);
+//				startOffset = view.textArea.getLineStartOffset(lineNumber);
+//				endOffset = view.textArea.getLineEndOffset(lineNumber);
+//				if (startOffset == endOffset) {
+//					view.textArea.replaceRange("Sample Text", startOffset, endOffset);
+//				} else {
+//					view.textArea.append("\n" + "Sample Text");
+//				}
+//			} catch (BadLocationException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		}
 	}
-
+	
 }
 

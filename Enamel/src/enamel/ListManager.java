@@ -32,14 +32,6 @@ public class ListManager {
 		derp.addNext("#TEXT", "six");
 		derp.addNext("#TEXT", "seven");
 		derp.addNext("/~pause:", "HALT"); //Akin
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.prev();
-		derp.prev();
 		
 		stuff = new HashMap<Integer, String>();
 		stuff.put(1,"apple");
@@ -193,9 +185,11 @@ public class ListManager {
 	}
 	
 	public void returnToRoot(ListManager list) {
-		for (int i = 0; i < list.currentList.size() - 2; i++) {
+		for (int i = 0; i < list.currentList.size() - 1; i++) {
 			list.prev();
 	      }
+		index = 0;
+		derp.next();
 	}
 	
 	/* #############################################################################

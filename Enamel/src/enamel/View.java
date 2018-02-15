@@ -195,7 +195,7 @@ public class View {
 				controller.addTextButton();
 			}
 		});
-		btnAdd.setBounds(327, 170, 117, 29);
+		btnAdd.setBounds(327, 100, 117, 29);
 		panel_2.add(btnAdd);
 		
 		
@@ -209,12 +209,33 @@ public class View {
 				controller.sampleButton();
 			}
 		});
-		btnSample.setBounds(73, 100, 117, 29);
+		btnSample.setBounds(73, 130, 117, 29);
 		panel_2.add(btnSample);
+		
+		//Show list
+		JButton btnRefresh = new JButton("Refresh List");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.revalidate();
+				frame.repaint();
+				
+				panel_1.revalidate();
+				panel_1.repaint();
+				
+				panel_1B.revalidate();
+				panel_1B.repaint();
+				
+				panel_2.revalidate();
+				panel_2.repaint();
+			}
+		});
+		btnRefresh.setBounds(73, 160, 117, 29);
+		panel_2.add(btnRefresh);
+		
 		
 		
 		if (controller != null) {
-			controller.viewInitialize();
+			controller.initializeList();
 		}
 	}
 	
