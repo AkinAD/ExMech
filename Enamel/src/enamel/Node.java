@@ -26,6 +26,7 @@ public class Node {
 		//Constructor for junction. Takes a list of button names.
 		Node a = new Node();
 		a.keyPhrase = "#JUNCTION";
+		a.data = "Question (choose an answer)";
 		a.buttons = buttons;
 		a.buttonsNames = buttonsNames;
 		a.nextList = nextt;
@@ -58,6 +59,7 @@ public class Node {
 		Node a = new Node();
 		//Constructor for NEXT head.
 		a.keyPhrase = "/~skip:NEXTT";
+		a.data ="End of branch, press next again to rejoin main branch.";
 		a.nextList = next;
 		return a;
 	}

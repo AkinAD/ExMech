@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -54,9 +55,10 @@ public class View {
 	JPanel panel_1B;
 	JPanel panel_2;
 	JLabel label[];
+	JLabel labeltop;
+	JLabel labelbottom;
 	JTextArea textArea;
 	JScrollPane scrollPane;
-	File selectedFile;
 	
 	JLabel currentNode;
 
@@ -135,8 +137,12 @@ public class View {
 
 		panel_1B = new JPanel();
 		tabbedPane_1.addTab("Navigate", null, panel_1B, null);
-		panel_1B.setLayout(new GridLayout(3, 0));
+		panel_1B.setLayout(new GridLayout(5, 0));
+		tabbedPane_1.setSelectedIndex(1);
 
+		
+		labeltop = new JLabel();
+		labelbottom = new JLabel();
 		label = new JLabel[3];
 		label[0] = new JLabel();
 		label[1] = new JLabel();
@@ -239,101 +245,9 @@ public class View {
 		}
 	}
 	
-	public void createJunction(ListManager derp) {
-		ArrayList<String> buttonsNames = new ArrayList<String>();
-		JPanel p = new JPanel(new GridLayout(0, 2));
 
-		// create checkboxes based on number of buttons
-		ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
-		for (int i = 0; i < derp.buttons; i++) {
-			checkBoxes.add(new JCheckBox("Button " + i, false));
-		}
 
-		// create textFields based on number of buttons
-		ArrayList<JTextField> textFields = new ArrayList<JTextField>();
-		for (int i = 0; i < derp.buttons; i++) {
-			textFields.add(new JTextField());
-		}
 
-		// add items to panel
-		for (int i = 0; i < derp.buttons; i++) {
-			p.add(checkBoxes.get(i));
-			textFields.get(i).setVisible(false);
-			p.add(textFields.get(i));
-		}
-
-		// add listener to checkBoxes
-		for (int i = 0; i < derp.buttons; i++) {
-			final int x = i;
-			checkBoxes.get(x).addItemListener(new ItemListener() {
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					if (e.getStateChange() == ItemEvent.SELECTED) {// checkbox has been selected
-						textFields.get(x).setVisible(true);
-						p.revalidate();
-						p.repaint();
-					} else {// checkbox has been deselected
-						textFields.get(x).setVisible(false);
-						p.revalidate();
-						p.repaint();
-					}
-					;
-				}
-			});
-		}
-
-		// show dialog
-		boolean skip = false;
-		while (skip == false) {
-			int result = JOptionPane.showConfirmDialog(null, p, "My custom dialog", JOptionPane.PLAIN_MESSAGE);
-			if (result == JOptionPane.OK_OPTION) {
-
-				// add textFields to buttonsNames
-				for (int i = 0; i < derp.buttons; i++) {
-					if (checkBoxes.get(i).isSelected()) {
-						buttonsNames.add(i, textFields.get(i).getText());
-					}
-				}
-				// check if names are unique
-				for (String s : buttonsNames) {
-					int count = Collections.frequency(buttonsNames, s);
-					System.out.println(count);
-					if (count != 1 || s.isEmpty()) {
-						JOptionPane.showMessageDialog(p, "Button names must be unique!", "Error",
-								JOptionPane.WARNING_MESSAGE);
-						break;
-					} else {
-						// Can now continue after verifications
-						skip = true;
-					}
-				}
-
-			} else {
-				System.out.println("User Cancelled createJunction");
-				return;
-			}
-		}
-		// create the junction
-		derp.createJunction(buttonsNames);
-		currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
-		// navigate
-		chooseButton(derp);
-	}
-
-	public void chooseButton(ListManager derp) {
-		if (derp.getKeyPhrase().equals("#JUNCTION")) {
-			// Get the buttonNames and create a dialog box to choose where to navigate to
-			ArrayList<String> buttons = derp.getNode().buttonsNames;
-			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button", JOptionPane.PLAIN_MESSAGE, 0, null,
-					buttons.toArray(), buttons.toArray()[0]);
-			// Goto the selected branch based on the button press
-			String s = buttons.toArray()[i].toString();
-			derp.junctionGoto(derp.junctionSearch(s));
-			currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
-			return;
-
-		}
-	}
 	
 	public KeyListener enter = new KeyAdapter() {
 		@Override
@@ -343,10 +257,6 @@ public class View {
 			}
 		}
 	};
-	
-	public File getSelectedFile() {
-		return selectedFile;
-	}
 
 	public void close() {
 		frame.setVisible(false);

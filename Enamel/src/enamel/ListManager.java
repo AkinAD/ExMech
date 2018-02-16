@@ -14,30 +14,12 @@ public class ListManager {
 	int cells;
 	int buttons;
 	
-	ListManager derp;
 	HashMap<Integer, String> stuff;
 	
 	/* #############################################################################
 	 * CONSTRUCTORS
 	 * #############################################################################*/
 
-	public ListManager() {
-		derp = new ListManager(3, 6);
-		derp.addNext("#TEXT", "this is under the root.");
-		derp.addNext("#TEXT", "one");
-		derp.addNext("#TEXT", "two");
-		derp.addNext("#TEXT", "three");
-		derp.addNext("#TEXT", "four");
-		derp.addNext("#TEXT", "five");
-		derp.addNext("#TEXT", "six");
-		derp.addNext("#TEXT", "seven");
-		derp.addNext("/~pause:", "HALT"); //Akin
-		
-		stuff = new HashMap<Integer, String>();
-		stuff.put(1,"apple");
-		stuff.put(2,"banana");
-		stuff.put(3,"chocolate");
-	}
 	
 	public ListManager(ListManager copy) {
 		this.currentList = copy.home;
@@ -46,7 +28,6 @@ public class ListManager {
 		this.cells = copy.cells;
 		this.buttons = copy.buttons;
 		
-		ListManager derp = new ListManager(this.cells, this.buttons);
 
 	}
 
@@ -107,13 +88,6 @@ public class ListManager {
 	 * #############################################################################*/
 	
 	public void next() {
-		//Check index is valid
-		if (index + 1 > currentList.size() - 1) {
-			System.out.println("End of List!");
-			return;
-		}
-		
-		index++;
 		if(getNode().keyPhrase.equals("/~skip:NEXTT")) {
 			ArrayList<Node> oldList = currentList;
 			currentList = getNode().nextList;
@@ -121,6 +95,15 @@ public class ListManager {
 			getNode().prevList = oldList;
 			return;
 		}
+		
+		//Check index is valid
+		if (index + 1 > currentList.size() - 1) {
+			System.out.println("End of List!");
+			return;
+		}
+		
+		index++;
+		
 		
 		if (getNode().keyPhrase.equals("#JUNCTION")) {
 			System.out.println("You are currently on a junction... choose a branch to proceed.");
@@ -160,9 +143,25 @@ public class ListManager {
 	public String getKeyPhrase() {
 		return getNode().getKeyPhrase();
 	}
+	
+	public String getKeyPhrase(int i) {
+		//get keyPhrase shifted by index
+		if(this.index + i < 0||this.index + i >= this.currentList.size()) {
+			return null;
+		}
+		return currentList.get(this.index + i).getKeyPhrase();
+	}
 
 	public String getData() {
 		return getNode().getData();
+	}
+	
+	public String getData(int i) {
+		//get data shifted by index
+		if(this.index + i < 0|| this.index + i >= this.currentList.size()) {
+			return null;
+		}
+		return currentList.get(this.index + i).getData();
 	}
 	
 	public void goHome() {
@@ -182,14 +181,6 @@ public class ListManager {
 	
 	public int getIndex(){
 		return this.index;
-	}
-	
-	public void returnToRoot(ListManager list) {
-		for (int i = 0; i < list.currentList.size() - 1; i++) {
-			list.prev();
-	      }
-		index = 0;
-		derp.next();
 	}
 	
 	/* #############################################################################

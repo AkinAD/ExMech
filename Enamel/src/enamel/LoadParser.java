@@ -70,8 +70,7 @@ public class LoadParser {
 						result.addNext(first, rest);
 						}
 					}else {
-						//do stuff with labels here! Possibly remove this!
-						result.addNext(line, "THIS IS A LABEL!!!!!!!!!!!!!!!!!!!!!");
+						result.addNext(line, line);
 					}
 				}else if(!line.isEmpty() && !line.equals(" ")){
 					//add line of text (no keyPhrase detected)
