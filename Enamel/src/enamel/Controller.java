@@ -505,6 +505,8 @@ public class Controller {
 				derp.addNext("/~pause:", pause);
 			} else {
 				infoBox("Invalid pause duration! Please enter a valid number", "Invalid!");
+				updateLabels();
+
 			}
 		} else {
 			infoBox("Pause Cancelled", "Cancel");
