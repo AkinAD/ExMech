@@ -30,6 +30,8 @@ public class Controller {
 	Node node;
 	View view;
 
+	String AudioFile = null; 
+	
 	int highlightPosition;
 
 	public Controller(View view) {
@@ -388,6 +390,36 @@ public class Controller {
 		return derp.currentList.size();
 	}
 
+	public void soundButton() 
+	{
+		SoundRecorder SR = new SoundRecorder(this);
+		SR.frmAudio.setVisible(true);
+		System.out.println("visible");
+		while (SR.frmAudio.isVisible()) 
+		{	if(SR.getFile() != null)
+			AudioFile = SR.getFile();
+		}
+		if (!SR.frmAudio.isVisible())
+		{
+		System.out.println("invisble");
+		append();
+		}
+		
+	}
+	public void append() {
+		System.out.println("openedAppend..");
+		if (AudioFile != null) {
+		System.out.println(AudioFile);
+		derp.addNext("/~sound:", AudioFile);
+		}
+		
+	}
+	public void addPauseButton()
+	{			            
+		String pause =  JOptionPane.showInputDialog(null, "Please pause duration: ", "Add a pause ", -1);
+		
+	}
+	
 	public void sampleButton() {
 		derp.addNext("#TEXT", "Sample");
 		if (highlightPosition == 0) {

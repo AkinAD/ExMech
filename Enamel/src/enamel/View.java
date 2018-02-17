@@ -204,6 +204,25 @@ public class View {
 		btnAdd.setBounds(327, 100, 117, 29);
 		panel_2.add(btnAdd);
 		
+		JButton  btnSound = new JButton("Audio Studio");
+		btnSound.getAccessibleContext().setAccessibleDescription("Record and import audio files to screnario file");
+		btnSound.addKeyListener(enter);
+		btnSound.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.soundButton();
+			}
+		});
+		btnSound.setBounds(73, 200, 117, 29);
+		panel_2.add(btnSound);
+		
+		JButton btnAddPause = new JButton("Add Pause");
+		btnAddPause.getAccessibleContext().setAccessibleDescription("Adds pause for a user specified duration");
+		btnAddPause.addKeyListener(enter);
+		btnAddPause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//controller.addPauseButton;
+			}
+		});
 		
 		//Sample button: Adds "Sample Text" to the text field.
 		JButton btnSample = new JButton("Sample");

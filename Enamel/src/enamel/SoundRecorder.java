@@ -11,23 +11,38 @@ import javax.sound.sampled.*;
 	 
 	public class SoundRecorder extends JFrame {
 	 
-	  protected boolean active;
-	  public JFrame frmAudio;
-	  ByteArrayOutputStream output;
-	  private File selectedWavFile;
-	  AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
-	  Boolean imported = false;
+		protected boolean active;
+		public JFrame frmAudio;
+		ByteArrayOutputStream output;
+		private File selectedWavFile;
+		File exportFile;
+		AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
+		Boolean imported = false;
+		Boolean written = false;
+		int option;
+		static Controller controller;
+		// Icons used for buttons
+			//ImageIcon iconRecord = new ImageIcon(getClass().getResource("/progResources/Record.png"));
+		//private	ImageIcon iconStop = new ImageIcon(getClass().getResource("/progResources/Stop.png"));
+		//private	ImageIcon iconPlay = new ImageIcon(getClass().getResource("/progResources/Play.png"));
 	  
-	  public SoundRecorder() {
+	  public SoundRecorder(Controller c) {
+		controller = c;
 		frmAudio = new JFrame();
 		frmAudio.setTitle("Audio Studio");
-		frmAudio.setBounds(100, 100, 368, 425);
+		frmAudio.setBounds(100, 100, 310, 239);
 		frmAudio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmAudio.getContentPane().setLayout(null);
 	 
-	    final JButton capture = new JButton("Capture");
-	    final JButton stop = new JButton("Stop");
-	    final JButton btnplay = new JButton("Play");
+	    final JButton btnCapture = new JButton("Capture");
+	    btnCapture.setIcon(new ImageIcon("C:\\Users\\Akin\\git\\ExMech\\Enamel\\progResources\\Record.ico"));
+	    final JButton btnStop = new JButton("Stop");
+	    final JButton btnPlay = new JButton("Play");
+	    btnPlay.setIcon(new ImageIcon("C:\\Users\\Akin\\git\\ExMech\\Enamel\\progResources\\Play.ico"));
+	    
+	    //capture.setIcon(iconRecord);
+	    //stop.setIcon(iconStop);
+	    //btnplay.setIcon(iconPlay);
 	   	   	    
 		 JMenuBar menuBar = new JMenuBar();
 		frmAudio.setJMenuBar(menuBar);
@@ -61,58 +76,38 @@ import javax.sound.sampled.*;
 			JMenuItem mntmSave = new JMenuItem("Save");
 			  mntmSave.addActionListener( new ActionListener() {
 			      public void actionPerformed(ActionEvent e) {
-			    	  JFileChooser wavSave = new JFileChooser("FactoryScenarios/AudioFiles/");
-			    	  int returnVal = wavSave.showSaveDialog(frmAudio);
-			    	  if(returnVal == JFileChooser.APPROVE_OPTION)
-			    	  {
-			    		  try
-			    		  {
-			    			  File file = wavSave.getSelectedFile();
-			    			  if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("wav")) {
-								    // filename is OK as-is
-								} else {
-								    file = new File(file.toString() + ".wav");  // append .wav if "meh.jpg.txt" is OK
-								    file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".wav");
-								}
-			    			 save(file);
-			    		  }
-			    		  catch(IOException e1)
-			    		  {
-			    			  e1.printStackTrace();
-			    		  }
-			       
-			      }
+			    	fileChooser();
 			      }
 			    });
 			  mnFile.add(mntmSave);
 			  
-	    capture.setEnabled(true);
-	    stop.setEnabled(false);
-	    btnplay.setEnabled(false);
+	    btnCapture.setEnabled(true);
+	    btnStop.setEnabled(false);
+	    btnPlay.setEnabled(false);
 	    mntmSave.setEnabled(false);
 	   
 	 
 	    ActionListener captureListener = new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
-	        capture.setEnabled(false);
-	        stop.setEnabled(true);
-	        btnplay.setEnabled(false);
+	        btnCapture.setEnabled(false);
+	        btnStop.setEnabled(true);
+	        btnPlay.setEnabled(false);
 	        mntmSave.setEnabled(true);
 	        captureAudio();
 	        }
 	    };
-	    capture.addActionListener(captureListener);
+	    btnCapture.addActionListener(captureListener);
 	 
 	    ActionListener stopListener =  new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
-	        capture.setEnabled(true);
-	        stop.setEnabled(false);
-	        btnplay.setEnabled(true);
+	        btnCapture.setEnabled(true);
+	        btnStop.setEnabled(false);
+	        btnPlay.setEnabled(true);
 	        active = false;
 	      }
 	    };
 	    
-	    stop.addActionListener(stopListener);
+	    btnStop.addActionListener(stopListener);
 	 
 	    ActionListener playListener = new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
@@ -122,13 +117,13 @@ import javax.sound.sampled.*;
 	    
 	   
 		
-	    btnplay.addActionListener(playListener); 	//LOOK HERE TO ASK USER TO SAVE THEIR FILE OR REPLAY IT 
-	    btnplay.setBounds(93, 98, 117, 29);
-	    frmAudio.getContentPane().add(btnplay);
-	    capture.setBounds(93, 140, 117, 29);
-	    frmAudio.getContentPane().add(capture);
-	    stop.setBounds(93, 182, 117, 29);
-	    frmAudio.getContentPane().add(stop);
+	    btnPlay.addActionListener(playListener); 
+	    btnPlay.setBounds(88, 0, 117, 29);
+	    frmAudio.getContentPane().add(btnPlay);
+	    btnCapture.setBounds(88, 37, 117, 29);
+	    frmAudio.getContentPane().add(btnCapture);
+	    btnStop.setBounds(88, 81, 117, 29);
+	    frmAudio.getContentPane().add(btnStop);
 	    
 	   
 	  
@@ -139,24 +134,26 @@ import javax.sound.sampled.*;
 	  private void captureAudio()
 	  {
 	    try
-	    {
-	      final AudioFormat format = getFormat();
-	      DataLine.Info info = new DataLine.Info(
-	        TargetDataLine.class, format);
-	      final TargetDataLine line = (TargetDataLine)AudioSystem.getLine(info);
+	    { 
+	    	final AudioFormat format = getFormat();
+	      DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
+	       
+	       TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info);
 	      
-	      line.open(format);
+	      line.open();
+	      System.out.println("Recording Started...");
 	      line.start();
 	      
-	      Runnable runner = new Runnable() {
-	      int bufferSize = (int)format.getSampleRate()* format.getFrameSize();
-	      byte buffer[] = new byte[bufferSize];
+	      Runnable runner = new Runnable() 
+	      {
+	    	  int bufferSize = (int)format.getSampleRate()* format.getFrameSize();
+	    	  byte buffer[] = new byte[bufferSize];
 	  
 	        public void run() {
 	          output = new ByteArrayOutputStream(); //sim1
 	          active = true;
 	          try {
-		            while (active) 
+	        	  while (active) 
 		            {
 		              int count =  line.read(buffer, 0, buffer.length); //sim2
 			              if (count > 0)
@@ -164,7 +161,10 @@ import javax.sound.sampled.*;
 			                output.write(buffer, 0, count); //sim3
 			              }
 		            }
+	           
 	            output.close(); //diff
+	            line.stop();
+	            line.close();
 	          	} 
 	          catch (IOException e) {
 	            System.err.println("I/O problems: " + e);
@@ -172,11 +172,16 @@ import javax.sound.sampled.*;
 	          }
 	        }
 	      };
-	      Thread captureThread = new Thread(runner);
+	      
+	    	      Thread captureThread = new Thread(runner);
 	      captureThread.start();
-	    } catch (LineUnavailableException e) {
+
+	    } 
+	       
+	    
+	    catch (LineUnavailableException e) {
 	      System.err.println("Line unavailable: " + e);
-	      System.exit(-2);
+	      this.setVisible(false);
 	    }
 	  }
 	 //plays audio without saving file
@@ -196,7 +201,7 @@ import javax.sound.sampled.*;
 		     
 		      line.open(format);
 		      line.start();
-		// ___ above code might be useful for saving it appears twice so far 
+	
 		      
 		      Runnable executer = new Runnable() 
 		      {
@@ -216,11 +221,57 @@ import javax.sound.sampled.*;
 		            }
 		            line.drain();
 		            line.close();
+		            option = optionbox("Are you satisfied with your recording?", "Save Recording?");
+		            if(option == 0)
+		            {   
+		            	fileChooser();
+		            	try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		            	option = optionbox("Would you like to export recording to your scenario file?", "Export?");
+		            	 if (option == 0)		            		 
+		            	 {	
+		            		 controller.AudioFile = exportFile.getName();
+		            		 frmAudio.setVisible(false);     	 	
+		            		 
+		         	    //Do something
+		            	 }
+		            	 else 
+		            	 {	 
+		            		 option = optionbox("Would you like to make a new recording?", "New recording?");
+			            	 if (option == 0)
+			            	 {
+			         	    //Do nothing honestly
+			            	 }
+			            	 else 
+			            	 {	 
+			            		 infoBox("Exiting..","Program Exiting");
+			            		 frmAudio.setVisible(false);
+			            	 }
+		            	 }
+		            }
+		            else
+		            {
+		            	option = optionbox("Would you like to make a new recording?", "New recording?");
+		            	 if (option == 0)
+		            	 {
+		         	    //Do nothing honestly
+		            	 }
+		            	 else 
+		            	 {	 
+		            		 infoBox("Exiting..","Program Exiting");
+		            		 frmAudio.setVisible(false);
+		            	 }
+		            }
+		            
 		          } 
 		          catch (IOException e)
 		          {
 		            System.err.println("I/O problems: " + e);
-		            System.exit(-3);
+		            frmAudio.setVisible(false);
 		          }
 		        }
 		      };
@@ -232,9 +283,10 @@ import javax.sound.sampled.*;
 		    catch (LineUnavailableException e)
 		    {
 		      System.err.println("Line unavailable: " + e);
-		      System.exit(-4);
+		      frmAudio.setVisible(false);
 		    } 
-	  	}
+			
+		  }
 		else
 		{ //For imported wav files
 			  try {
@@ -252,13 +304,14 @@ import javax.sound.sampled.*;
 	  
 	
 	  private AudioFormat getFormat() { //defines file format used to record
-	    float sampleRate = 16000;
-	    int sampleSizeInBits = 8;
-	    int channels = 2;
-	    boolean signed = true;
-	    boolean bigEndian = true;
-	    return new AudioFormat(sampleRate, 
-	      sampleSizeInBits, channels, signed, bigEndian);
+		  float sampleRate = 44100;
+		    int sampleSizeInBits = 16;
+		    int channels = 2;
+		    boolean signed = true;
+		    boolean bigEndian = true;
+		    return new AudioFormat(sampleRate, 
+		      sampleSizeInBits, channels, signed, bigEndian);
+		    
 	  }
 	  
 	 public void save(File wavFile) throws IOException 
@@ -268,18 +321,69 @@ import javax.sound.sampled.*;
 	      final AudioInputStream aisS = new AudioInputStream(input, format, audio.length / format.getFrameSize());
 	      
 	      AudioSystem.write(aisS, AudioFileFormat.Type.WAVE, wavFile);
-		 
+	      exportFile = wavFile;
+	      written = true;
 	      aisS.close();
 		  output.close();
 		}
+	 public void fileChooser() {
+		 JFileChooser wavSave = new JFileChooser("FactoryScenarios/AudioFiles/");
+   	  int returnVal = wavSave.showSaveDialog(frmAudio);
+   	  if(returnVal == JFileChooser.APPROVE_OPTION)
+   	  {
+   		  try
+   		  {
+   			  File file = wavSave.getSelectedFile();
+   			  if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("wav")) {
+					    // filename is OK as-is
+					} else {
+					    file = new File(file.toString() + ".wav");  // append .wav if "meh.jpg.txt" is OK
+					    file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".wav");
+					    
+					   
+					}
+   			 save(file);
+   		  }
+   		  catch(IOException e1)
+   		  {
+   			  e1.printStackTrace();
+   		  }
+      
+     }
+	 }
+	 public String getFile() {
+		 if (exportFile != null) {
+			 return exportFile.getName();
+		 }
+		 else {
+			 return null;
+		 }
+	 }
+	 public static int optionbox(String infoMessage, String titleBar)
+	 {	 int dialogButton = JOptionPane.YES_NO_OPTION;
+		 int dialogResult = JOptionPane.showConfirmDialog(null, infoMessage,"InfoBox: " + titleBar,dialogButton);
+		 
+		 if(dialogResult == JOptionPane.YES_OPTION)
+		 {
+		  return 0;
+		 }
+		 else {
+		 return 1;
+	    }
+	 }
+	 public static void infoBox(String infoMessage, String titleBar) {
+		    JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+		  }
+	 
 	 public void close() {
 		 frmAudio.setVisible(false);
 			frmAudio.dispose();
 		}
 
+	
 	public static void main(String args[])
 	  {
-		SoundRecorder window = new SoundRecorder();
+		SoundRecorder window = new SoundRecorder(controller);
 	    window.frmAudio.setVisible(true);
 	  }
 	}
