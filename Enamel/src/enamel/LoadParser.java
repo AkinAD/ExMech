@@ -18,8 +18,8 @@ public class LoadParser {
 
 	public ListManager fromText(String scenarioFile) {
 		ListManager result = null;
-		int cells = -1;
-		int buttons = -1;
+		int cells = -9;
+		int buttons = -9;
 
 		try {
 			// read the text file
@@ -42,10 +42,11 @@ public class LoadParser {
 				} else if (first.equals("Button")) {
 					buttons = Integer.parseInt(rest);
 					break;
-				} else {
-					throw new IllegalArgumentException("loading failed: does not contain 'cells' or 'buttons'");
-				}
-
+				} 
+				
+			}
+			if(cells <= 0 || buttons <= 0 ) {
+				throw new IllegalArgumentException("loading failed: does not contain 'cells' or 'buttons'");
 			}
 			// Create new ListManager using the extracted cell and button numbers.
 			result = new ListManager(cells, buttons);

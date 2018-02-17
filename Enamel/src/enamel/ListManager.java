@@ -38,7 +38,7 @@ public class ListManager {
 		this.buttons = b;
 		currentList = new ArrayList<Node>();
 		home = currentList;
-		Node root = new Node("#HEAD", "Cells " + cells + "\nButton " + buttons);
+		Node root = new Node("#HEAD", "Cell " + cells + " Button " + buttons);
 		currentList.add(root);
 		index = 0;
 	}

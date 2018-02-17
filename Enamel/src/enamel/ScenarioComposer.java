@@ -29,7 +29,9 @@ public class ScenarioComposer {
 				String jData = "";
 				
 				if (key == "#HEAD") {
-					sb.append(data);
+					String[] info = data.split(" ",4);
+					sb.append(info[0] +" "+ info[1] +"\n");
+					sb.append(info[2] +" "+ info[3] +"\n");
 					sb.append("\n");
 					sb.append("\n");
 				}

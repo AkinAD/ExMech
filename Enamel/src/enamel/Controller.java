@@ -234,16 +234,18 @@ public class Controller {
 
 	public void saveMenuItem() {
 		JFileChooser save = new JFileChooser("FactoryScenarios/");
+		
 		int retrunVal = save.showSaveDialog(view.frame);
 		if (retrunVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				File file = save.getSelectedFile();
+				
 				if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("txt")) {
 					// filename is OK as-is
 				} else {
 					file = new File(file.toString() + ".txt"); // append .txt if "foo.jpg.txt" is OK
 					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName()) + ".txt");
-					BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
+					BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath(),false));
 
 					ScenarioComposer composer = new ScenarioComposer();
 					String result = composer.returnStringFile(derp);
@@ -570,20 +572,27 @@ public class Controller {
 	}
 
 	public void simulateScenario() {
-		// File file = new File("FactoryScenarios/temp_" + 1 + ".txt");
-		// try {
-		// BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
-		// ScenarioComposer composer = new ScenarioComposer();
-		// String result = composer.returnStringFile(derp);
-		// bf.write(result);
-		// bf.close();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		File file = new File("FactoryScenarios/temp_" + 1 + ".txt");
 
-		// ScenarioParser s = new ScenarioParser(true);
-		// s.setScenarioFile("FactoryScenarios/Scenario_" + 2 + ".txt");
+		try {
+			file.createNewFile();
+			BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
+			ScenarioComposer composer = new ScenarioComposer();
+			String result = composer.returnStringFile(derp);
+			bf.write(result);
+			bf.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Thread starterCodeThread = new Thread("Starter Code Thread") {
+			public void run() {
+				ScenarioParser s = new ScenarioParser(true);
+				s.setScenarioFile("FactoryScenarios/temp_" + 1 + ".txt");
+			}
+		};
+		starterCodeThread.start();
 	}
 
 }
