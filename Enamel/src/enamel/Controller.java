@@ -3,62 +3,75 @@ package enamel;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.NumberFormatter;
+
 import org.apache.commons.io.FilenameUtils;
 
 public class Controller {
 
 	ListManager derp;
-	Node node;
 	View view;
 
-	static String AudioFile = null; 
-	
+	static String AudioFile = null;
+
 	int highlightPosition;
 
 	public Controller(View view) {
 
 		// default data structure initialized. SET the default cells and buttons here.
 		this.derp = new ListManager(10, 10);
-		this.node = new Node();
 		this.view = view;
 
 		this.highlightPosition = 0;
 	}
 
-	public void initTestList() {
-		derp = new ListManager(3, 6);
-		derp.addNext("#TEXT", "this is under the root.");
-		derp.addNext("#TEXT", "one");
-		derp.addNext("#TEXT", "two");
-		derp.addNext("/~pause:", "HALT"); // Akin
-		
-		HashMap<Integer,String> stuff = new HashMap<Integer,String>();
-		stuff.put(0,"Apple");
-		stuff.put(1,"Banana");
-		stuff.put(2,"Chocolate");
-		
-		derp.createJunction(stuff);
+	public void initDefaultList(int cells, int buttons) {
+		derp = new ListManager(cells, buttons);
+		updateLabels();
 	}
+
+	// public void initTestList() {
+	// derp = new ListManager(3, 6);
+	// derp.addNext("#TEXT", "this is under the root.");
+	// derp.addNext("#TEXT", "one");
+	// derp.addNext("#TEXT", "two");
+	// derp.addNext("/~pause:", "HALT"); // Akin
+	//
+	// HashMap<Integer,String> stuff = new HashMap<Integer,String>();
+	// stuff.put(0,"Apple");
+	// stuff.put(1,"Banana");
+	// stuff.put(2,"Chocolate");
+	//
+	// derp.createJunction(stuff);
+	// }
 
 	public void initializeList() {
 		displayList();
@@ -75,7 +88,69 @@ public class Controller {
 		derp.goHome();
 		updateLabels();
 	}
-	
+
+	public void welcomeScreen() {
+		boolean skip = false;
+		while (skip == false) {
+
+			// Custom button text
+			Object[] options = { "New Story", "Load Existing", "Quit" };
+			int n = JOptionPane.showOptionDialog(view.frame, "Welcome to Treasure Box Braille!", "Treasure Box Braille",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[2]);
+
+			System.out.println("User selected: " + n);
+
+			if (n == 2 || n == JOptionPane.CLOSED_OPTION) {
+				// Close program if 'Quit' or X button
+				view.close();
+				skip = true;
+				break;
+			}
+
+			if (n == 0) {
+				// Create new story
+				JPanel p = new JPanel(new GridLayout(2, 2));
+				SpinnerNumberModel model1 = new SpinnerNumberModel();
+				model1.setValue(1);
+				model1.setMaximum(99);
+				model1.setMinimum(1);
+				SpinnerNumberModel model2 = new SpinnerNumberModel();
+				model2.setValue(1);
+				model2.setMaximum(99);
+				model2.setMinimum(1);
+				JSpinner spinner1 = new JSpinner(model1);
+				JSpinner spinner2 = new JSpinner(model2);
+				spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
+				spinner2.setEditor(new JSpinner.DefaultEditor(spinner2));
+				p.add(new JLabel("Cells: "));
+				p.add(spinner1);
+				p.add(new JLabel("Buttons: "));
+				p.add(spinner2);
+
+				int result = JOptionPane.showConfirmDialog(null, p, "Create New Story", JOptionPane.PLAIN_MESSAGE);
+				System.out.println("User selected2: " + result);
+				// return back to welcome screen if X button
+				if (result == JOptionPane.CLOSED_OPTION) {
+					skip = false;
+					break;
+				}
+
+				int cells = Integer.parseInt(spinner1.getValue().toString());
+				int buttons = Integer.parseInt(spinner2.getValue().toString());
+
+				initDefaultList(cells, buttons);
+				skip = true;
+			}
+
+			if (n == 1) {
+				openMenuItem();
+				skip = true;
+				break;
+			}
+
+		}
+	}
+
 	public void setHighlightPos(int highlightPosition) {
 		this.highlightPosition = highlightPosition;
 		for (int k = 0; k < view.label.length; k++) {
@@ -92,7 +167,7 @@ public class Controller {
 				highlightPosition = k;
 			}
 		}
-		if(derp.index==0) {
+		if (derp.index == 0) {
 			view.labeltop.setText(derp.getData(-1));
 			view.label[0].setText(derp.getData());
 			view.label[1].setText(derp.getData(1));
@@ -169,7 +244,7 @@ public class Controller {
 					file = new File(file.toString() + ".txt"); // append .txt if "foo.jpg.txt" is OK
 					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName()) + ".txt");
 					BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
-					
+
 					ScenarioComposer composer = new ScenarioComposer();
 					String result = composer.returnStringFile(derp);
 					bf.write(result);
@@ -182,20 +257,19 @@ public class Controller {
 	}
 
 	public void nextButton() {
-		//check special cases
-		if(derp.getKeyPhrase().equals("#JUNCTION")) {
+		// check special cases
+		if (derp.getKeyPhrase().equals("#JUNCTION")) {
 			chooseButton();
 			return;
 		}
-		if(derp.getKeyPhrase().equals("/~skip:NEXTT")) {
+		if (derp.getKeyPhrase().equals("/~skip:NEXTT")) {
 			derp.next();
 			updateLabels();
 			return;
 		}
-		
-		
-		//check if end of list
-		if(derp.getKeyPhrase(1)==null) {
+
+		// check if end of list
+		if (derp.getKeyPhrase(1) == null) {
 			System.out.println("End of list (next node is null).");
 			return;
 		}
@@ -215,34 +289,33 @@ public class Controller {
 			view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 		} else {
 			if (listSize() > view.label.length) {
-					derp.next();
-					updateLabels();
+				derp.next();
+				updateLabels();
 
-					String text = view.label[highlightPosition].getText();
-					System.out.println("Positon: " + highlightPosition + ", Data Type: " + derp.getData() + ", Index: "
-							+ derp.index + "/" + (listSize() - 1));
-					view.currentNode
-							.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
-				
+				String text = view.label[highlightPosition].getText();
+				System.out.println("Positon: " + highlightPosition + ", Data Type: " + derp.getData() + ", Index: "
+						+ derp.index + "/" + (listSize() - 1));
+				view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
+
 			}
 		}
 	}
 
 	public void prevButton() {
-		//Special cases
-		if(derp.getKeyPhrase().equals("#BUTTON")) {
+		// Special cases
+		if (derp.getKeyPhrase().equals("#BUTTON")) {
 			derp.prev();
 			setHighlightPos(2);
 			updateLabels();
 			return;
 		}
-		if(derp.getKeyPhrase().equals("/~NEXTT")) {
+		if (derp.getKeyPhrase().equals("/~NEXTT")) {
 			derp.prev();
 			setHighlightPos(2);
 			updateLabels();
 			return;
 		}
-		
+
 		for (int k = 0; k < view.label.length; k++) {
 			if (view.label[k].getBorder() == view.bevel) {
 				highlightPosition = k;
@@ -259,20 +332,19 @@ public class Controller {
 			view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 		} else {
 
-				
-				derp.prev();
-				updateLabels();
-				String text = view.label[highlightPosition].getText();
-				System.out.println("Positon: " + highlightPosition + ", Data Type: " + derp.getData() + ", Index: "
-						+ derp.index + "/" + (listSize() - 1));
-				view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
-			
+			derp.prev();
+			updateLabels();
+			String text = view.label[highlightPosition].getText();
+			System.out.println("Positon: " + highlightPosition + ", Data Type: " + derp.getData() + ", Index: "
+					+ derp.index + "/" + (listSize() - 1));
+			view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
+
 		}
 	}
 
 	public void branchItButton() {
 		if (derp.index == listSize() - 1) {
-			HashMap<Integer,String> buttonsNames = new HashMap<Integer,String>();
+			HashMap<Integer, String> buttonsNames = new HashMap<Integer, String>();
 			JPanel p = new JPanel(new GridLayout(0, 2));
 
 			// create checkboxes based on number of buttons
@@ -317,7 +389,7 @@ public class Controller {
 			// show dialog
 			boolean skip = false;
 			while (skip == false) {
-				int result = JOptionPane.showConfirmDialog(null, p, "My custom dialog", JOptionPane.PLAIN_MESSAGE);
+				int result = JOptionPane.showConfirmDialog(null, p, "Create Question", JOptionPane.PLAIN_MESSAGE);
 				if (result == JOptionPane.OK_OPTION) {
 					// add textFields to buttonsNames
 					for (int i = 0; i < derp.buttons; i++) {
@@ -326,18 +398,18 @@ public class Controller {
 							buttonsNames.put(i, null);
 						}
 					}
-					//convoluted way of removing null entries, but it works...
+					// convoluted way of removing null entries, but it works...
 					ArrayList<String> poop = new ArrayList<String>();
 					poop.add(null);
 					buttonsNames.values().removeAll(poop);
-					
+
 					System.out.println(buttonsNames.toString());
-					
+
 					// check if names are unique
 					for (String s : buttonsNames.values()) {
 						if (s != null && !s.isEmpty()) {
 							int count = Collections.frequency(buttonsNames.values(), s);
-							//System.out.println("buttonsNames frequency: " + count);
+							// System.out.println("buttonsNames frequency: " + count);
 							if (count != 1) {
 								buttonsNames.clear();
 								JOptionPane.showMessageDialog(p, "Button names must be unique!", "Error",
@@ -355,13 +427,12 @@ public class Controller {
 					return;
 				}
 			}
-			if(buttonsNames.isEmpty()) {
+			if (buttonsNames.isEmpty()) {
 				JOptionPane.showMessageDialog(p, "Create Junction Failed! buttonsNames is empty!", "Error",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			
-	
+
 			derp.createJunction(buttonsNames);
 			view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 			// navigate
@@ -374,7 +445,7 @@ public class Controller {
 	public void chooseButton() {
 		if (derp.getKeyPhrase().equals("#JUNCTION")) {
 			// Get the buttonNames and create a dialog box to choose where to navigate to
-			HashMap<Integer,String> buttons = derp.getNode().buttonsNames;
+			HashMap<Integer, String> buttons = derp.getNode().buttonsNames;
 			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button",
 					JOptionPane.PLAIN_MESSAGE, 0, null, buttons.values().toArray(), buttons.values().toArray()[0]);
 			// Goto the selected branch based on the button press
@@ -403,75 +474,66 @@ public class Controller {
 		return derp.currentList.size();
 	}
 
-	public void soundButton() 
-	{
+	public void soundButton() {
 		SoundRecorder SR = new SoundRecorder(this);
 		SR.frmAudio.setVisible(true);
 		System.out.println("visible");
-			
-		if (!SR.frmAudio.isVisible())
-		{
-		System.out.println("invisble");
-		append();
+
+		if (!SR.frmAudio.isVisible()) {
+			System.out.println("invisble");
+			append();
 		}
-		
+
 	}
+
 	public void append() {
 		System.out.println("openedAppend..");
 		if (AudioFile != null) {
-		System.out.println(AudioFile);
-		derp.addNext("/~sound:", AudioFile);
+			System.out.println(AudioFile);
+			derp.addNext("/~sound:", AudioFile);
 		}
-		
+
 	}
-	public void addPauseButton()
-	{	
-		String pause = null;       
-		pause =  JOptionPane.showInputDialog(null, "Please enter pause duration: ", "Add a pause ", -1);
-		if(pause != null)
-		{
-			if (isStringInt(pause)) 
-			{
-			derp.addNext("/~pause:", pause);
-			}
-			else
-			{
+
+	public void addPauseButton() {
+		String pause = null;
+		pause = JOptionPane.showInputDialog(null, "Please enter pause duration: ", "Add a pause ", -1);
+		if (pause != null) {
+			if (isStringInt(pause)) {
+				derp.addNext("/~pause:", pause);
+			} else {
 				infoBox("Invalid pause duration! Please enter a valid number", "Invalid!");
 			}
-		}
-		else
-		{
+		} else {
 			infoBox("Pause Cancelled", "Cancel");
 		}
-		
+
 	}
-	public boolean isStringInt(String s)
-	{
-	    try
-	    {
-	        Integer.parseInt(s);
-	        return true;
-	    } catch (NumberFormatException ex)
-	    {
-	        return false;
-	    }
+
+	public boolean isStringInt(String s) {
+		try {
+			Integer.parseInt(s);
+			return true;
+		} catch (NumberFormatException ex) {
+			return false;
+		}
 	}
-	public static int optionbox(String infoMessage, String titleBar)
-	 {	 int dialogButton = JOptionPane.YES_NO_OPTION;
-		 int dialogResult = JOptionPane.showConfirmDialog(null, infoMessage,"InfoBox: " + titleBar,dialogButton);
-		 
-		 if(dialogResult == JOptionPane.YES_OPTION)
-		 {
-		  return 0;
-		 }
-		 else {
-		 return 1;
-	    }
-	 }
-	 public static void infoBox(String infoMessage, String titleBar) {
-		    JOptionPane.showMessageDialog(null, infoMessage,  titleBar, JOptionPane.INFORMATION_MESSAGE);
-		  }
-	
+
+	public static int optionbox(String infoMessage, String titleBar) {
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog(null, infoMessage, "InfoBox: " + titleBar, dialogButton);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	public static void infoBox(String infoMessage, String titleBar) {
+		JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+	}
+
 	public void sampleButton() {
 		derp.addNext("#TEXT", "Sample");
 		if (highlightPosition == 0) {
@@ -505,6 +567,23 @@ public class Controller {
 		// e1.printStackTrace();
 		// }
 		// }
+	}
+
+	public void simulateScenario() {
+		// File file = new File("FactoryScenarios/temp_" + 1 + ".txt");
+		// try {
+		// BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath()));
+		// ScenarioComposer composer = new ScenarioComposer();
+		// String result = composer.returnStringFile(derp);
+		// bf.write(result);
+		// bf.close();
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+
+		// ScenarioParser s = new ScenarioParser(true);
+		// s.setScenarioFile("FactoryScenarios/Scenario_" + 2 + ".txt");
 	}
 
 }

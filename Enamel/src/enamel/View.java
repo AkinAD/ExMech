@@ -9,6 +9,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -117,6 +118,17 @@ public class View {
 		});
 		mnFile.add(mntmSave);
 		mnFile.add(mntmClear);
+		
+		JMenu mnSimulate = new JMenu("Simulate");
+		menuBar.add(mnSimulate);
+		JMenuItem mntmSimulateScenario = new JMenuItem("Simulate Story");
+		mntmSimulateScenario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.simulateScenario();
+			}
+		});
+		mnSimulate.add(mntmSimulateScenario);
+		
 
 		// TabbedPane 1
 		tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
@@ -282,8 +294,7 @@ public class View {
 	};
 
 	public void close() {
-		frame.setVisible(false);
-		frame.dispose();
+		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
 
 	public void setController(Controller controller) {

@@ -23,7 +23,7 @@ public class ToyAuthoring {
 //		
 //		//start the Scenario Parser with chosen file.
 	    ScenarioParser s = new ScenarioParser(true);
-	    s.setScenarioFile("FactoryScenarios/Scenario_" + 1 + ".txt");
+	    //s.setScenarioFile("FactoryScenarios/Scenario_" + 1 + ".txt");
 	   // s.setScenarioFile(file.getAbsolutePath());  
 	}
       	
