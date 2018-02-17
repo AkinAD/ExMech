@@ -212,17 +212,21 @@ public class View {
 				controller.soundButton();
 			}
 		});
-		btnSound.setBounds(73, 200, 117, 29);
+		btnSound.setBounds(73, 160, 117, 29);
 		panel_2.add(btnSound);
+		
 		
 		JButton btnAddPause = new JButton("Add Pause");
 		btnAddPause.getAccessibleContext().setAccessibleDescription("Adds pause for a user specified duration");
 		btnAddPause.addKeyListener(enter);
 		btnAddPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//controller.addPauseButton;
+				controller.addPauseButton();
 			}
 		});
+		
+		btnAddPause.setBounds(73, 190, 117, 29);
+		panel_2.add(btnAddPause);
 		
 		//Sample button: Adds "Sample Text" to the text field.
 		JButton btnSample = new JButton("Sample");

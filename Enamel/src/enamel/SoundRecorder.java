@@ -14,7 +14,11 @@ import javax.sound.sampled.*;
 		protected boolean active;
 		public JFrame frmAudio;
 		ByteArrayOutputStream output;
-		private File selectedWavFile;
+		
+		AudioInputStream audioIS;
+		static File selectedWavFile;
+		Clip aClip;
+		
 		File exportFile;
 		AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
 		Boolean imported = false;
@@ -26,12 +30,13 @@ import javax.sound.sampled.*;
 		//private	ImageIcon iconStop = new ImageIcon(getClass().getResource("/progResources/Stop.png"));
 		//private	ImageIcon iconPlay = new ImageIcon(getClass().getResource("/progResources/Play.png"));
 	  
-	  public SoundRecorder(Controller c) {
+	  public SoundRecorder(Controller c)
+	  {
 		controller = c;
 		frmAudio = new JFrame();
 		frmAudio.setTitle("Audio Studio");
 		frmAudio.setBounds(100, 100, 310, 239);
-		frmAudio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAudio.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frmAudio.getContentPane().setLayout(null);
 	 
 	    final JButton btnCapture = new JButton("Capture");
@@ -113,9 +118,7 @@ import javax.sound.sampled.*;
 	      public void actionPerformed(ActionEvent e) {
 	        playAudio();
 	      }
-	    };
-	    
-	   
+	    };   
 		
 	    btnPlay.addActionListener(playListener); 
 	    btnPlay.setBounds(88, 0, 117, 29);
@@ -126,13 +129,15 @@ import javax.sound.sampled.*;
 	    frmAudio.getContentPane().add(btnStop);
 	    
 	   
-	  
+         
+       // aClip.loop(Clip.LOOP_CONTINUOUSLY);
 	  
 	  }
 	  // CONSTRUCTOR ENDS HERE
  
 	  private void captureAudio()
 	  {
+		  imported = false;
 	    try
 	    { 
 	    	final AudioFormat format = getFormat();
@@ -234,7 +239,7 @@ import javax.sound.sampled.*;
 		            	option = optionbox("Would you like to export recording to your scenario file?", "Export?");
 		            	 if (option == 0)		            		 
 		            	 {	
-		            		 controller.AudioFile = exportFile.getName();
+		            		 Controller.AudioFile = exportFile.getName();
 		            		 frmAudio.setVisible(false);     	 	
 		            		 
 		         	    //Do something
@@ -288,18 +293,59 @@ import javax.sound.sampled.*;
 			
 		  }
 		else
-		{ //For imported wav files
-			  try {
-		            AudioInputStream ais = AudioSystem.getAudioInputStream(selectedWavFile);
-		            Clip test = AudioSystem.getClip();
-		            test.open(ais);
-		            test.start();
-		            test.drain();
-		            test.close();
-		        }catch(Exception ex){
-		            ex.printStackTrace();
-		        }
+		{ 	if(imported) {
+			try {
+				audioIS = AudioSystem.getAudioInputStream(selectedWavFile);
+			} catch (UnsupportedAudioFileException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	         
+	        // create clip reference
+	        try {
+				aClip = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) {
+				e1.printStackTrace();
+			}
+	         
+	        // open audioInputStream to the clip
+	        try {
+				aClip.open(audioIS);
+				}
+	        catch (LineUnavailableException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		   }
 		}
+		  //For imported wav files
+			 aClip.start();
+//			 if(!aClip.isActive())
+//			 {
+//				 if (option == 0)		            		 
+//            	 {	
+//            		 Controller.AudioFile = selectedWavFile.getName();
+//            		 frmAudio.setVisible(false);     	 	
+//            		 
+//         	    //Do something
+//            	 }
+//            	 else 
+//            	 {	 
+//            		 option = optionbox("Would you like to make a new recording?", "New recording?");
+//	            	 if (option == 0)
+//	            	 {
+//	         	    //Do nothing honestly
+//	            	 }
+//	            	 else 
+//	            	 {	 
+//	            		 infoBox("Exiting..","Program Exiting");
+//	            		 frmAudio.setVisible(false);
+//	            	 }
+//            	 }
+//			 }
+		
 	  }
 	  
 	
@@ -353,6 +399,7 @@ import javax.sound.sampled.*;
 	 }
 	 public String getFile() {
 		 if (exportFile != null) {
+			 System.out.println(exportFile.getName());
 			 return exportFile.getName();
 		 }
 		 else {
