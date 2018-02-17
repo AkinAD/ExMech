@@ -1,6 +1,7 @@
 package enamel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -59,6 +60,11 @@ public class ListManager {
 		//Cannot AddNext on JUNCTIONS
 		if(getNode().getKeyPhrase().equals("#JUNCTION")) {
 			System.out.println("Error: Can Not add nodes on JUNCTIONS! You are currently on a JUNCTION.");
+			return;
+		}
+		
+		if(getNode().getKeyPhrase().equals("/~skip:NEXTT")) {
+			System.out.println("Error: Can Not add nodes on \"/~skip:NEXTT\"!");
 			return;
 		}
 		
@@ -187,7 +193,7 @@ public class ListManager {
 	 * JUNCTION
 	 * #############################################################################*/
 
-	public void createJunction(ArrayList<String> s) {
+	public void createJunction(HashMap<Integer,String> s) {
 		// takes an input of strings for button choices. Order of string array matters! Each element corresponds to a button!
 		
 		//Only allow JUNCTION creation on the last Node
@@ -203,7 +209,7 @@ public class ListManager {
 		}
 		
 		//Check if there are enough buttons
-		if (s.size() > buttons) {
+		if (s.values().size() > buttons) {
 			throw new IndexOutOfBoundsException("There are more branches than the buttons set for this scenario!");
 		}
 		
@@ -217,17 +223,24 @@ public class ListManager {
 
 		//JUNCTION Creation.
 		ArrayList<ArrayList<Node>> buttons = new ArrayList<ArrayList<Node>>();
-		for (int i = 0; i < s.size(); i++) {
-			if (s.get(i) != null) {
+		for(int i =0; i < this.buttons;i++) {
+			buttons.add(null);
+		}
+		
+		
+		for (Entry<Integer,String> entry: s.entrySet()) {
+			if (entry.getValue() != null && !entry.getValue().isEmpty()) {
 				Node buttonTail = Node.tail(nextt);
 				ArrayList<Node> newList = new ArrayList<Node>();
-				Node buttonHead = Node.button(s.get(i), currentList);
+				Node buttonHead = Node.button(entry.getValue(), currentList);
 				newList.add(buttonHead);
 				newList.add(buttonTail);
-				buttons.add(i,newList);
-				
+				buttons.add(entry.getKey(),newList);
 			}
 		}
+		
+
+
 		currentList.add(index + 1, Node.junction(buttons, s, nextt));
 		index++;
 		
@@ -250,12 +263,19 @@ public class ListManager {
 	public int junctionSearch(String s) {
 		//Searches the current junction for value and gives it's key.
 		if (getNode().getKeyPhrase().equals("#JUNCTION")) {
-			int index = getNode().buttonsNames.indexOf(s);
+			int index = -1;
+			
+			for(Entry<Integer, String> entry : getNode().buttonsNames.entrySet()) {
+				if(entry.getValue().equals(s)) {
+					index = entry.getKey();
+					break;
+				}
+			}
 			if(index != -1) {
 				return index;
 			}else {
 
-		    System.out.println("Error junctionSearch: string not found in junction");
+		    System.out.println("Error junctionSearch: string not found in junction:  " + s);
 		    return -1;
 			}
 		}

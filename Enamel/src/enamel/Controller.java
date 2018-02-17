@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import javax.swing.JCheckBox;
@@ -47,17 +48,12 @@ public class Controller {
 		derp.addNext("#TEXT", "this is under the root.");
 		derp.addNext("#TEXT", "one");
 		derp.addNext("#TEXT", "two");
-		derp.addNext("#TEXT", "three");
-		derp.addNext("#TEXT", "four");
-		derp.addNext("#TEXT", "five");
-		derp.addNext("#TEXT", "six");
-		derp.addNext("#TEXT", "seven");
 		derp.addNext("/~pause:", "HALT"); // Akin
 		
-		ArrayList<String> stuff = new ArrayList<String>();
-		stuff.add(0,"Apple");
-		stuff.add(1,"Banana");
-		stuff.add(2,"Chocolate");
+		HashMap<Integer,String> stuff = new HashMap<Integer,String>();
+		stuff.put(0,"Apple");
+		stuff.put(1,"Banana");
+		stuff.put(2,"Chocolate");
 		
 		derp.createJunction(stuff);
 	}
@@ -238,9 +234,9 @@ public class Controller {
 			updateLabels();
 			return;
 		}
-		if(derp.getKeyPhrase().equals("#BUTTON")) {
+		if(derp.getKeyPhrase().equals("/~NEXTT")) {
 			derp.prev();
-			setHighlightPos(1);
+			setHighlightPos(2);
 			updateLabels();
 			return;
 		}
@@ -274,7 +270,7 @@ public class Controller {
 
 	public void branchItButton() {
 		if (derp.index == listSize() - 1) {
-			ArrayList<String> buttonsNames = new ArrayList<String>();
+			HashMap<Integer,String> buttonsNames = new HashMap<Integer,String>();
 			JPanel p = new JPanel(new GridLayout(0, 2));
 
 			// create checkboxes based on number of buttons
@@ -321,24 +317,34 @@ public class Controller {
 			while (skip == false) {
 				int result = JOptionPane.showConfirmDialog(null, p, "My custom dialog", JOptionPane.PLAIN_MESSAGE);
 				if (result == JOptionPane.OK_OPTION) {
-
 					// add textFields to buttonsNames
 					for (int i = 0; i < derp.buttons; i++) {
-						if (checkBoxes.get(i).isSelected()) {
-							buttonsNames.add(i, textFields.get(i).getText());
+						buttonsNames.put(i, textFields.get(i).getText());
+						if (!checkBoxes.get(i).isSelected()) {
+							buttonsNames.put(i, null);
 						}
 					}
+					//convoluted way of removing null entries, but it works...
+					ArrayList<String> poop = new ArrayList<String>();
+					poop.add(null);
+					buttonsNames.values().removeAll(poop);
+					
+					System.out.println(buttonsNames.toString());
+					
 					// check if names are unique
-					for (String s : buttonsNames) {
-						int count = Collections.frequency(buttonsNames, s);
-						System.out.println(count);
-						if (count != 1 || s.isEmpty()) {
-							JOptionPane.showMessageDialog(p, "Button names must be unique!", "Error",
-									JOptionPane.WARNING_MESSAGE);
-							break;
-						} else {
-							// Can now continue after verifications
-							skip = true;
+					for (String s : buttonsNames.values()) {
+						if (s != null && !s.isEmpty()) {
+							int count = Collections.frequency(buttonsNames.values(), s);
+							//System.out.println("buttonsNames frequency: " + count);
+							if (count != 1) {
+								buttonsNames.clear();
+								JOptionPane.showMessageDialog(p, "Button names must be unique!", "Error",
+										JOptionPane.WARNING_MESSAGE);
+								break;
+							} else {
+								// Can now continue after verifications
+								skip = true;
+							}
 						}
 					}
 
@@ -347,7 +353,13 @@ public class Controller {
 					return;
 				}
 			}
-			// create the junction
+			if(buttonsNames.isEmpty()) {
+				JOptionPane.showMessageDialog(p, "Create Junction Failed! buttonsNames is empty!", "Error",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			
+	
 			derp.createJunction(buttonsNames);
 			view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 			// navigate
@@ -360,11 +372,12 @@ public class Controller {
 	public void chooseButton() {
 		if (derp.getKeyPhrase().equals("#JUNCTION")) {
 			// Get the buttonNames and create a dialog box to choose where to navigate to
-			ArrayList<String> buttons = derp.getNode().buttonsNames;
+			HashMap<Integer,String> buttons = derp.getNode().buttonsNames;
 			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button",
-					JOptionPane.PLAIN_MESSAGE, 0, null, buttons.toArray(), buttons.toArray()[0]);
+					JOptionPane.PLAIN_MESSAGE, 0, null, buttons.values().toArray(), buttons.values().toArray()[0]);
 			// Goto the selected branch based on the button press
-			String s = buttons.toArray()[i].toString();
+			String s = buttons.values().toArray()[0].toString();
+			System.out.println(s);
 			derp.junctionGoto(derp.junctionSearch(s));
 
 			updateLabels();
