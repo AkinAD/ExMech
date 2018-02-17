@@ -503,10 +503,10 @@ public class Controller {
 		if (pause != null) {
 			if (isStringInt(pause)) {
 				derp.addNext("/~pause:", pause);
-			} else {
-				infoBox("Invalid pause duration! Please enter a valid number", "Invalid!");
 				updateLabels();
 
+			} else {
+				infoBox("Invalid pause duration! Please enter a valid number", "Invalid!");
 			}
 		} else {
 			infoBox("Pause Cancelled", "Cancel");
