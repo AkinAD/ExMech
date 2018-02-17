@@ -31,6 +31,8 @@ public class Controller {
 	Node node;
 	View view;
 
+	static String AudioFile = null; 
+	
 	int highlightPosition;
 
 	public Controller(View view) {
@@ -401,6 +403,75 @@ public class Controller {
 		return derp.currentList.size();
 	}
 
+	public void soundButton() 
+	{
+		SoundRecorder SR = new SoundRecorder(this);
+		SR.frmAudio.setVisible(true);
+		System.out.println("visible");
+			
+		if (!SR.frmAudio.isVisible())
+		{
+		System.out.println("invisble");
+		append();
+		}
+		
+	}
+	public void append() {
+		System.out.println("openedAppend..");
+		if (AudioFile != null) {
+		System.out.println(AudioFile);
+		derp.addNext("/~sound:", AudioFile);
+		}
+		
+	}
+	public void addPauseButton()
+	{	
+		String pause = null;       
+		pause =  JOptionPane.showInputDialog(null, "Please enter pause duration: ", "Add a pause ", -1);
+		if(pause != null)
+		{
+			if (isStringInt(pause)) 
+			{
+			derp.addNext("/~pause:", pause);
+			}
+			else
+			{
+				infoBox("Invalid pause duration! Please enter a valid number", "Invalid!");
+			}
+		}
+		else
+		{
+			infoBox("Pause Cancelled", "Cancel");
+		}
+		
+	}
+	public boolean isStringInt(String s)
+	{
+	    try
+	    {
+	        Integer.parseInt(s);
+	        return true;
+	    } catch (NumberFormatException ex)
+	    {
+	        return false;
+	    }
+	}
+	public static int optionbox(String infoMessage, String titleBar)
+	 {	 int dialogButton = JOptionPane.YES_NO_OPTION;
+		 int dialogResult = JOptionPane.showConfirmDialog(null, infoMessage,"InfoBox: " + titleBar,dialogButton);
+		 
+		 if(dialogResult == JOptionPane.YES_OPTION)
+		 {
+		  return 0;
+		 }
+		 else {
+		 return 1;
+	    }
+	 }
+	 public static void infoBox(String infoMessage, String titleBar) {
+		    JOptionPane.showMessageDialog(null, infoMessage,  titleBar, JOptionPane.INFORMATION_MESSAGE);
+		  }
+	
 	public void sampleButton() {
 		derp.addNext("#TEXT", "Sample");
 		if (highlightPosition == 0) {
