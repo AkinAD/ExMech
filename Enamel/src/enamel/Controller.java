@@ -37,10 +37,11 @@ import org.apache.commons.io.FilenameUtils;
 
 public class Controller {
 
-	ListManager derp;
+	static ListManager derp;
 	View view;
 
 	static String AudioFile = null;
+	static Boolean sOpen;
 
 	int highlightPosition;
 
@@ -301,6 +302,7 @@ public class Controller {
 
 			}
 		}
+		updateLabels();
 	}
 
 	public void prevButton() {
@@ -342,6 +344,7 @@ public class Controller {
 			view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 
 		}
+		updateLabels();
 	}
 
 	public void branchItButton() {
@@ -480,22 +483,22 @@ public class Controller {
 		SoundRecorder SR = new SoundRecorder(this);
 		SR.frmAudio.setVisible(true);
 		System.out.println("visible");
-
-		if (!SR.frmAudio.isVisible()) {
-			System.out.println("invisble");
-			append();
-		}
-
+		
+		
 	}
-
-	public void append() {
-		System.out.println("openedAppend..");
-		if (AudioFile != null) {
+	public static void setAudioFile (String Au){
+		AudioFile = Au;
+		
+	}
+	
+	public static void appendSound() 
+	{
+			if (AudioFile != null)
+			{
 			System.out.println(AudioFile);
 			derp.addNext("/~sound:", AudioFile);
+			}		
 		}
-
-	}
 
 	public void addPauseButton() {
 		String pause = null;
