@@ -167,7 +167,7 @@ public class View {
 //		textArea.setEditable(false);
 
 		panel_1B = new JPanel();
-		tabbedPane_1.addTab("Navigate", null, panel_1B, null);
+		tabbedPane_1.addTab("Navigation", null, panel_1B, null);
 		panel_1B.setLayout(new GridLayout(5, 0));
 //		tabbedPane_1.setSelectedIndex(1);
 
@@ -189,7 +189,7 @@ public class View {
 		tabbedPane_2.setBounds(479, 31, 301, 303);
 		frame.getContentPane().add(tabbedPane_2);
 		JPanel panel_2 = new JPanel();
-		tabbedPane_2.addTab("Control", null, panel_2, null);
+		tabbedPane_2.addTab("Actions", null, panel_2, null);
 		panel_2.setLayout(null);
 		
 		JButton btnBranch = new JButton("Create question!");

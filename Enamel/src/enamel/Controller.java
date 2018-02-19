@@ -539,7 +539,7 @@ public class Controller {
 			if (AudioFile != null)
 			{
 			System.out.println(AudioFile);
-			derp.addNext("/~sound:", AudioFile);
+			derp.addNext("/~sound", AudioFile);
 			}		
 		}
 
@@ -548,7 +548,7 @@ public class Controller {
 		pause = JOptionPane.showInputDialog(null, "Please enter pause duration: ", "Add a pause ", -1);
 		if (pause != null) {
 			if (isStringInt(pause)) {
-				derp.addNext("/~pause:", pause);
+				derp.addNext("/~pause", pause);
 				updateLabels();
 
 			} else {
