@@ -451,7 +451,7 @@ public class Controller {
 			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button",
 					JOptionPane.PLAIN_MESSAGE, 0, null, buttons.values().toArray(), buttons.values().toArray()[0]);
 			// Goto the selected branch based on the button press
-			String s = buttons.values().toArray()[0].toString();
+			String s = buttons.values().toArray()[i].toString();
 			System.out.println(s);
 			derp.junctionGoto(derp.junctionSearch(s));
 
