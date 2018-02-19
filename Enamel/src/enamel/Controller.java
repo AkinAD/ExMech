@@ -439,6 +439,7 @@ public class Controller {
 			// navigate
 			chooseButton();
 		} else {
+			infoBox("You can only add a user input at the end of the list. /n Move to the end of the list and try again.", "Can not add user input here.");
 			System.out.println("ERROR: Can only create junction at the end of list!");
 		}
 	}

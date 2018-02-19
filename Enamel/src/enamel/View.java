@@ -1,5 +1,6 @@
 package enamel;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -79,7 +80,7 @@ public class View {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnNext = new JButton("↓");
+		JButton btnNext = new JButton("\\/");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.nextButton();
@@ -88,7 +89,7 @@ public class View {
 		btnNext.setBounds(440, 186, 42, 29);
 		frame.getContentPane().add(btnNext);
 
-		JButton btnPrev = new JButton("↑");
+		JButton btnPrev = new JButton("/\\");
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.prevButton();
@@ -189,10 +190,11 @@ public class View {
 		tabbedPane_2.setBounds(479, 31, 301, 303);
 		frame.getContentPane().add(tabbedPane_2);
 		JPanel panel_2 = new JPanel();
-		tabbedPane_2.addTab("Actions", null, panel_2, null);
+		tabbedPane_2.addTab("Create", null, panel_2, null);
 		panel_2.setLayout(null);
 		
-		JButton btnBranch = new JButton("Create question!");
+		
+		JButton btnBranch = new JButton("User-Input");
 		btnBranch.getAccessibleContext().setAccessibleName("Branch");
 		btnBranch.getAccessibleContext().setAccessibleDescription("Creates a new Branch from current list");
 		btnBranch.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
@@ -201,11 +203,11 @@ public class View {
 				controller.branchItButton();
 			}
 		});
-		btnBranch.setBounds(62, 10, 140, 36);
+		btnBranch.setBounds(73, 20, 150, 36);
 		panel_2.add(btnBranch);
 		
 		
-		JButton btnAdd = new JButton("Add Text");
+		JButton btnAdd = new JButton("Text");
 		btnAdd.getAccessibleContext().setAccessibleName("Add Text");
 		btnAdd.getAccessibleContext().setAccessibleDescription("Input new text into editor text box");
 		btnAdd.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
@@ -214,10 +216,10 @@ public class View {
 				controller.addTextButton();
 			}
 		});
-		btnAdd.setBounds(73, 50, 117, 29);
+		btnAdd.setBounds(73, 60, 150, 36);
 		panel_2.add(btnAdd);
 		
-		JButton  btnSound = new JButton("Audio Studio");
+		JButton  btnSound = new JButton("Audio Recording");
 		btnSound.getAccessibleContext().setAccessibleDescription("Record and import audio files to screnario file");
 		btnSound.addKeyListener(enter);
 		btnSound.addActionListener(new ActionListener() {
@@ -225,11 +227,11 @@ public class View {
 				controller.soundButton();
 			}
 		});
-		btnSound.setBounds(73, 90, 117, 29);
+		btnSound.setBounds(73, 100, 150, 36);
 		panel_2.add(btnSound);
 		
 		
-		JButton btnAddPause = new JButton("Add Pause");
+		JButton btnAddPause = new JButton("Pause");
 		btnAddPause.getAccessibleContext().setAccessibleDescription("Adds pause for a user specified duration");
 		btnAddPause.addKeyListener(enter);
 		btnAddPause.addActionListener(new ActionListener() {
@@ -238,7 +240,7 @@ public class View {
 			}
 		});
 		
-		btnAddPause.setBounds(73, 130, 117, 29);
+		btnAddPause.setBounds(73, 140, 150, 36);
 		panel_2.add(btnAddPause);
 		
 		JButton btnPin = new JButton("Set Pins");
@@ -250,7 +252,7 @@ public class View {
 				controller.setPinButton();
 			}
 		});
-		btnPin.setBounds(73, 170, 117, 29);
+		btnPin.setBounds(73, 180, 150, 36);
 		panel_2.add(btnPin);
 		
 		JButton btnClrPin = new JButton("Clear Pins");
@@ -262,7 +264,7 @@ public class View {
 				controller.clrPinButton();
 			}
 		});
-		btnClrPin.setBounds(73, 210, 117, 29);
+		btnClrPin.setBounds(73, 220, 150, 36);
 		panel_2.add(btnClrPin);
 		
 		
