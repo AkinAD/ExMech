@@ -42,13 +42,14 @@ public class LoadParser {
 				} else if (first.equals("Button")) {
 					buttons = Integer.parseInt(rest);
 					break;
-				} 
-				
+				}
+
 			}
-			if(cells <= 0 || buttons <= 0 ) {
+			if (cells <= 0 || buttons <= 0) {
 				throw new IllegalArgumentException("loading failed: does not contain 'cells' or 'buttons'");
 			}
-			// Create new ListManager using the extracted cell and button numbers.
+			// Create new ListManager using the extracted cell and button
+			// numbers.
 			result = new ListManager(cells, buttons);
 
 			// Add nodes:
@@ -79,14 +80,14 @@ public class LoadParser {
 						} // end of while loop
 
 						if (first.startsWith("/~skip-button")) {
-							//nextLine();
+							// nextLine();
 						} else {
 							result.addNext(first, rest);
 						}
 
 					}
 					if (line == null) {
-						//break;
+						// break;
 					}
 				} else if (!line.isEmpty() && !line.equals(" ")) {
 					// add line of text (no keyPhrase detected)
@@ -136,7 +137,8 @@ public class LoadParser {
 		ArrayList<Node> juncList = result.currentList;
 		ArrayList<Node> juncNext = result.getNextList();
 
-		// keep looping until /~NEXTT is reached or if only one button and /~skip-button
+		// keep looping until /~NEXTT is reached or if only one button and
+		// /~skip-button
 		// is reached.
 		boolean skip = false;
 		while (skip == false) {
@@ -144,7 +146,8 @@ public class LoadParser {
 			// Add nodes under each of the 'branches' under the Junction
 			while ((nextLine()) != null && !line.trim().equals(" ") && !line.startsWith("/~skip-button")) {
 				if (line.startsWith("/~NEXTT")) {
-					// Case for loading nodes is done. Set current position to NEXTT node. exit.
+					// Case for loading nodes is done. Set current position to
+					// NEXTT node. exit.
 					result.currentList = juncNext;
 					result.index = 0;
 					System.out.println("Switched to NEXTT path...(Reached /~NEXTT)");
@@ -184,7 +187,8 @@ public class LoadParser {
 
 								// Case when there is only one button
 								if (line.startsWith("/~skip-button:") && buttonListSize == 1) {
-									// System.out.println("detected only 1 button");
+									// System.out.println("detected only 1
+									// button");
 									break;
 								}
 
@@ -232,9 +236,10 @@ public class LoadParser {
 	}
 
 	/*
-	 * #############################################################################
-	 * TESTING // Delete later.
-	 * #############################################################################
+	 * #########################################################################
+	 * #### TESTING // Delete later.
+	 * #########################################################################
+	 * ####
 	 */
 
 	public static void main(String[] args) {
