@@ -219,7 +219,6 @@ public class Controller {
 	}
 
 	public void openMenuItem() {
-		view.textArea.setText("");
 		JFileChooser open = new JFileChooser("FactoryScenarios/");
 		int retrunVal = open.showOpenDialog(view.frame);
 		if (retrunVal == JFileChooser.APPROVE_OPTION) {
