@@ -45,12 +45,18 @@ public class Controller {
 
 	int highlightPosition;
 
+	int cells;
+	int buttons;
+
 	public Controller(View view) {
 
-		// default data structure initialized. SET the default cells and buttons here.
+		// default data structure initialized. SET the default cells and buttons
+		// here.
 		this.derp = new ListManager(10, 10);
 		this.view = view;
 		this.highlightPosition = 0;
+		this.cells = 0;
+		this.buttons = 0;
 	}
 
 	public void initDefaultList(int cells, int buttons) {
@@ -134,8 +140,8 @@ public class Controller {
 					break;
 				}
 
-				int cells = Integer.parseInt(spinner1.getValue().toString());
-				int buttons = Integer.parseInt(spinner2.getValue().toString());
+				this.cells = Integer.parseInt(spinner1.getValue().toString());
+				this.buttons = Integer.parseInt(spinner2.getValue().toString());
 
 				initDefaultList(cells, buttons);
 				skip = true;
@@ -201,18 +207,18 @@ public class Controller {
 		}
 	}
 
-//	public void displayList() {
-//		int currentListPos = derp.index;
-//		derp.goHome();
-//		view.textArea.setText("");
-//		for (int i = 0; i < listSize() - 1; i++) {
-//			view.textArea.append(derp.getData() + "\n");
-//			derp.next();
-//		}
-//		for (int j = listSize(); j > currentListPos; j--) {
-//			derp.prev();
-//		}
-//	}
+	// public void displayList() {
+	// int currentListPos = derp.index;
+	// derp.goHome();
+	// view.textArea.setText("");
+	// for (int i = 0; i < listSize() - 1; i++) {
+	// view.textArea.append(derp.getData() + "\n");
+	// derp.next();
+	// }
+	// for (int j = listSize(); j > currentListPos; j--) {
+	// derp.prev();
+	// }
+	// }
 
 	public void newMenuItem() {
 		view.textArea.setText("");
@@ -231,18 +237,20 @@ public class Controller {
 
 	public void saveMenuItem() {
 		JFileChooser save = new JFileChooser("FactoryScenarios/");
-		
+
 		int retrunVal = save.showSaveDialog(view.frame);
 		if (retrunVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				File file = save.getSelectedFile();
-				
+
 				if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("txt")) {
 					// filename is OK as-is
 				} else {
-					file = new File(file.toString() + ".txt"); // append .txt if "foo.jpg.txt" is OK
+					file = new File(file.toString() + ".txt"); // append .txt if
+																// "foo.jpg.txt"
+																// is OK
 					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName()) + ".txt");
-					BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath(),false));
+					BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath(), false));
 
 					ScenarioComposer composer = new ScenarioComposer();
 					String result = composer.returnStringFile(derp);
@@ -373,7 +381,10 @@ public class Controller {
 				checkBoxes.get(x).addItemListener(new ItemListener() {
 					@Override
 					public void itemStateChanged(ItemEvent e) {
-						if (e.getStateChange() == ItemEvent.SELECTED) {// checkbox has been selected
+						if (e.getStateChange() == ItemEvent.SELECTED) {// checkbox
+																		// has
+																		// been
+																		// selected
 							textFields.get(x).setVisible(true);
 							p.revalidate();
 							p.repaint();
@@ -410,7 +421,8 @@ public class Controller {
 					for (String s : buttonsNames.values()) {
 						if (s != null && !s.isEmpty()) {
 							int count = Collections.frequency(buttonsNames.values(), s);
-							// System.out.println("buttonsNames frequency: " + count);
+							// System.out.println("buttonsNames frequency: " +
+							// count);
 							if (count != 1) {
 								buttonsNames.clear();
 								JOptionPane.showMessageDialog(p, "Button names must be unique!", "Error",
@@ -439,19 +451,24 @@ public class Controller {
 			// navigate
 			chooseButton();
 		} else {
-			infoBox("You can only add a user input at the end of the list. /n Move to the end of the list and try again.", "Can not add user input here.");
+			infoBox("You can only add a user input at the end of the list. /n Move to the end of the list and try again.",
+					"Can not add user input here.");
 			System.out.println("ERROR: Can only create junction at the end of list!");
 		}
 	}
 
 	public void chooseButton() {
 		if (derp.getKeyPhrase().equals("#JUNCTION")) {
-			// Get the buttonNames and create a dialog box to choose where to navigate to
+			// Get the buttonNames and create a dialog box to choose where to
+			// navigate to
 			HashMap<Integer, String> buttons = derp.getNode().buttonsNames;
 			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button",
 					JOptionPane.PLAIN_MESSAGE, 0, null, buttons.values().toArray(), buttons.values().toArray()[0]);
 			// Goto the selected branch based on the button press
-			String s = buttons.values().toArray()[i].toString(); //go to i  (whatever dialogbox returns)
+			String s = buttons.values().toArray()[i].toString(); // go to i
+																	// (whatever
+																	// dialogbox
+																	// returns)
 			System.out.println(s);
 			derp.junctionGoto(derp.junctionSearch(s));
 
@@ -465,57 +482,157 @@ public class Controller {
 	public void addTextButton() {
 		String text = null;
 		text = JOptionPane.showInputDialog(null, "Please enter your text: ", "Add text ", -1);
-		if (text != null && !text.equals("")) {
+		if (text != null && !text.trim().isEmpty()) {
 			derp.addNext("#TEXT", text);
 			updateLabels();
-		} else {
-			infoBox("Text Not Entered", "Cancel");
 		}
 	}
-	
+
 	public void setPinButton() {
-		derp.addNext("/~disp-cell-pins:", "0");
-		String text = null;
-		text = JOptionPane.showInputDialog(null, "Please set the cell pins: ", "Set pins ", -1);
-		if (text != null) {
-			switch (text) {
-            case "a":	derp.addNext("/~disp-cell-pins::", "0 " + "10000000"); break;
-            case "b":	derp.addNext("/~disp-cell-pins::", "0 " + "11000000"); break;
-            case "c":	derp.addNext("/~disp-cell-pins::", "0 " + "10100000"); break;
-            case "d":	derp.addNext("/~disp-cell-pins::", "0 " + "10011000"); break;
-            case "e":	derp.addNext("/~disp-cell-pins::", "0 " + "10001000"); break;
-            case "f":	derp.addNext("/~disp-cell-pins::", "0 " + "11010000"); break;
-            case "g":	derp.addNext("/~disp-cell-pins::", "0 " + "11011000"); break;
-            case "h":	derp.addNext("/~disp-cell-pins::", "0 " + "11001000"); break;
-            case "i":	derp.addNext("/~disp-cell-pins::", "0 " + "01010000"); break;
-            case "j":	derp.addNext("/~disp-cell-pins::", "0 " + "01011000"); break;
-            case "k":	derp.addNext("/~disp-cell-pins::", "0 " + "10100000"); break;
-            case "l":	derp.addNext("/~disp-cell-pins::", "0 " + "11100000"); break;
-            case "m":	derp.addNext("/~disp-cell-pins::", "0 " + "10110000"); break;
-            case "n":	derp.addNext("/~disp-cell-pins::", "0 " + "10111000"); break;
-            case "o":	derp.addNext("/~disp-cell-pins::", "0 " + "10101000"); break;
-            case "p":	derp.addNext("/~disp-cell-pins::", "0 " + "11110000"); break;
-            case "q":	derp.addNext("/~disp-cell-pins::", "0 " + "11111000"); break;
-            case "r":	derp.addNext("/~disp-cell-pins::", "0 " + "11101000"); break;
-            case "s":	derp.addNext("/~disp-cell-pins::", "0 " + "01110000"); break;
-            case "t":	derp.addNext("/~disp-cell-pins::", "0 " + "01111000"); break;
-            case "u":	derp.addNext("/~disp-cell-pins::", "0 " + "10100100"); break;
-            case "v":	derp.addNext("/~disp-cell-pins::", "0 " + "11100100"); break;
-            case "w":	derp.addNext("/~disp-cell-pins::", "0 " + "01011100"); break;
-            case "x":	derp.addNext("/~disp-cell-pins::", "0 " + "10110100"); break;
-            case "y":	derp.addNext("/~disp-cell-pins::", "0 " + "10111100"); break;
-            case "z":	derp.addNext("/~disp-cell-pins::", "0 " + "10101100"); break;
-            case "":	derp.addNext("/~disp-cell-pins::", "0 " + "11111111"); break;
-            case " ":	derp.addNext("/~disp-cell-pins::", "0 " + "11111111"); break;
-            default: 	infoBox("Invalid Entry", "Cancel"); break;
+		String num = null;
+		num = JOptionPane.showInputDialog(null, "Please enter a valid Braille cell index: ", "Index value ", -1);
+
+		if (num != null) {
+			if (isStringInt(num) && Integer.parseInt(num) <= this.cells) {
+				String text = null;
+				text = JOptionPane.showInputDialog(null, "Please set the cell pins: ", "Set pins ", -1);
+				if (text != null) {
+					switch (text) {
+					case "a":
+						derp.addNext("/~disp-cell-pins", num + " " + "10000000");
+						updateLabels();
+						break;
+					case "b":
+						derp.addNext("/~disp-cell-pins", num + " " + "11000000");
+						updateLabels();
+						break;
+					case "c":
+						derp.addNext("/~disp-cell-pins", num + " " + "10100000");
+						updateLabels();
+						break;
+					case "d":
+						derp.addNext("/~disp-cell-pins", num + " " + "10011000");
+						updateLabels();
+						break;
+					case "e":
+						derp.addNext("/~disp-cell-pins", num + " " + "10001000");
+						updateLabels();
+						break;
+					case "f":
+						derp.addNext("/~disp-cell-pins", num + " " + "11010000");
+						updateLabels();
+						break;
+					case "g":
+						derp.addNext("/~disp-cell-pins", num + " " + "11011000");
+						updateLabels();
+						break;
+					case "h":
+						derp.addNext("/~disp-cell-pins", num + " " + "11001000");
+						updateLabels();
+						break;
+					case "i":
+						derp.addNext("/~disp-cell-pins", num + " " + "01010000");
+						updateLabels();
+						break;
+					case "j":
+						derp.addNext("/~disp-cell-pins", num + " " + "01011000");
+						updateLabels();
+						break;
+					case "k":
+						derp.addNext("/~disp-cell-pins", num + " " + "10100000");
+						updateLabels();
+						break;
+					case "l":
+						derp.addNext("/~disp-cell-pins", num + " " + "11100000");
+						updateLabels();
+						break;
+					case "m":
+						derp.addNext("/~disp-cell-pins::", num + " " + "10110000");
+						updateLabels();
+						break;
+					case "n":
+						derp.addNext("/~disp-cell-pins", num + " " + "10111000");
+						updateLabels();
+						break;
+					case "o":
+						derp.addNext("/~disp-cell-pins", num + " " + "10101000");
+						updateLabels();
+						break;
+					case "p":
+						derp.addNext("/~disp-cell-pins", num + " " + "11110000");
+						updateLabels();
+						break;
+					case "q":
+						derp.addNext("/~disp-cell-pins", num + " " + "11111000");
+						updateLabels();
+						break;
+					case "r":
+						derp.addNext("/~disp-cell-pins", num + " " + "11101000");
+						updateLabels();
+						break;
+					case "s":
+						derp.addNext("/~disp-cell-pins", num + " " + "01110000");
+						updateLabels();
+						break;
+					case "t":
+						derp.addNext("/~disp-cell-pins", num + " " + "01111000");
+						updateLabels();
+						break;
+					case "u":
+						derp.addNext("/~disp-cell-pins", num + " " + "10100100");
+						updateLabels();
+						break;
+					case "v":
+						derp.addNext("/~disp-cell-pins", num + " " + "11100100");
+						updateLabels();
+						break;
+					case "w":
+						derp.addNext("/~disp-cell-pins", num + " " + "01011100");
+						updateLabels();
+						break;
+					case "x":
+						derp.addNext("/~disp-cell-pins", num + " " + "10110100");
+						updateLabels();
+						break;
+					case "y":
+						derp.addNext("/~disp-cell-pins", num + " " + "10111100");
+						updateLabels();
+						break;
+					case "z":
+						derp.addNext("/~disp-cell-pins", num + " " + "10101100");
+						updateLabels();
+						break;
+					case "":
+						derp.addNext("/~disp-cell-pins", num + " " + "11111111");
+						updateLabels();
+						break;
+					case " ":
+						derp.addNext("/~disp-cell-pins", num + " " + "11111111");
+						updateLabels();
+						break;
+					default:
+						infoBox("Invalid 8-character Sequence", "Cancel");
+						break;
+					}
+				} 
+			} else {
+				infoBox("Invalid Braille cell index! Please enter a valid number", "Invalid!");
 			}
-        }
-		updateLabels();
+		}
 	}
-	
+
 	public void clrPinButton() {
-		derp.addNext("/~disp-cell-pins:", "0");
-		updateLabels();
+		String num = null;
+		num = JOptionPane.showInputDialog(null, "Please enter a valid Braille cell index: ", "Index value ", -1);
+
+		if (num != null) {
+			if (isStringInt(num) && Integer.parseInt(num) <= this.cells) {
+				derp.addNext("/~disp-clear-cell", num);
+				updateLabels();
+			} else {
+				infoBox("Invalid Braille cell index! Please enter a valid number", "Invalid!");
+			}
+		}
 	}
 
 	private int listSize() {
@@ -526,22 +643,20 @@ public class Controller {
 		SoundRecorder SR = new SoundRecorder(this);
 		SR.frmAudio.setVisible(true);
 		System.out.println("visible");
-		
-		
+
 	}
-	public static void setAudioFile (String Au){
+
+	public static void setAudioFile(String Au) {
 		AudioFile = Au;
-		
+
 	}
-	
-	public static void appendSound() 
-	{
-			if (AudioFile != null)
-			{
+
+	public static void appendSound() {
+		if (AudioFile != null) {
 			System.out.println(AudioFile);
 			derp.addNext("/~sound", AudioFile);
-			}		
 		}
+	}
 
 	public void addPauseButton() {
 		String pause = null;
