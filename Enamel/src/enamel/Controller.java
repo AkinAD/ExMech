@@ -627,7 +627,7 @@ public class Controller {
 
 		if (num != null) {
 			if (isStringInt(num) && Integer.parseInt(num) <= this.cells) {
-				derp.addNext("/~disp-clear-cell", num);
+				derp.addNext("/~disp-cell-clear", num);
 				updateLabels();
 			} else {
 				infoBox("Invalid Braille cell index! Please enter a valid number", "Invalid!");
