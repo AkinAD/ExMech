@@ -8,11 +8,11 @@ import java.util.*;
  * for displaying letters on the cell as well as raising and/or lowering
  * individual pins.
  * 
- * The pins are boolean objects stored in a boolean array field called 
- * <code>listOfPins</code>. boolean allows abstracting the pins, which by 
+ * The pins are boolean objects stored in a boolean array field called
+ * <code>listOfPins</code>. boolean allows abstracting the pins, which by
  * definition can only have two states. This allows for graphical, auditory, and
- * other implementations (i.e. hardware braille cell, Metec B11) to show the 
- * braille cell to the user in different forms. 
+ * other implementations (i.e. hardware braille cell, Metec B11) to show the
+ * braille cell to the user in different forms.
  * 
  * <p>
  * This class supports the standard Braille encoding of English characters plus
@@ -37,18 +37,20 @@ public class BrailleCell {
 
 	/**
 	 * 
-	 * Class constructor. Initializes the <code>alphabet</code> HashMap to populate it
-	 * with the appropriate alphabet, which in this case is the English alphabet,
-	 * and the corresponding String representations of the braille cell.
+	 * Class constructor. Initializes the <code>alphabet</code> HashMap to
+	 * populate it with the appropriate alphabet, which in this case is the
+	 * English alphabet, and the corresponding String representations of the
+	 * braille cell.
 	 */
 	public BrailleCell() {
 		this.initializeAlphabet();
 	}
 
 	/**
-	 * Initializes the HashMap of our Braille alphabet, with the Key being the char
-	 * English alphabet letter and the Value being the corresponding 8 pins represented
-	 * as String, with 1 representing a raised pin and 0 representing a lowered pin. 
+	 * Initializes the HashMap of our Braille alphabet, with the Key being the
+	 * char English alphabet letter and the Value being the corresponding 8 pins
+	 * represented as String, with 1 representing a raised pin and 0
+	 * representing a lowered pin.
 	 */
 	private void initializeAlphabet() {
 		alphabet.put('a', "10000000");
@@ -79,19 +81,21 @@ public class BrailleCell {
 		alphabet.put('z', "10101100");
 		alphabet.put(' ', "11111111");
 	}
+
 	/**
 	 * Displays the character passed as argument on this Braille Cell object in
 	 * Braille.
 	 * <p>
-	 * The method works by selecting specific booleans in <code>listOfPins</code> that represent
-	 * raised "pins", or the parts of the letter that would be felt by a human
-	 * hand, and setting it to true, while setting the "pins" that are not
-	 * raised to false. 
+	 * The method works by selecting specific booleans in
+	 * <code>listOfPins</code> that represent raised "pins", or the parts of the
+	 * letter that would be felt by a human hand, and setting it to true, while
+	 * setting the "pins" that are not raised to false.
 	 * 
 	 * @param a
-	 * 			the char letter to display.
+	 *            the char letter to display.
 	 * @throws InterruptedException
-	 * 			if the argument is not within our alphabet of English letters.
+	 *             if the argument is not within our alphabet of English
+	 *             letters.
 	 */
 	public void displayCharacter(char a) throws InterruptedException {
 
@@ -101,15 +105,16 @@ public class BrailleCell {
 		}
 		this.setPins(alphabet.get(a));
 	}
-	
+
 	/**
 	 * Takes an eight character string of 1s and 0s as argument, and sets the
-	 * the 8 pins accordingly. 1 corresponds to raising the pin, 0 to lowering it.
-	 * The first 3 characters correspond to the top-left pin to the
-	 * third from the top pin on the left side. The second 3 characters correspond to the top-right 
-	 * pin to the third from the top pin on the right side. The last 2 characters correspond
-	 * to the bottom-left and the bottom-right pins. This arrangement is to support to the
-	 * Metec B11 Braille Cell's arrangement of the pins, which is arranged the same.
+	 * the 8 pins accordingly. 1 corresponds to raising the pin, 0 to lowering
+	 * it. The first 3 characters correspond to the top-left pin to the third
+	 * from the top pin on the left side. The second 3 characters correspond to
+	 * the top-right pin to the third from the top pin on the right side. The
+	 * last 2 characters correspond to the bottom-left and the bottom-right
+	 * pins. This arrangement is to support to the Metec B11 Braille Cell's
+	 * arrangement of the pins, which is arranged the same.
 	 * 
 	 * @param pins
 	 *            string of 1s and 0s that is 8 characters long that sets the
@@ -118,7 +123,7 @@ public class BrailleCell {
 	 *             if the string is not 8 characters long or if it contains any
 	 *             character that isn't a 1 or a 0
 	 */
-	
+
 	public void setPins(String pins) {
 		// checking for correct index
 		if (pins.length() != 8) {
@@ -137,7 +142,7 @@ public class BrailleCell {
 			}
 		}
 	}
-	
+
 	/**
 	 * Raises the pin that corresponds to the argument.
 	 * 
@@ -152,7 +157,7 @@ public class BrailleCell {
 		}
 		listOfPins[pin - 1] = true;
 	}
-	
+
 	/**
 	 * Lowers the pin that corresponds to the argument.
 	 * 
@@ -178,22 +183,23 @@ public class BrailleCell {
 	}
 
 	/**
-	 * Gets the pin's current state (raised or lowered) at the index that corresponds to the argument.
+	 * Gets the pin's current state (raised or lowered) at the index that
+	 * corresponds to the argument.
 	 * 
 	 * @param index
-	 * 			the index of the pin
-	 * @return
-	 * 			the pin's current state
+	 *            the index of the pin
+	 * @return the pin's current state
 	 */
 	public boolean getPinState(int index) {
 		return listOfPins[index];
 	}
 
 	/**
-	 * Gets the braille cell's number of pins. This is to allow support for braille cells with 6 pins
-	 * in the future, while currently we are using the 8 pin braille cell. 
-	 * @return
-	 * 			the number of pins in this BrailleCell
+	 * Gets the braille cell's number of pins. This is to allow support for
+	 * braille cells with 6 pins in the future, while currently we are using the
+	 * 8 pin braille cell.
+	 * 
+	 * @return the number of pins in this BrailleCell
 	 */
 	public int getNumberOfPins() {
 		return listOfPins.length;

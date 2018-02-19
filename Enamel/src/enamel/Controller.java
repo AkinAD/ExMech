@@ -614,7 +614,7 @@ public class Controller {
 						infoBox("Invalid 8-character Sequence", "Cancel");
 						break;
 					}
-				} 
+				}
 			} else {
 				infoBox("Invalid Braille cell index! Please enter a valid number", "Invalid!");
 			}

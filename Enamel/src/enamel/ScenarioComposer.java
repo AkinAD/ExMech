@@ -27,11 +27,11 @@ public class ScenarioComposer {
 				String data = currentNode.getData();
 				String jKey = "";
 				String jData = "";
-				
+
 				if (key == "#HEAD") {
-					String[] info = data.split(" ",4);
-					sb.append(info[0] +" "+ info[1] +"\n");
-					sb.append(info[2] +" "+ info[3] +"\n");
+					String[] info = data.split(" ", 4);
+					sb.append(info[0] + " " + info[1] + "\n");
+					sb.append(info[2] + " " + info[3] + "\n");
 					sb.append("\n");
 					sb.append("\n");
 				}
@@ -42,14 +42,14 @@ public class ScenarioComposer {
 				}
 
 				else if (key == "#JUNCTION") {
-					//create /~skip-buttons for every branch
-					for (Entry<Integer,String> entry : currentNode.buttonsNames.entrySet()) {
-							if (entry.getValue() != null) {
-								jData = entry.getValue();
-								jKey = entry.getKey().toString();
-								sb.append("/~skip-button:"+jKey+" " + jData);
-								sb.append("\n");
-							}	
+					// create /~skip-buttons for every branch
+					for (Entry<Integer, String> entry : currentNode.buttonsNames.entrySet()) {
+						if (entry.getValue() != null) {
+							jData = entry.getValue();
+							jKey = entry.getKey().toString();
+							sb.append("/~skip-button:" + jKey + " " + jData);
+							sb.append("\n");
+						}
 					}
 					sb.append("/~user-input");
 					sb.append("\n");
@@ -60,9 +60,10 @@ public class ScenarioComposer {
 					for (Entry<Integer, String> entry : currentNode.buttonsNames.entrySet()) {
 						entrySetCount++;
 						int i = entry.getKey();
-						//set currentList to the branch so we can iterate through it
+						// set currentList to the branch so we can iterate
+						// through it
 						aList.currentList = currentNode.buttons.get(i);
-						//for every node in the branch...
+						// for every node in the branch...
 						for (int k = 0; k < aList.currentList.size(); k++) {
 							Node branchNode = aList.currentList.get(k);
 							String bKey = branchNode.getKeyPhrase();
@@ -78,38 +79,40 @@ public class ScenarioComposer {
 								sb.append("\n");
 								sb.append("\n");
 							} else if (bKey == "#JUNCTION") {
-								//sb.append("!!!!!!!!!made it to a junction somehow?");
+								// sb.append("!!!!!!!!!made it to a junction
+								// somehow?");
 								sb.append("\n");
 							} else {
-								sb.append(bKey+":"+ bData);
+								sb.append(bKey + ":" + bData);
 								sb.append("\n");
 							}
-							
-							//reach last branch and last node
+
+							// reach last branch and last node
 							if (bKey == "/~skip:NEXTT" && entrySetCount == currentNode.buttonsNames.entrySet().size()) {
 								aList.currentList = branchNode.nextList;
-								//sb.append("!!!!!!!!!!!!end of branch condition \n");
+								// sb.append("!!!!!!!!!!!!end of branch
+								// condition \n");
 								break;
-								}
+							}
 						}
 					}
 				} // end of JUNCTION
-				
-				else if (key == "/~NEXTT"){
+
+				else if (key == "/~NEXTT") {
 					sb.append(key);
 					sb.append("\n");
 					sb.append("\n");
 				}
 
 				else {
-					//generic node data
-					sb.append(key+":"+data);
+					// generic node data
+					sb.append(key + ":" + data);
 					sb.append("\n");
 				}
-				
+
 				// test if at the end of data structure (no more nodes left)
 				if ((u == aList.currentList.size() - 1) && (currentNode.getKeyPhrase() != "#JUNCTION")) {
-					//sb.append("!!!!!!!!!!end of data struct condition \n");
+					// sb.append("!!!!!!!!!!end of data struct condition \n");
 					skip = true;
 				}
 			}

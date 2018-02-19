@@ -24,16 +24,17 @@ public class ScenarioParser {
 
 	public ScenarioParser(boolean isVisual) {
 
-		//String currDir = System.getProperty("user.dir");
-        //System.setProperty("mbrola.base", currDir + File.separator + "lib/mbrola.jar");
-        vm = VoiceManager.getInstance();
-        voice = vm.getVoice ("kevin16");
-        voice.allocate();
-        repeatedText = new ArrayList<String> ();
-        userInput = false;
-        this.isVisual = isVisual;
+		// String currDir = System.getProperty("user.dir");
+		// System.setProperty("mbrola.base", currDir + File.separator +
+		// "lib/mbrola.jar");
+		vm = VoiceManager.getInstance();
+		voice = vm.getVoice("kevin16");
+		voice.allocate();
+		repeatedText = new ArrayList<String>();
+		userInput = false;
+		this.isVisual = isVisual;
 	}
-	
+
 	/*
 	 * This method exits the program.
 	 */
@@ -240,7 +241,7 @@ public class ScenarioParser {
 	 */
 	private void dispCellPins(String paramArgs) {
 		try {
-			
+
 			String[] param = paramArgs.split("\\s");
 			int paramIndex = Integer.parseInt(param[0]);
 			if (param.length > 2 || paramIndex < 0 || paramIndex > player.brailleCellNumber - 1
@@ -503,9 +504,9 @@ public class ScenarioParser {
 			cellNum = Integer.parseInt(fileScanner.nextLine().split("\\s")[1]);
 			buttonNum = Integer.parseInt(fileScanner.nextLine().split("\\s")[1]);
 			if (isVisual)
-			    player = new VisualPlayer(cellNum, buttonNum);
+				player = new VisualPlayer(cellNum, buttonNum);
 			else
-			    player =  new AudioPlayer(cellNum, buttonNum);
+				player = new AudioPlayer(cellNum, buttonNum);
 		} catch (Exception e) {
 
 			errorLog("Exception error: " + e.toString(),
