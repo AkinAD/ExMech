@@ -94,8 +94,11 @@ public class Controller {
 
 			// Custom button text
 			Object[] options = { "New Story", "Load Existing", "Quit" };
-			int n = JOptionPane.showOptionDialog(view.frame, "Welcome to Treasure Box Braille!", "Treasure Box Braille",
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[2]);
+			JLabel lbl = new JLabel("Welcome to Treasure Box Braille!");
+			lbl.setFocusable(true);
+			lbl.requestFocusInWindow(); 
+			int n = JOptionPane.showOptionDialog(view.frame, lbl, "Treasure Box Braille",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
 
 			System.out.println("User selected: " + n);
 
@@ -118,27 +121,40 @@ public class Controller {
 				model2.setMaximum(99);
 				model2.setMinimum(1);
 				JSpinner spinner1 = new JSpinner(model1);
+				spinner1.setToolTipText(
+					     "Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
+				spinner1.getAccessibleContext().setAccessibleName("Cells");
+				spinner1.getAccessibleContext().setAccessibleDescription("Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
 				JSpinner spinner2 = new JSpinner(model2);
+				spinner2.setToolTipText(
+					     "Buttons. Use the up & down arrow keys to set the number of buttons for the scenario.\"");
+				spinner2.getAccessibleContext().setAccessibleName("Buttons");
+				spinner2.getAccessibleContext().setAccessibleDescription("Buttons. Use the up & down arrow keys to set the number of buttons for the scenario.");
 				spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
 				spinner2.setEditor(new JSpinner.DefaultEditor(spinner2));
-				p.add(new JLabel("Cells: "));
+				JLabel cellsLabel = new JLabel("Cells: ");
+				cellsLabel.setLabelFor(spinner1);
+				p.add(cellsLabel);
 				p.add(spinner1);
-				p.add(new JLabel("Buttons: "));
+				JLabel buttonsLabel = new JLabel("Buttons: ");
+				buttonsLabel.setLabelFor(spinner2);
+				p.add(buttonsLabel);
 				p.add(spinner2);
 
 				int result = JOptionPane.showConfirmDialog(null, p, "Create New Story", JOptionPane.PLAIN_MESSAGE);
 				System.out.println("User selected2: " + result);
 				// return back to welcome screen if X button
-				if (result == JOptionPane.CLOSED_OPTION) {
+				if (result == -1) {
 					skip = false;
-					break;
-				}
+					//break;
+				}else {
 
 				int cells = Integer.parseInt(spinner1.getValue().toString());
 				int buttons = Integer.parseInt(spinner2.getValue().toString());
 
 				initDefaultList(cells, buttons);
 				skip = true;
+				}
 			}
 
 			if (n == 1) {
@@ -160,7 +176,8 @@ public class Controller {
 
 	public void updateLabels() {
 		view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"' + " "
-				+ highlightPosition);
+				+ "  Index: "
+				+ derp.index + "/" + (listSize() - 1));
 		for (int k = 0; k < view.label.length; k++) {
 			if (view.label[k].getBorder() == view.bevel) {
 				highlightPosition = k;
