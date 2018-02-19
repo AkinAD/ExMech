@@ -466,7 +466,7 @@ public class Controller {
 		String text = null;
 		text = JOptionPane.showInputDialog(null, "Please enter your text: ", "Add text ", -1);
 		if (text != null && !text.equals("")) {
-			derp.addNext("#TEXT:", text);
+			derp.addNext("#TEXT", text);
 			updateLabels();
 		} else {
 			infoBox("Text Not Entered", "Cancel");
