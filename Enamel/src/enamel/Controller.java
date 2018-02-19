@@ -50,7 +50,6 @@ public class Controller {
 		// default data structure initialized. SET the default cells and buttons here.
 		this.derp = new ListManager(10, 10);
 		this.view = view;
-
 		this.highlightPosition = 0;
 	}
 
@@ -75,7 +74,6 @@ public class Controller {
 	// }
 
 	public void initializeList() {
-		displayList();
 		derp.goHome();
 		view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 		view.labeltop.setHorizontalAlignment(JLabel.CENTER);
@@ -201,21 +199,20 @@ public class Controller {
 			view.labelbottom.setText(derp.getData(1));
 			return;
 		}
-
 	}
 
-	public void displayList() {
-		int currentListPos = derp.index;
-		derp.goHome();
-		view.textArea.setText("");
-		for (int i = 0; i < listSize() - 1; i++) {
-			view.textArea.append(derp.getData() + "\n");
-			derp.next();
-		}
-		for (int j = listSize(); j > currentListPos; j--) {
-			derp.prev();
-		}
-	}
+//	public void displayList() {
+//		int currentListPos = derp.index;
+//		derp.goHome();
+//		view.textArea.setText("");
+//		for (int i = 0; i < listSize() - 1; i++) {
+//			view.textArea.append(derp.getData() + "\n");
+//			derp.next();
+//		}
+//		for (int j = listSize(); j > currentListPos; j--) {
+//			derp.prev();
+//		}
+//	}
 
 	public void newMenuItem() {
 		view.textArea.setText("");
@@ -466,13 +463,59 @@ public class Controller {
 	}
 
 	public void addTextButton() {
-		if (view.textArea.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(view.frame, "Type something in the text box before add.", "Inane error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
+		String text = null;
+		text = JOptionPane.showInputDialog(null, "Please enter your text: ", "Add text ", -1);
+		if (text != null && !text.equals("")) {
+			derp.addNext("#TEXT:", text);
+			updateLabels();
+		} else {
+			infoBox("Text Not Entered", "Cancel");
 		}
-		derp.addNext("#TEXT", view.textArea.getText());
-		view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
+	}
+	
+	public void setPinButton() {
+		derp.addNext("/~disp-cell-pins:", "0");
+		String text = null;
+		text = JOptionPane.showInputDialog(null, "Please set the cell pins: ", "Set pins ", -1);
+		if (text != null) {
+			switch (text) {
+            case "a":	derp.addNext("/~disp-cell-pins::", "0 " + "10000000"); break;
+            case "b":	derp.addNext("/~disp-cell-pins::", "0 " + "11000000"); break;
+            case "c":	derp.addNext("/~disp-cell-pins::", "0 " + "10100000"); break;
+            case "d":	derp.addNext("/~disp-cell-pins::", "0 " + "10011000"); break;
+            case "e":	derp.addNext("/~disp-cell-pins::", "0 " + "10001000"); break;
+            case "f":	derp.addNext("/~disp-cell-pins::", "0 " + "11010000"); break;
+            case "g":	derp.addNext("/~disp-cell-pins::", "0 " + "11011000"); break;
+            case "h":	derp.addNext("/~disp-cell-pins::", "0 " + "11001000"); break;
+            case "i":	derp.addNext("/~disp-cell-pins::", "0 " + "01010000"); break;
+            case "j":	derp.addNext("/~disp-cell-pins::", "0 " + "01011000"); break;
+            case "k":	derp.addNext("/~disp-cell-pins::", "0 " + "10100000"); break;
+            case "l":	derp.addNext("/~disp-cell-pins::", "0 " + "11100000"); break;
+            case "m":	derp.addNext("/~disp-cell-pins::", "0 " + "10110000"); break;
+            case "n":	derp.addNext("/~disp-cell-pins::", "0 " + "10111000"); break;
+            case "o":	derp.addNext("/~disp-cell-pins::", "0 " + "10101000"); break;
+            case "p":	derp.addNext("/~disp-cell-pins::", "0 " + "11110000"); break;
+            case "q":	derp.addNext("/~disp-cell-pins::", "0 " + "11111000"); break;
+            case "r":	derp.addNext("/~disp-cell-pins::", "0 " + "11101000"); break;
+            case "s":	derp.addNext("/~disp-cell-pins::", "0 " + "01110000"); break;
+            case "t":	derp.addNext("/~disp-cell-pins::", "0 " + "01111000"); break;
+            case "u":	derp.addNext("/~disp-cell-pins::", "0 " + "10100100"); break;
+            case "v":	derp.addNext("/~disp-cell-pins::", "0 " + "11100100"); break;
+            case "w":	derp.addNext("/~disp-cell-pins::", "0 " + "01011100"); break;
+            case "x":	derp.addNext("/~disp-cell-pins::", "0 " + "10110100"); break;
+            case "y":	derp.addNext("/~disp-cell-pins::", "0 " + "10111100"); break;
+            case "z":	derp.addNext("/~disp-cell-pins::", "0 " + "10101100"); break;
+            case "":	derp.addNext("/~disp-cell-pins::", "0 " + "11111111"); break;
+            case " ":	derp.addNext("/~disp-cell-pins::", "0 " + "11111111"); break;
+            default: 	infoBox("Invalid Entry", "Cancel"); break;
+			}
+        }
+		updateLabels();
+	}
+	
+	public void clrPinButton() {
+		derp.addNext("/~disp-cell-pins:", "0");
+		updateLabels();
 	}
 
 	private int listSize() {

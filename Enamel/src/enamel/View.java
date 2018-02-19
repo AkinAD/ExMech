@@ -73,11 +73,29 @@ public class View {
 		bevel = new BevelBorder(BevelBorder.RAISED);
 		empty = new EmptyBorder(5, 5, 5, 5);
 
-		// Frame Properties
+		//Frame 
 		frame = new JFrame("Panda");
 		frame.setBounds(100, 100, 800, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		JButton btnNext = new JButton("↓");
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.nextButton();
+			}
+		});
+		btnNext.setBounds(440, 186, 42, 29);
+		frame.getContentPane().add(btnNext);
+
+		JButton btnPrev = new JButton("↑");
+		btnPrev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.prevButton();
+			}
+		});
+		btnPrev.setBounds(440, 145, 42, 29);
+		frame.getContentPane().add(btnPrev);
 		
 		//Menu
 		JMenuBar menuBar = new JMenuBar();
@@ -134,23 +152,24 @@ public class View {
 		tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_1.setBounds(19, 31, 426, 303);
 		frame.getContentPane().add(tabbedPane_1);
-		panel_1 = new JPanel();
-		tabbedPane_1.addTab("Scenarios", null, panel_1, null);
-		panel_1.setLayout(null);
-
-		scrollPane = new JScrollPane();
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(6, 6, 393, 245);
-		panel_1.add(scrollPane);
-		textArea = new JTextArea();
-		scrollPane.setViewportView(textArea);
-		textArea.setEditable(false);
+		
+//		panel_1 = new JPanel();
+//		tabbedPane_1.addTab("Scenarios", null, panel_1, null);
+//		panel_1.setLayout(null);
+//
+//		scrollPane = new JScrollPane();
+//		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setBounds(6, 6, 393, 245);
+//		panel_1.add(scrollPane);
+//		textArea = new JTextArea();
+//		scrollPane.setViewportView(textArea);
+//		textArea.setEditable(false);
 
 		panel_1B = new JPanel();
 		tabbedPane_1.addTab("Navigate", null, panel_1B, null);
 		panel_1B.setLayout(new GridLayout(5, 0));
-		tabbedPane_1.setSelectedIndex(1);
+//		tabbedPane_1.setSelectedIndex(1);
 
 		
 		labeltop = new JLabel();
@@ -172,26 +191,8 @@ public class View {
 		JPanel panel_2 = new JPanel();
 		tabbedPane_2.addTab("Control", null, panel_2, null);
 		panel_2.setLayout(null);
-
-		JButton btnNext = new JButton("Next");
-		btnNext.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				controller.nextButton();
-			}
-		});
-		btnNext.setBounds(73, 10, 117, 29);
-		panel_2.add(btnNext);
-
-		JButton btnPrev = new JButton("Previous");
-		btnPrev.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				controller.prevButton();
-			}
-		});
-		btnPrev.setBounds(73, 40, 117, 29);
-		panel_2.add(btnPrev);
 		
-		JButton btnBranch = new JButton("Branch it!");
+		JButton btnBranch = new JButton("Create question!");
 		btnBranch.getAccessibleContext().setAccessibleName("Branch");
 		btnBranch.getAccessibleContext().setAccessibleDescription("Creates a new Branch from current list");
 		btnBranch.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
@@ -200,12 +201,12 @@ public class View {
 				controller.branchItButton();
 			}
 		});
-		btnBranch.setBounds(73, 70, 117, 29);
+		btnBranch.setBounds(62, 10, 140, 36);
 		panel_2.add(btnBranch);
 		
 		
 		JButton btnAdd = new JButton("Add Text");
-		//btnAdd.getAccessibleContext().setAccessibleName("Add Text");
+		btnAdd.getAccessibleContext().setAccessibleName("Add Text");
 		btnAdd.getAccessibleContext().setAccessibleDescription("Input new text into editor text box");
 		btnAdd.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
 		btnAdd.addActionListener(new ActionListener() {
@@ -213,7 +214,7 @@ public class View {
 				controller.addTextButton();
 			}
 		});
-		btnAdd.setBounds(327, 100, 117, 29);
+		btnAdd.setBounds(73, 50, 117, 29);
 		panel_2.add(btnAdd);
 		
 		JButton  btnSound = new JButton("Audio Studio");
@@ -224,7 +225,7 @@ public class View {
 				controller.soundButton();
 			}
 		});
-		btnSound.setBounds(73, 160, 117, 29);
+		btnSound.setBounds(73, 90, 117, 29);
 		panel_2.add(btnSound);
 		
 		
@@ -237,43 +238,47 @@ public class View {
 			}
 		});
 		
-		btnAddPause.setBounds(73, 190, 117, 29);
+		btnAddPause.setBounds(73, 130, 117, 29);
 		panel_2.add(btnAddPause);
 		
-		//Sample button: Adds "Sample Text" to the text field.
-		JButton btnSample = new JButton("Sample");
-		//btnSample.getAccessibleContext().setAccessibleName("Sample");
-		btnSample.getAccessibleContext().setAccessibleDescription("Adds sample text to editor text  box");
-		btnSample.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
-		btnSample.addActionListener(new ActionListener() {
+		JButton btnPin = new JButton("Set Pins");
+		btnPin.getAccessibleContext().setAccessibleName("Set Pins");
+		btnPin.getAccessibleContext().setAccessibleDescription("Set the cell pins from A to Z or leave blank for '11111111'");
+		btnPin.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
+		btnPin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.sampleButton();
+				controller.setPinButton();
 			}
 		});
-		btnSample.setBounds(73, 130, 117, 29);
-		panel_2.add(btnSample);
+		btnPin.setBounds(73, 170, 117, 29);
+		panel_2.add(btnPin);
 		
-		//Show list
-		JButton btnRefresh = new JButton("Refresh List");
-		btnRefresh.addActionListener(new ActionListener() {
+		JButton btnClrPin = new JButton("Clear Pins");
+		btnClrPin.getAccessibleContext().setAccessibleName("Clear Pins");
+		btnClrPin.getAccessibleContext().setAccessibleDescription("Clear all pins to 0");
+		btnClrPin.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
+		btnClrPin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.revalidate();
-				frame.repaint();
-				
-				panel_1.revalidate();
-				panel_1.repaint();
-				
-				panel_1B.revalidate();
-				panel_1B.repaint();
-				
-				panel_2.revalidate();
-				panel_2.repaint();
+				controller.clrPinButton();
 			}
 		});
-		btnRefresh.setBounds(73, 160, 117, 29);
-		panel_2.add(btnRefresh);
+		btnClrPin.setBounds(73, 210, 117, 29);
+		panel_2.add(btnClrPin);
 		
 		
+		
+//		//Sample button: Adds "Sample Text" to the text field.
+//		JButton btnSample = new JButton("Sample");
+//		//btnSample.getAccessibleContext().setAccessibleName("Sample");
+//		btnSample.getAccessibleContext().setAccessibleDescription("Adds sample text to editor text  box");
+//		btnSample.addKeyListener(enter);	// Must be added to each button to execute it with the 'ENTER' key
+//		btnSample.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				controller.sampleButton();
+//			}
+//		});
+//		btnSample.setBounds(73, 190, 117, 29);
+//		panel_2.add(btnSample);
 		
 		if (controller != null) {
 			controller.initializeList();
