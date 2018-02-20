@@ -200,7 +200,7 @@ public class View {
 		                          redline, matte);
 		navigationPanel.setBorder(compound);
 
-		JLabel naviLabel = new JLabel("Navigation");
+		JLabel naviLabel = new JLabel("  Navigation");
 		naviLabel.setBackground(new Color(200,221,242));
 		naviLabel.setOpaque(true);
 		naviLabel.setFont(new Font("", Font.BOLD, 12));
