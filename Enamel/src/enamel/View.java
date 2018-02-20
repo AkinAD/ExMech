@@ -1,5 +1,6 @@
 package enamel;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -39,12 +41,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 
@@ -54,7 +59,8 @@ public class View {
 
 	JFrame frame;
 
-	JTabbedPane tabbedPane_1;
+	JPanel navigationPanel;
+	//JTabbedPane tabbedPane_1;
 	JTabbedPane tabbedPane_2;
 	JTabbedPane tabbedPane_3;
 	JPanel panel_1;
@@ -98,7 +104,7 @@ public class View {
 				//currentNode.setRequestFocusEnabled(true);
 			}
 		});
-		btnNext.setBounds(440, 186, 42, 29);
+		btnNext.setBounds(442, 154, 42, 29);
 		frame.getContentPane().add(btnNext);
 
 		JButton btnPrev = new JButton("/\\");
@@ -109,7 +115,7 @@ public class View {
 				controller.prevButton();
 			}
 		});
-		btnPrev.setBounds(440, 145, 42, 29);
+		btnPrev.setBounds(442, 114, 42, 29);
 		frame.getContentPane().add(btnPrev);
 
 		// Menu
@@ -173,9 +179,33 @@ public class View {
 		mnSimulate.add(mntmSimulateScenario);
 
 		// TabbedPane 1
-		tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_1.setBounds(19, 31, 426, 303);
-		frame.getContentPane().add(tabbedPane_1);
+		navigationPanel = new JPanel();
+		navigationPanel.setBounds(20, 29, 413, 279);
+		navigationPanel.setFocusable(true);
+		navigationPanel.setToolTipText("Current Position ");
+		navigationPanel.getAccessibleContext().setAccessibleName("Navigation");
+		navigationPanel.getAccessibleContext().setAccessibleDescription("Current Position ");
+		frame.getContentPane().add(navigationPanel);
+		
+		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+		Border bevel = BorderFactory.createCompoundBorder(
+                raisedbevel, loweredbevel);
+		Border matte = BorderFactory.createMatteBorder(1, 5, 1, 1, new Color(200,221,242));
+		Border redline = BorderFactory.createLineBorder(new Color(99,130,191));
+
+
+		//Add a red outline to the frame.
+		Border compound = BorderFactory.createCompoundBorder(
+		                          redline, matte);
+		navigationPanel.setBorder(compound);
+
+		JLabel naviLabel = new JLabel("Navigation");
+		naviLabel.setBackground(new Color(200,221,242));
+		naviLabel.setOpaque(true);
+		naviLabel.setFont(new Font("", Font.BOLD, 12));
+		naviLabel.setBounds(20, 5, 413, 23);
+		frame.getContentPane().add(naviLabel);
 
 		// panel_1 = new JPanel();
 		// tabbedPane_1.addTab("Scenarios", null, panel_1, null);
@@ -190,9 +220,9 @@ public class View {
 		// scrollPane.setViewportView(textArea);
 		// textArea.setEditable(false);
 
-		panel_1B = new JPanel();
-		tabbedPane_1.addTab("Navigation", null, panel_1B, null);
-		panel_1B.setLayout(new GridLayout(5, 0));
+		//panel_1B = new JPanel();
+		//tabbedPane_1.addTab("Navigation", null, panel_1B, null);
+		navigationPanel.setLayout(new GridLayout(5, 0));
 		// tabbedPane_1.setSelectedIndex(1);
 
 		labeltop = new JLabel();
@@ -205,19 +235,19 @@ public class View {
 
 		currentNode = new JLabel();
 		//currentNode.setFocusable(true);
-		currentNode.setBounds(10, 5, 500, 15);
+		currentNode.setBounds(10, 319, 500, 15);
 		frame.getContentPane().add(currentNode);
 
 		// TabbedPane 2
 		tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_2.setBounds(479, 31, 301, 303);
+		tabbedPane_2.setBounds(494, 5, 286, 303);
 		frame.getContentPane().add(tabbedPane_2);
 		JPanel panel_2 = new JPanel();
 		tabbedPane_2.addTab("Create", null, panel_2, null);
 		panel_2.setLayout(null);
 
 		JButton btnBranch = new JButton("User-Input");
-		btnBranch.getAccessibleContext().setAccessibleName("Branch");
+		btnBranch.getAccessibleContext().setAccessibleName("User-Input");
 		btnBranch.getAccessibleContext().setAccessibleDescription("Creates a new Branch from current list");
 		btnBranch.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
 		btnBranch.addActionListener(new ActionListener() {
@@ -230,7 +260,7 @@ public class View {
 
 		JButton btnAdd = new JButton("Text");
 		btnAdd.getAccessibleContext().setAccessibleName("Add Text");
-		btnAdd.getAccessibleContext().setAccessibleDescription("Input new text into editor text box");
+		btnAdd.getAccessibleContext().setAccessibleDescription("Input new text");
 		btnAdd.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -322,7 +352,7 @@ public class View {
 		//Set the focus order when using Tab or Shift+Tab
 		Vector<Component> order = new Vector<Component>();
 		
-        order.add(tabbedPane_1);
+        order.add(navigationPanel);
         order.add(btnNext);
         order.add(btnPrev);
         order.add(tabbedPane_2);

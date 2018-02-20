@@ -83,13 +83,13 @@ public class Controller {
 		derp.goHome();
 		view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 		view.labeltop.setHorizontalAlignment(JLabel.CENTER);
-		view.panel_1B.add(view.labeltop);
+		view.navigationPanel.add(view.labeltop);
 		for (int i = 0; i < view.label.length; i++) {
 			view.label[i].setHorizontalAlignment(JLabel.CENTER);
-			view.panel_1B.add(view.label[i]);
+			view.navigationPanel.add(view.label[i]);
 		}
 		view.labelbottom.setHorizontalAlignment(JLabel.CENTER);
-		view.panel_1B.add(view.labelbottom);
+		view.navigationPanel.add(view.labelbottom);
 		derp.goHome();
 		updateLabels();
 	}
@@ -184,6 +184,8 @@ public class Controller {
 	}
 
 	public void updateLabels() {
+		focusCurrentPosition();
+		
 		view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"' + " "
 				+ "  Index: " + derp.index + "/" + (listSize() - 1));
 		for (int k = 0; k < view.label.length; k++) {
@@ -816,8 +818,11 @@ public class Controller {
 		starterCodeThread.start();
 	}
 
-	public String getCurrentText() {
-		return "Current position is called " + derp.getKeyPhrase() + " with data " + derp.getData();
+	
+	public void focusCurrentPosition() {
+		String currentNodeText = "Current Position is called " + derp.getKeyPhrase() + " with data " + derp.getData();
+		view.navigationPanel.getAccessibleContext().setAccessibleDescription(currentNodeText);
+		view.navigationPanel.requestFocusInWindow();
 	}
 
 }
