@@ -101,8 +101,8 @@ public class Controller {
 			// Custom button text
 			Object[] options = { "New Story", "Load Existing", "Quit" };
 			JLabel lbl = new JLabel("Welcome to Treasure Box Braille!");
-			//lbl.setFocusable(true);
-			lbl.addAncestorListener( new RequestFocusListener() );
+			// lbl.setFocusable(true);
+			lbl.addAncestorListener(new RequestFocusListener());
 			int n = JOptionPane.showOptionDialog(view.frame, lbl, "Treasure Box Braille",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
 
@@ -128,14 +128,16 @@ public class Controller {
 				model2.setMinimum(1);
 				JSpinner spinner1 = new JSpinner(model1);
 				spinner1.setToolTipText(
-					     "Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
+						"Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
 				spinner1.getAccessibleContext().setAccessibleName("Cells");
-				spinner1.getAccessibleContext().setAccessibleDescription("Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
+				spinner1.getAccessibleContext().setAccessibleDescription(
+						"Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
 				JSpinner spinner2 = new JSpinner(model2);
 				spinner2.setToolTipText(
-					     "Buttons. Use the up & down arrow keys to set the number of buttons for the scenario.\"");
+						"Buttons. Use the up & down arrow keys to set the number of buttons for the scenario.\"");
 				spinner2.getAccessibleContext().setAccessibleName("Buttons");
-				spinner2.getAccessibleContext().setAccessibleDescription("Buttons. Use the up & down arrow keys to set the number of buttons for the scenario.");
+				spinner2.getAccessibleContext().setAccessibleDescription(
+						"Buttons. Use the up & down arrow keys to set the number of buttons for the scenario.");
 				spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
 				spinner2.setEditor(new JSpinner.DefaultEditor(spinner2));
 				JLabel cellsLabel = new JLabel("Cells: ");
@@ -146,21 +148,21 @@ public class Controller {
 				buttonsLabel.setLabelFor(spinner2);
 				p.add(buttonsLabel);
 				p.add(spinner2);
-				
-				cellsLabel.addAncestorListener( new RequestFocusListener() );
+
+				cellsLabel.addAncestorListener(new RequestFocusListener());
 				int result = JOptionPane.showConfirmDialog(null, p, "Create New Story", JOptionPane.PLAIN_MESSAGE);
 				System.out.println("User selected2: " + result);
 				// return back to welcome screen if X button
 				if (result == -1) {
 					skip = false;
-					//break;
-				}else {
+					// break;
+				} else {
 
-				this.cells = Integer.parseInt(spinner1.getValue().toString());
-				this.buttons = Integer.parseInt(spinner2.getValue().toString());
+					this.cells = Integer.parseInt(spinner1.getValue().toString());
+					this.buttons = Integer.parseInt(spinner2.getValue().toString());
 
-				initDefaultList(cells, buttons);
-				skip = true;
+					initDefaultList(cells, buttons);
+					skip = true;
 				}
 			}
 
@@ -183,8 +185,7 @@ public class Controller {
 
 	public void updateLabels() {
 		view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"' + " "
-				+ "  Index: "
-				+ derp.index + "/" + (listSize() - 1));
+				+ "  Index: " + derp.index + "/" + (listSize() - 1));
 		for (int k = 0; k < view.label.length; k++) {
 			if (view.label[k].getBorder() == view.bevel) {
 				highlightPosition = k;
@@ -483,16 +484,16 @@ public class Controller {
 			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button",
 					JOptionPane.PLAIN_MESSAGE, 0, null, buttons.values().toArray(), buttons.values().toArray()[0]);
 			// Goto the selected branch based on the button press
-			String s = buttons.values().toArray()[i].toString(); // go to i
-																	// (whatever
-																	// dialogbox
-																	// returns)
-			System.out.println(s);
-			derp.junctionGoto(derp.junctionSearch(s));
+			if (i != -1) {
+				String s = buttons.values().toArray()[i].toString();
+				System.out.println(s);
+				ArrayList<Node> currentList = derp.currentList;
+				derp.junctionGoto(derp.junctionSearch(s));
+				derp.getNode().prevList = currentList;
+				updateLabels();
 
-			updateLabels();
-
-			view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
+				view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
+			}
 			return;
 		}
 	}
@@ -653,6 +654,45 @@ public class Controller {
 		}
 	}
 
+	public void removeButton() {
+		if (derp.getKeyPhrase() == "#JUNCTION") {
+			Object[] options = { "Yes", "Cancel" };
+			JLabel str = new JLabel("Removing user input will remove all events associated with it. This action can not be undone. Are you sure you wish to remove the user input?");
+			str.addAncestorListener(new RequestFocusListener());
+			int n = JOptionPane.showOptionDialog(view.frame, str,
+					"Remove User Input", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+					options[1]);
+			if(n == 0) {
+				derp.remove();
+				updateLabels();
+				return;
+			}
+			return;
+		}
+		if (derp.getKeyPhrase() == "#BUTTON") {
+			Object[] options = { "Yes", "Cancel" };
+			JLabel str = new JLabel("Removing this answer choice will remove all events associated with it. This action can not be undone. Are you sure you wish to remove the answer choice?");
+			str.addAncestorListener(new RequestFocusListener());
+			int n = JOptionPane.showOptionDialog(view.frame, str,
+					"Remove Answer", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+					options[1]);
+			if(n == 0) {
+				derp.remove();
+				updateLabels();
+				return;
+			}
+			return;
+		}
+		
+		if(derp.getKeyPhrase() == "/~NEXTT" || derp.getKeyPhrase() == "/~skip:NEXTT" || derp.getKeyPhrase() == "#HEAD") {
+			JOptionPane.showMessageDialog(view.frame,
+				    "You cannot remove this event!");
+		}
+		derp.remove();
+		updateLabels();
+
+	}
+
 	private int listSize() {
 		return derp.currentList.size();
 	}
@@ -775,7 +815,7 @@ public class Controller {
 		};
 		starterCodeThread.start();
 	}
-	
+
 	public String getCurrentText() {
 		return "Current position is called " + derp.getKeyPhrase() + " with data " + derp.getData();
 	}

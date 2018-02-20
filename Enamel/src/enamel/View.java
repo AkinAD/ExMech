@@ -73,6 +73,9 @@ public class View {
 
 	Controller controller;
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public void init() {
 
 		bevel = new BevelBorder(BevelBorder.RAISED);
@@ -222,7 +225,7 @@ public class View {
 				controller.branchItButton();
 			}
 		});
-		btnBranch.setBounds(73, 20, 150, 36);
+		btnBranch.setBounds(73, 12, 150, 25);
 		panel_2.add(btnBranch);
 
 		JButton btnAdd = new JButton("Text");
@@ -234,7 +237,7 @@ public class View {
 				controller.addTextButton();
 			}
 		});
-		btnAdd.setBounds(73, 60, 150, 36);
+		btnAdd.setBounds(73, 49, 150, 25);
 		panel_2.add(btnAdd);
 
 		JButton btnSound = new JButton("Audio Recording");
@@ -245,7 +248,7 @@ public class View {
 				controller.soundButton();
 			}
 		});
-		btnSound.setBounds(73, 100, 150, 36);
+		btnSound.setBounds(73, 86, 150, 25);
 		panel_2.add(btnSound);
 
 		JButton btnAddPause = new JButton("Pause");
@@ -257,7 +260,7 @@ public class View {
 			}
 		});
 
-		btnAddPause.setBounds(73, 140, 150, 36);
+		btnAddPause.setBounds(73, 123, 150, 25);
 		panel_2.add(btnAddPause);
 
 		JButton btnPin = new JButton("Set Pins");
@@ -269,7 +272,7 @@ public class View {
 				controller.setPinButton();
 			}
 		});
-		btnPin.setBounds(73, 180, 150, 36);
+		btnPin.setBounds(73, 160, 150, 25);
 		panel_2.add(btnPin);
 
 		JButton btnClrPin = new JButton("Clear Pins");
@@ -281,8 +284,20 @@ public class View {
 				controller.clrPinButton();
 			}
 		});
-		btnClrPin.setBounds(73, 220, 150, 36);
+		btnClrPin.setBounds(73, 197, 150, 25);
 		panel_2.add(btnClrPin);
+		
+		JButton btnRemove = new JButton("Remove");
+		btnRemove.getAccessibleContext().setAccessibleName("Remove");
+		btnRemove.getAccessibleContext().setAccessibleDescription("Removes the current node. Can not undo this action.");
+		btnRemove.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.removeButton();
+			}
+		});
+		btnRemove.setBounds(73, 234, 150, 25);
+		panel_2.add(btnRemove);
 
 		// //Sample button: Adds "Sample Text" to the text field.
 		// JButton btnSample = new JButton("Sample");
@@ -305,7 +320,7 @@ public class View {
 		
 		
 		//Set the focus order when using Tab or Shift+Tab
-		Vector<Component> order = new Vector<Component>(3);
+		Vector<Component> order = new Vector<Component>();
 		
         order.add(tabbedPane_1);
         order.add(btnNext);
@@ -317,6 +332,7 @@ public class View {
         order.add(btnAddPause);
         order.add(btnPin);
         order.add(btnClrPin);
+        order.add(btnRemove);
         FocusPolicy newPolicy = new FocusPolicy(order);
         frame.setFocusTraversalPolicy(newPolicy);
 	}
