@@ -78,9 +78,41 @@ public class ListManager {
 	}
 
 	public void remove() {
-		// Removes node as long as it is not a JUNCTION or BUTTON
-		if (!getNode().keyPhrase.equals("#JUNCTION") && !getNode().keyPhrase.equals("#BUTTON")) {
+		//be sure to add some warning somewhere for this
+		if(getNode().keyPhrase.equals("#JUNCTION")) {
+			ArrayList<Node> nextt = getNode().nextList;
 			currentList.remove(index);
+			index--;
+			//remove head node
+			nextt.remove(0);
+			//If nextt is empty then just return
+			if(nextt.size() == 0) {
+				System.out.println("Removed JUNCTION");
+				return;
+			}
+			//otherwise add everything that is left.
+			System.out.println("Removed JUNCTION");
+			currentList.addAll(nextt);
+			return;
+		}
+		
+		if(getNode().keyPhrase.equals("#BUTTON")) {
+			String del = getData();
+			prev();
+			if(getNode().buttonsNames.values().toArray().length == 1) {
+				remove();
+				return;
+			}
+			getNode().buttonsNames.values().remove(del);
+			System.out.println("Removed BUTTON");
+			return;
+		}
+		
+		// Removes node as long as it is not a JUNCTION or BUTTON
+		if (!getNode().keyPhrase.equals("/~NEXTT") && !getNode().keyPhrase.equals("/~skip:NEXTT") && !getNode().keyPhrase.equals("#HEAD")) {
+			System.out.println("Removed: " + getNode().getKeyPhrase() + " " + '"' + getNode().getData() + '"');
+			currentList.remove(index);
+			index--;
 		}
 	}
 
