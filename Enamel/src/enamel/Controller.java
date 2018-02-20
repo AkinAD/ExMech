@@ -688,7 +688,7 @@ public class Controller {
 		
 		if(derp.getKeyPhrase() == "/~NEXTT" || derp.getKeyPhrase() == "/~skip:NEXTT" || derp.getKeyPhrase() == "#HEAD") {
 			JOptionPane.showMessageDialog(view.frame,
-				    "You cannot remove this event!");
+				    "You cannot remove this!");
 		}
 		derp.remove();
 		updateLabels();

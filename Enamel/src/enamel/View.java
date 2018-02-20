@@ -104,7 +104,7 @@ public class View {
 				//currentNode.setRequestFocusEnabled(true);
 			}
 		});
-		btnNext.setBounds(442, 154, 42, 29);
+		btnNext.setBounds(452, 173, 42, 29);
 		frame.getContentPane().add(btnNext);
 
 		JButton btnPrev = new JButton("/\\");
@@ -115,7 +115,7 @@ public class View {
 				controller.prevButton();
 			}
 		});
-		btnPrev.setBounds(442, 114, 42, 29);
+		btnPrev.setBounds(452, 139, 42, 29);
 		frame.getContentPane().add(btnPrev);
 
 		// Menu
@@ -180,7 +180,7 @@ public class View {
 
 		// TabbedPane 1
 		navigationPanel = new JPanel();
-		navigationPanel.setBounds(20, 29, 413, 279);
+		navigationPanel.setBounds(10, 29, 442, 289);
 		navigationPanel.setFocusable(true);
 		navigationPanel.setToolTipText("Current Position ");
 		navigationPanel.getAccessibleContext().setAccessibleName("Navigation");
@@ -204,7 +204,7 @@ public class View {
 		naviLabel.setBackground(new Color(200,221,242));
 		naviLabel.setOpaque(true);
 		naviLabel.setFont(new Font("", Font.BOLD, 12));
-		naviLabel.setBounds(20, 5, 413, 23);
+		naviLabel.setBounds(10, 5, 442, 23);
 		frame.getContentPane().add(naviLabel);
 
 		// panel_1 = new JPanel();
@@ -235,12 +235,13 @@ public class View {
 
 		currentNode = new JLabel();
 		//currentNode.setFocusable(true);
-		currentNode.setBounds(10, 319, 500, 15);
+		currentNode.setBounds(10, 319, 770, 15);
+		currentNode.setForeground(Color.GRAY);
 		frame.getContentPane().add(currentNode);
 
 		// TabbedPane 2
 		tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_2.setBounds(494, 5, 286, 303);
+		tabbedPane_2.setBounds(494, 5, 280, 313);
 		frame.getContentPane().add(tabbedPane_2);
 		JPanel panel_2 = new JPanel();
 		tabbedPane_2.addTab("Create", null, panel_2, null);
