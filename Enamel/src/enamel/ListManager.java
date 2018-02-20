@@ -78,9 +78,21 @@ public class ListManager {
 	}
 
 	public void remove() {
+		//be sure to add some warning somewhere for this
+		if(getNode().keyPhrase.equals("#JUNCTION")) {
+			
+			return;
+		}
+		
+		if(getNode().keyPhrase.equals("#BUTTON")) {
+			
+			return;
+		}
+		
 		// Removes node as long as it is not a JUNCTION or BUTTON
-		if (!getNode().keyPhrase.equals("#JUNCTION") && !getNode().keyPhrase.equals("#BUTTON")) {
+		if (!getNode().keyPhrase.equals("/~NEXTT") && !getNode().keyPhrase.equals("/~skip:NEXTT")) {
 			currentList.remove(index);
+			index--;
 		}
 	}
 

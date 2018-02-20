@@ -83,6 +83,8 @@ public class View {
 		frame.setBounds(100, 100, 800, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		
 
 		JButton btnNext = new JButton("\\/");
 		btnNext.getAccessibleContext().setAccessibleName("Next");
@@ -90,6 +92,7 @@ public class View {
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.nextButton();
+				//currentNode.setRequestFocusEnabled(true);
 			}
 		});
 		btnNext.setBounds(440, 186, 42, 29);
@@ -186,8 +189,6 @@ public class View {
 
 		panel_1B = new JPanel();
 		tabbedPane_1.addTab("Navigation", null, panel_1B, null);
-		tabbedPane_1.setToolTipText(
-			     "Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
 		panel_1B.setLayout(new GridLayout(5, 0));
 		// tabbedPane_1.setSelectedIndex(1);
 
@@ -200,6 +201,7 @@ public class View {
 		label[0].setBorder(bevel);
 
 		currentNode = new JLabel();
+		//currentNode.setFocusable(true);
 		currentNode.setBounds(10, 5, 500, 15);
 		frame.getContentPane().add(currentNode);
 
@@ -304,6 +306,7 @@ public class View {
 		
 		//Set the focus order when using Tab or Shift+Tab
 		Vector<Component> order = new Vector<Component>(3);
+		
         order.add(tabbedPane_1);
         order.add(btnNext);
         order.add(btnPrev);
@@ -314,7 +317,7 @@ public class View {
         order.add(btnAddPause);
         order.add(btnPin);
         order.add(btnClrPin);
-        MyOwnFocusTraversalPolicy newPolicy = new MyOwnFocusTraversalPolicy(order);
+        FocusPolicy newPolicy = new FocusPolicy(order);
         frame.setFocusTraversalPolicy(newPolicy);
 	}
 
@@ -336,38 +339,6 @@ public class View {
 	}
 	
 
-	public static class MyOwnFocusTraversalPolicy extends FocusTraversalPolicy {
-		Vector<Component> order;
 
-		public MyOwnFocusTraversalPolicy(Vector<Component> order) {
-			this.order = new Vector<Component>(order.size());
-			this.order.addAll(order);
-		}
-
-		public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
-			int idx = (order.indexOf(aComponent) + 1) % order.size();
-			return order.get(idx);
-		}
-
-		public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
-			int idx = order.indexOf(aComponent) - 1;
-			if (idx < 0) {
-				idx = order.size() - 1;
-			}
-			return order.get(idx);
-		}
-
-		public Component getDefaultComponent(Container focusCycleRoot) {
-			return order.get(0);
-		}
-
-		public Component getLastComponent(Container focusCycleRoot) {
-			return order.lastElement();
-		}
-
-		public Component getFirstComponent(Container focusCycleRoot) {
-			return order.get(0);
-		}
-	}
 
 }

@@ -101,8 +101,8 @@ public class Controller {
 			// Custom button text
 			Object[] options = { "New Story", "Load Existing", "Quit" };
 			JLabel lbl = new JLabel("Welcome to Treasure Box Braille!");
-			lbl.setFocusable(true);
-			lbl.requestFocusInWindow(); 
+			//lbl.setFocusable(true);
+			lbl.addAncestorListener( new RequestFocusListener() );
 			int n = JOptionPane.showOptionDialog(view.frame, lbl, "Treasure Box Braille",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
 
@@ -146,7 +146,8 @@ public class Controller {
 				buttonsLabel.setLabelFor(spinner2);
 				p.add(buttonsLabel);
 				p.add(spinner2);
-
+				
+				cellsLabel.addAncestorListener( new RequestFocusListener() );
 				int result = JOptionPane.showConfirmDialog(null, p, "Create New Story", JOptionPane.PLAIN_MESSAGE);
 				System.out.println("User selected2: " + result);
 				// return back to welcome screen if X button
@@ -773,6 +774,10 @@ public class Controller {
 			}
 		};
 		starterCodeThread.start();
+	}
+	
+	public String getCurrentText() {
+		return "Current position is called " + derp.getKeyPhrase() + " with data " + derp.getData();
 	}
 
 }
