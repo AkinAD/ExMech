@@ -23,6 +23,7 @@ public class SoundRecorder extends JFrame {
 	File exportFile;
 	AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
 	Boolean imported = false;
+	//Boolean crashControl =  false;
 	Clip aClip;
 
 	public SoundRecorder(Controller c) {
@@ -36,6 +37,7 @@ public class SoundRecorder extends JFrame {
 		final JButton btnCapture = new JButton("Capture");
 		final JButton btnStop = new JButton("Stop");
 		final JButton btnPlay = new JButton("Play");
+		final JToolTip justDaTip = new JToolTip();
 
 		JButton btnExport = new JButton("Export Selected wav File");
 		btnExport.addActionListener(new ActionListener() {
@@ -48,18 +50,32 @@ public class SoundRecorder extends JFrame {
 		});
 		btnExport.setEnabled(false);
 		btnExport.setBounds(12, 124, 207, 29);
+		btnExport.setToolTipText("<html>" + "Click this button only after you import an audio file you would like" + "<br>" + " to add to the scenario file" + "</html>");
+		btnExport.getAccessibleContext().setAccessibleName("Export selected wave file");
+		btnExport.getAccessibleContext().setAccessibleDescription("Click this button only after you import an audio file you would like to add to the scenario file");
 		frmAudio.getContentPane().add(btnExport);
 
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.getAccessibleContext().setAccessibleName("Menu Bar");
+		menuBar.getAccessibleContext().setAccessibleDescription("Contains operations for using certain actions in application");
+		menuBar.setToolTipText("Contains operations for using certain actions in application");
 		frmAudio.setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("File");
+		mnFile.getAccessibleContext().setAccessibleName("File menu option");
+		mnFile.getAccessibleContext().setAccessibleDescription("Click here for a list of other performable action for the application");
+		mnFile.setToolTipText("Click here for a list of other performable action for the application");
 		menuBar.add(mnFile);
 
 		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen.getAccessibleContext().setAccessibleName("Open, Import File");
+		mntmOpen.getAccessibleContext().setAccessibleDescription("Imports pre-exiting audio files into audio studio to be added to scenario File");
+		mntmOpen.setToolTipText("Imports pre-exiting audio files into audio studio to be added to scenario File");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser open = new JFileChooser("FactoryScenarios/AudioFiles/");
+				open.getAccessibleContext().setAccessibleDescription("Dialog box to choose a file to be imported into Audio Studio");
+				open.setToolTipText("Dialog box to choose a file to be imported into Audio Studio");
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV Files", "wav");
 				open.setFileFilter(filter);
 				open.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -82,6 +98,10 @@ public class SoundRecorder extends JFrame {
 		mnFile.add(mntmOpen);
 
 		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.getAccessibleContext().setAccessibleName("Save File");
+		mntmSave.getAccessibleContext().setAccessibleDescription("Saves recorded audio files from audio studio");
+		mntmSave.setToolTipText("Saves recorded audio files from audio studio");
+		
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fileChooser();
@@ -125,10 +145,21 @@ public class SoundRecorder extends JFrame {
 
 		btnPlay.addActionListener(playListener);
 		btnPlay.setBounds(12, 0, 207, 29);
+		btnPlay.setToolTipText("Plays recorded or imported audio file back to user " );
+		btnPlay.getAccessibleContext().setAccessibleName("Play Audio");
+		btnPlay.getAccessibleContext().setAccessibleDescription("Plays recorded or imported audio file back to user ");
+		
 		frmAudio.getContentPane().add(btnPlay);
 		btnCapture.setBounds(12, 42, 207, 29);
+		btnCapture.setToolTipText("Records user audio" );
+		btnCapture.getAccessibleContext().setAccessibleName("Record Audio");
+		btnCapture.getAccessibleContext().setAccessibleDescription("Records user audio");
+
+		
 		frmAudio.getContentPane().add(btnCapture);
 		btnStop.setBounds(12, 84, 207, 29);
+		btnStop.setToolTipText("Stops audio recording" );
+		btnStop.getAccessibleContext().setAccessibleName("Stop audio Recording");
 		frmAudio.getContentPane().add(btnStop);
 
 		// aClip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -215,6 +246,7 @@ public class SoundRecorder extends JFrame {
 							line.drain();
 							line.close();
 							option = optionbox("Are you satisfied with your recording?", "Save Recording?");
+							
 							if (option == 0) {
 								fileChooser();
 								option = optionbox("Would you like to export recording to your scenario file?",
@@ -293,7 +325,7 @@ public class SoundRecorder extends JFrame {
 		}
 	}
 
-	private AudioFormat getFormat() {
+	public AudioFormat getFormat() {
 		// defines file format used to record
 		float sampleRate = 44100;
 		int sampleSizeInBits = 16;
@@ -353,7 +385,7 @@ public class SoundRecorder extends JFrame {
 	public static int optionbox(String infoMessage, String titleBar) {
 		int dialogButton = JOptionPane.YES_NO_OPTION;
 		int dialogResult = JOptionPane.showConfirmDialog(null, infoMessage, "InfoBox: " + titleBar, dialogButton);
-
+		
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			return 0;
 		} else {
