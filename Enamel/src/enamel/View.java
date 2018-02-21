@@ -358,10 +358,10 @@ public class View {
 		btnAddPause.setBounds(45, 49, 150, 25);
 		panel_create.add(btnAddPause);
 
-		JButton btnPin = new JButton("Set Braille Letter");
-		btnPin.getAccessibleContext().setAccessibleName("Set Braile Letter");
-		btnPin.getAccessibleContext().setAccessibleDescription("Set the cell pins to alphabet letters.");
-		btnPin.setToolTipText("Set the cell pins to alphabet letters.");
+		JButton btnPin = new JButton("Set Braille");
+		btnPin.getAccessibleContext().setAccessibleName("Set Braile");
+		btnPin.getAccessibleContext().setAccessibleDescription("Set the cell pins to an 8 character sequence.");
+		btnPin.setToolTipText("Set the cell pins to an 8 character sequence.");
 		btnPin.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
 		btnPin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -626,125 +626,132 @@ public class Controller {
 		int location = Integer.parseInt(spinner1.getValue().toString());
 
 				String text = null;
-				text = JOptionPane.showInputDialog(null, "Please enter a letter you would like to display on the braille character: ", "Please enter a letter you would like to display on the braille character", -1);
+				text = JOptionPane.showInputDialog(null, "Please enter a letter or 8-character sequence you would like to display on the braille character: ", "Please enter a letter or 8-character sequence you would like to display on the braille character", -1);
 				text = text.toLowerCase();
 				if (text != null) {
-					switch (text) {
-					case "a":
-						derp.addNext("/~disp-cell-pins", location + " " + "10000000");
+					if (text.length() == 1) {
+						switch (text) {
+						case "a":
+							derp.addNext("/~disp-cell-pins", location + " " + "10000000");
+							updateLabels();
+							break;
+						case "b":
+							derp.addNext("/~disp-cell-pins", location + " " + "11000000");
+							updateLabels();
+							break;
+						case "c":
+							derp.addNext("/~disp-cell-pins", location + " " + "10100000");
+							updateLabels();
+							break;
+						case "d":
+							derp.addNext("/~disp-cell-pins", location + " " + "10011000");
+							updateLabels();
+							break;
+						case "e":
+							derp.addNext("/~disp-cell-pins", location + " " + "10001000");
+							updateLabels();
+							break;
+						case "f":
+							derp.addNext("/~disp-cell-pins", location + " " + "11010000");
+							updateLabels();
+							break;
+						case "g":
+							derp.addNext("/~disp-cell-pins", location + " " + "11011000");
+							updateLabels();
+							break;
+						case "h":
+							derp.addNext("/~disp-cell-pins", location + " " + "11001000");
+							updateLabels();
+							break;
+						case "i":
+							derp.addNext("/~disp-cell-pins", location + " " + "01010000");
+							updateLabels();
+							break;
+						case "j":
+							derp.addNext("/~disp-cell-pins", location + " " + "01011000");
+							updateLabels();
+							break;
+						case "k":
+							derp.addNext("/~disp-cell-pins", location + " " + "10100000");
+							updateLabels();
+							break;
+						case "l":
+							derp.addNext("/~disp-cell-pins", location + " " + "11100000");
+							updateLabels();
+							break;
+						case "m":
+							derp.addNext("/~disp-cell-pins::", location + " " + "10110000");
+							updateLabels();
+							break;
+						case "n":
+							derp.addNext("/~disp-cell-pins", location + " " + "10111000");
+							updateLabels();
+							break;
+						case "o":
+							derp.addNext("/~disp-cell-pins", location + " " + "10101000");
+							updateLabels();
+							break;
+						case "p":
+							derp.addNext("/~disp-cell-pins", location + " " + "11110000");
+							updateLabels();
+							break;
+						case "q":
+							derp.addNext("/~disp-cell-pins", location + " " + "11111000");
+							updateLabels();
+							break;
+						case "r":
+							derp.addNext("/~disp-cell-pins", location + " " + "11101000");
+							updateLabels();
+							break;
+						case "s":
+							derp.addNext("/~disp-cell-pins", location + " " + "01110000");
+							updateLabels();
+							break;
+						case "t":
+							derp.addNext("/~disp-cell-pins", location + " " + "01111000");
+							updateLabels();
+							break;
+						case "u":
+							derp.addNext("/~disp-cell-pins", location + " " + "10100100");
+							updateLabels();
+							break;
+						case "v":
+							derp.addNext("/~disp-cell-pins", location + " " + "11100100");
+							updateLabels();
+							break;
+						case "w":
+							derp.addNext("/~disp-cell-pins", location + " " + "01011100");
+							updateLabels();
+							break;
+						case "x":
+							derp.addNext("/~disp-cell-pins", location + " " + "10110100");
+							updateLabels();
+							break;
+						case "y":
+							derp.addNext("/~disp-cell-pins", location + " " + "10111100");
+							updateLabels();
+							break;
+						case "z":
+							derp.addNext("/~disp-cell-pins", location + " " + "10101100");
+							updateLabels();
+							break;
+						case "":
+							derp.addNext("/~disp-cell-pins", location + " " + "11111111");
+							updateLabels();
+							break;
+						case " ":
+							derp.addNext("/~disp-cell-pins", location + " " + "11111111");
+							updateLabels();
+							break;
+						default:
+							infoBox("Invalid character. Please enter a single letter.", "Cancel");
+							break;
+						}
+					} else if (text.length() == 8 && text.matches("^[01]+$")) {
+						derp.addNext("/~disp-cell-pins", location + " " + text);
 						updateLabels();
-						break;
-					case "b":
-						derp.addNext("/~disp-cell-pins", location + " " + "11000000");
-						updateLabels();
-						break;
-					case "c":
-						derp.addNext("/~disp-cell-pins", location + " " + "10100000");
-						updateLabels();
-						break;
-					case "d":
-						derp.addNext("/~disp-cell-pins", location + " " + "10011000");
-						updateLabels();
-						break;
-					case "e":
-						derp.addNext("/~disp-cell-pins", location + " " + "10001000");
-						updateLabels();
-						break;
-					case "f":
-						derp.addNext("/~disp-cell-pins", location + " " + "11010000");
-						updateLabels();
-						break;
-					case "g":
-						derp.addNext("/~disp-cell-pins", location + " " + "11011000");
-						updateLabels();
-						break;
-					case "h":
-						derp.addNext("/~disp-cell-pins", location + " " + "11001000");
-						updateLabels();
-						break;
-					case "i":
-						derp.addNext("/~disp-cell-pins", location + " " + "01010000");
-						updateLabels();
-						break;
-					case "j":
-						derp.addNext("/~disp-cell-pins", location + " " + "01011000");
-						updateLabels();
-						break;
-					case "k":
-						derp.addNext("/~disp-cell-pins", location + " " + "10100000");
-						updateLabels();
-						break;
-					case "l":
-						derp.addNext("/~disp-cell-pins", location + " " + "11100000");
-						updateLabels();
-						break;
-					case "m":
-						derp.addNext("/~disp-cell-pins::", location + " " + "10110000");
-						updateLabels();
-						break;
-					case "n":
-						derp.addNext("/~disp-cell-pins", location + " " + "10111000");
-						updateLabels();
-						break;
-					case "o":
-						derp.addNext("/~disp-cell-pins", location + " " + "10101000");
-						updateLabels();
-						break;
-					case "p":
-						derp.addNext("/~disp-cell-pins", location + " " + "11110000");
-						updateLabels();
-						break;
-					case "q":
-						derp.addNext("/~disp-cell-pins", location + " " + "11111000");
-						updateLabels();
-						break;
-					case "r":
-						derp.addNext("/~disp-cell-pins", location + " " + "11101000");
-						updateLabels();
-						break;
-					case "s":
-						derp.addNext("/~disp-cell-pins", location + " " + "01110000");
-						updateLabels();
-						break;
-					case "t":
-						derp.addNext("/~disp-cell-pins", location + " " + "01111000");
-						updateLabels();
-						break;
-					case "u":
-						derp.addNext("/~disp-cell-pins", location + " " + "10100100");
-						updateLabels();
-						break;
-					case "v":
-						derp.addNext("/~disp-cell-pins", location + " " + "11100100");
-						updateLabels();
-						break;
-					case "w":
-						derp.addNext("/~disp-cell-pins", location + " " + "01011100");
-						updateLabels();
-						break;
-					case "x":
-						derp.addNext("/~disp-cell-pins", location + " " + "10110100");
-						updateLabels();
-						break;
-					case "y":
-						derp.addNext("/~disp-cell-pins", location + " " + "10111100");
-						updateLabels();
-						break;
-					case "z":
-						derp.addNext("/~disp-cell-pins", location + " " + "10101100");
-						updateLabels();
-						break;
-					case "":
-						derp.addNext("/~disp-cell-pins", location + " " + "11111111");
-						updateLabels();
-						break;
-					case " ":
-						derp.addNext("/~disp-cell-pins", location + " " + "11111111");
-						updateLabels();
-						break;
-					default:
-						infoBox("Invalid character. Please enter a single letter.", "Cancel");
-						break;
+					} else {
+						infoBox("Invalid Braille character! Please enter a valid number", "Please enter a valid number!");
 					}
 				
 			} else {
