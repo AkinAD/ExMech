@@ -39,7 +39,10 @@ public class Node {
 			this.label = "EVENT: Clears the following braille characters:  " + d;
 			break;
 		case "/~disp-cell-pins":
-			this.label = "EVENT: Set braille character  " +"1"+ " to " + "a";
+			String[] data = d.split(" ", 2);
+			if(data.length == 2) {
+				this.label = "EVENT: Set braille " + data[0] +" to display letter  " + brailleToLetter(data[1]);
+			}
 			break;
 		case "/~pause":
 			this.label = "EVENT: Pause for " + d + " seconds";
@@ -48,7 +51,7 @@ public class Node {
 			this.label = "EVENT: Reset all braille characters";
 			break;
 		case "/~disp-string":
-			this.label = "EVENT: Set braille characters to: " + d;
+			this.label = "EVENT: Set braille to display word: " + d;
 			break;
 		case "/~disp-cell-clear":
 			this.label = "EVENT: Clear all braille characters.";
@@ -62,7 +65,7 @@ public class Node {
 		Node a = new Node();
 		a.keyPhrase = "#JUNCTION";
 		a.data = "Question (choose an answer)";
-		a.label = "USER-INPUT: (Choose an answer to continue).";
+		a.label = "USER-INPUT: (Press Next again to choose an answer to continue).";
 		a.buttons = buttons;
 		a.buttonsNames = buttonsNames;
 		a.nextList = nextt;
@@ -124,5 +127,94 @@ public class Node {
 
 	public ArrayList<ArrayList<Node>> getButtons() {
 		return buttons;
+	}
+	
+	private String brailleToLetter(String s) {
+		String result = null;
+		switch (s) {
+		case "10000000":
+			result = "a";
+			break;
+		case "11000000":
+			result =  "b";
+			break;
+		case "10010000":
+			result =  "c";
+			break;
+		case "10011000":
+			result =  "d";
+			break;
+		case "10001000":
+			result =  "e";
+			break;
+		case "11010000":
+			result =  "f";
+			break;
+		case "11011000":
+			result =  "g";
+			break;
+		case "11001000":
+			result =  "h";
+			break;
+		case "01010000":
+			result =  "i";
+			break;
+		case "01011000":
+			result =  "j";
+			break;
+		case "10100000":
+			result =  "k";
+			break;
+		case "11100000":
+			result =  "l";
+			break;
+		case "10110000":
+			result = "m";
+			break;
+		case "10111000":
+			result =  "n";
+			break;
+		case "10101000":
+			result =  "o";
+			break;
+		case "11110000":
+			result =  "p";
+			break;
+		case "11111000":
+			result = "q";
+			break;
+		case "11101000":
+			result =  "r";
+			break;
+		case "01110000":
+			result =  "s";
+			break;
+		case "01111000":
+			result =  "t";
+			break;
+		case "10100100":
+			result =  "u";
+			break;
+		case "11100100":
+			result =  "v";
+			break;
+		case "01011100":
+			result =  "w";
+			break;
+		case "10110100":
+			result =  "x";
+			break;
+		case "10111100":
+			result =  "y";
+			break;
+		case "10101100":
+			result =  "z";
+			break;
+		case "11111111":
+			result = "" ;
+		default:
+			result = null;
+		}
+		return result;
 	}
 }

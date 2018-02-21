@@ -117,7 +117,11 @@ public class Controller {
 
 			if (n == 0) {
 				// Create new story
-				JPanel p = new JPanel(new GridLayout(2, 2));
+				JPanel p = new JPanel(new GridLayout(3, 2));
+				JLabel msg = new JLabel("Select the number of cells and buttons on your device.");
+				msg.addAncestorListener(new RequestFocusListener());
+				p.add(msg);
+				p.add(new JLabel());
 				SpinnerNumberModel model1 = new SpinnerNumberModel();
 				model1.setValue(1);
 				model1.setMaximum(99);
@@ -149,7 +153,7 @@ public class Controller {
 				p.add(buttonsLabel);
 				p.add(spinner2);
 
-				cellsLabel.addAncestorListener(new RequestFocusListener());
+				
 				int result = JOptionPane.showConfirmDialog(null, p, "Create New Story", JOptionPane.PLAIN_MESSAGE);
 				System.out.println("User selected2: " + result);
 				// return back to welcome screen if X button
@@ -242,7 +246,57 @@ public class Controller {
 	// }
 
 	public void newMenuItem() {
-		view.textArea.setText("");
+		// Create new story
+		JPanel p = new JPanel(new GridLayout(3, 2));
+		JLabel msg = new JLabel("Select the number of cells and buttons on your device.");
+		msg.addAncestorListener(new RequestFocusListener());
+		p.add(msg);
+		p.add(new JLabel());
+		SpinnerNumberModel model1 = new SpinnerNumberModel();
+		model1.setValue(1);
+		model1.setMaximum(99);
+		model1.setMinimum(1);
+		SpinnerNumberModel model2 = new SpinnerNumberModel();
+		model2.setValue(1);
+		model2.setMaximum(99);
+		model2.setMinimum(1);
+		JSpinner spinner1 = new JSpinner(model1);
+		spinner1.setToolTipText(
+				"Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
+		spinner1.getAccessibleContext().setAccessibleName("Cells");
+		spinner1.getAccessibleContext().setAccessibleDescription(
+				"Cells. Use the up & down arrow keys to set the number of cells for the scenario.");
+		JSpinner spinner2 = new JSpinner(model2);
+		spinner2.setToolTipText(
+				"Buttons. Use the up & down arrow keys to set the number of buttons for the scenario.\"");
+		spinner2.getAccessibleContext().setAccessibleName("Buttons");
+		spinner2.getAccessibleContext().setAccessibleDescription(
+				"Buttons. Use the up & down arrow keys to set the number of buttons for the scenario.");
+		spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
+		spinner2.setEditor(new JSpinner.DefaultEditor(spinner2));
+		JLabel cellsLabel = new JLabel("Cells: ");
+		cellsLabel.setLabelFor(spinner1);
+		p.add(cellsLabel);
+		p.add(spinner1);
+		JLabel buttonsLabel = new JLabel("Buttons: ");
+		buttonsLabel.setLabelFor(spinner2);
+		p.add(buttonsLabel);
+		p.add(spinner2);
+
+		
+		int result = JOptionPane.showConfirmDialog(null, p, "Create New Story", JOptionPane.PLAIN_MESSAGE);
+		System.out.println("User selected2: " + result);
+		// return back to welcome screen if X button
+		if (result == -1) {
+			// break;
+		} else {
+
+			this.cells = Integer.parseInt(spinner1.getValue().toString());
+			this.buttons = Integer.parseInt(spinner2.getValue().toString());
+
+			initDefaultList(cells, buttons);
+
+		}
 	}
 
 	public void openMenuItem() {
@@ -376,6 +430,11 @@ public class Controller {
 		if (derp.index == listSize() - 1) {
 			HashMap<Integer, String> buttonsNames = new HashMap<Integer, String>();
 			JPanel p = new JPanel(new GridLayout(0, 2));
+			JLabel text = new JLabel("<html>Type a name for each answer you wish to create. <br> Use the checkbox to enable the answer and type a name.</html>");
+			text.addAncestorListener(new RequestFocusListener());
+			p.add(text);
+			p.add(new JLabel());
+			
 
 			// create checkboxes based on number of buttons
 			ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
@@ -472,7 +531,7 @@ public class Controller {
 			// navigate
 			chooseButton();
 		} else {
-			infoBox("You can only add a user input at the end of the list. /n Move to the end of the list and try again.",
+			infoBox("Error: You can only add a user input at the end of the list. Move to the end of the list and try again.",
 					"Can not add user input here.");
 			System.out.println("ERROR: Can only create junction at the end of list!");
 		}
@@ -483,7 +542,7 @@ public class Controller {
 			// Get the buttonNames and create a dialog box to choose where to
 			// navigate to
 			HashMap<Integer, String> buttons = derp.getNode().buttonsNames;
-			int i = JOptionPane.showOptionDialog(null, "Choose which response you would like to go to:", "Choose Button",
+			int i = JOptionPane.showOptionDialog(null, "Choose which answer you would like to go to:", "Choose User-Input",
 					JOptionPane.PLAIN_MESSAGE, 0, null, buttons.values().toArray(), buttons.values().toArray()[0]);
 			// Goto the selected branch based on the button press
 			if (i != -1) {
@@ -502,158 +561,211 @@ public class Controller {
 
 	public void addTextButton() {
 		String text = null;
-		text = JOptionPane.showInputDialog(null, "Please enter your text: ", "Add text ", -1);
+		text = JOptionPane.showInputDialog(null, "Please enter your text: ", "Add text (Please enter your text) ", -1);
 		if (text != null && !text.trim().isEmpty()) {
 			derp.addNext("#TEXT", text);
 			updateLabels();
 		}
 	}
+	
+	public void setDispStringButton() {
+		String text = null;
+		text = JOptionPane.showInputDialog(null, "Please enter your text: ", "Add text (Please enter your text) ", -1);
+		if (text != null && !text.trim().isEmpty()) {
+			derp.addNext("/~disp-string", text);
+			updateLabels();
+		}
+	}
+	
 
 	public void setPinButton() {
-		String num = null;
-		num = JOptionPane.showInputDialog(null, "Please enter a valid Braille cell index: ", "Index value ", -1);
+		JPanel p = new JPanel(new GridLayout(2, 2));
+		JLabel msg = new JLabel("Select a Braille Character location below:");
+		msg.addAncestorListener(new RequestFocusListener());
+		p.add(msg);
+		p.add(new JLabel());
+		SpinnerNumberModel model1 = new SpinnerNumberModel();
+		model1.setValue(1);
+		model1.setMaximum(derp.cells);
+		model1.setMinimum(1);
+		JSpinner spinner1 = new JSpinner(model1);
+		spinner1.setToolTipText(
+				"Braille Location. Use the up & down arrow keys to set the Braille Location.");
+		spinner1.getAccessibleContext().setAccessibleName("Cells");
+		spinner1.getAccessibleContext().setAccessibleDescription(
+				"Braille Location. Use the up & down arrow keys to set the Braille Location.");
+		spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
+		JLabel cellsLabel = new JLabel("Braille Location: ");
+		cellsLabel.setLabelFor(spinner1);
+		p.add(cellsLabel);
+		p.add(spinner1);
 
-		if (num != null) {
-			if (isStringInt(num) && Integer.parseInt(num) <= this.cells) {
+		
+		int result = JOptionPane.showConfirmDialog(null, p, "Select Braille Location", JOptionPane.PLAIN_MESSAGE);
+		System.out.println("User selected2: " + result);
+		// return back to welcome screen if X button
+		
+		int location = Integer.parseInt(spinner1.getValue().toString());
+
 				String text = null;
-				text = JOptionPane.showInputDialog(null, "Please enter a letter you would like to display in braile on the cell: ", "Set pins ", -1);
+				text = JOptionPane.showInputDialog(null, "Please enter a letter you would like to display on the braille character: ", "Please enter a letter you would like to display on the braille character", -1);
 				if (text != null) {
 					switch (text) {
 					case "a":
-						derp.addNext("/~disp-cell-pins", num + " " + "10000000");
+						derp.addNext("/~disp-cell-pins", location + " " + "10000000");
 						updateLabels();
 						break;
 					case "b":
-						derp.addNext("/~disp-cell-pins", num + " " + "11000000");
+						derp.addNext("/~disp-cell-pins", location + " " + "11000000");
 						updateLabels();
 						break;
 					case "c":
-						derp.addNext("/~disp-cell-pins", num + " " + "10100000");
+						derp.addNext("/~disp-cell-pins", location + " " + "10100000");
 						updateLabels();
 						break;
 					case "d":
-						derp.addNext("/~disp-cell-pins", num + " " + "10011000");
+						derp.addNext("/~disp-cell-pins", location + " " + "10011000");
 						updateLabels();
 						break;
 					case "e":
-						derp.addNext("/~disp-cell-pins", num + " " + "10001000");
+						derp.addNext("/~disp-cell-pins", location + " " + "10001000");
 						updateLabels();
 						break;
 					case "f":
-						derp.addNext("/~disp-cell-pins", num + " " + "11010000");
+						derp.addNext("/~disp-cell-pins", location + " " + "11010000");
 						updateLabels();
 						break;
 					case "g":
-						derp.addNext("/~disp-cell-pins", num + " " + "11011000");
+						derp.addNext("/~disp-cell-pins", location + " " + "11011000");
 						updateLabels();
 						break;
 					case "h":
-						derp.addNext("/~disp-cell-pins", num + " " + "11001000");
+						derp.addNext("/~disp-cell-pins", location + " " + "11001000");
 						updateLabels();
 						break;
 					case "i":
-						derp.addNext("/~disp-cell-pins", num + " " + "01010000");
+						derp.addNext("/~disp-cell-pins", location + " " + "01010000");
 						updateLabels();
 						break;
 					case "j":
-						derp.addNext("/~disp-cell-pins", num + " " + "01011000");
+						derp.addNext("/~disp-cell-pins", location + " " + "01011000");
 						updateLabels();
 						break;
 					case "k":
-						derp.addNext("/~disp-cell-pins", num + " " + "10100000");
+						derp.addNext("/~disp-cell-pins", location + " " + "10100000");
 						updateLabels();
 						break;
 					case "l":
-						derp.addNext("/~disp-cell-pins", num + " " + "11100000");
+						derp.addNext("/~disp-cell-pins", location + " " + "11100000");
 						updateLabels();
 						break;
 					case "m":
-						derp.addNext("/~disp-cell-pins::", num + " " + "10110000");
+						derp.addNext("/~disp-cell-pins::", location + " " + "10110000");
 						updateLabels();
 						break;
 					case "n":
-						derp.addNext("/~disp-cell-pins", num + " " + "10111000");
+						derp.addNext("/~disp-cell-pins", location + " " + "10111000");
 						updateLabels();
 						break;
 					case "o":
-						derp.addNext("/~disp-cell-pins", num + " " + "10101000");
+						derp.addNext("/~disp-cell-pins", location + " " + "10101000");
 						updateLabels();
 						break;
 					case "p":
-						derp.addNext("/~disp-cell-pins", num + " " + "11110000");
+						derp.addNext("/~disp-cell-pins", location + " " + "11110000");
 						updateLabels();
 						break;
 					case "q":
-						derp.addNext("/~disp-cell-pins", num + " " + "11111000");
+						derp.addNext("/~disp-cell-pins", location + " " + "11111000");
 						updateLabels();
 						break;
 					case "r":
-						derp.addNext("/~disp-cell-pins", num + " " + "11101000");
+						derp.addNext("/~disp-cell-pins", location + " " + "11101000");
 						updateLabels();
 						break;
 					case "s":
-						derp.addNext("/~disp-cell-pins", num + " " + "01110000");
+						derp.addNext("/~disp-cell-pins", location + " " + "01110000");
 						updateLabels();
 						break;
 					case "t":
-						derp.addNext("/~disp-cell-pins", num + " " + "01111000");
+						derp.addNext("/~disp-cell-pins", location + " " + "01111000");
 						updateLabels();
 						break;
 					case "u":
-						derp.addNext("/~disp-cell-pins", num + " " + "10100100");
+						derp.addNext("/~disp-cell-pins", location + " " + "10100100");
 						updateLabels();
 						break;
 					case "v":
-						derp.addNext("/~disp-cell-pins", num + " " + "11100100");
+						derp.addNext("/~disp-cell-pins", location + " " + "11100100");
 						updateLabels();
 						break;
 					case "w":
-						derp.addNext("/~disp-cell-pins", num + " " + "01011100");
+						derp.addNext("/~disp-cell-pins", location + " " + "01011100");
 						updateLabels();
 						break;
 					case "x":
-						derp.addNext("/~disp-cell-pins", num + " " + "10110100");
+						derp.addNext("/~disp-cell-pins", location + " " + "10110100");
 						updateLabels();
 						break;
 					case "y":
-						derp.addNext("/~disp-cell-pins", num + " " + "10111100");
+						derp.addNext("/~disp-cell-pins", location + " " + "10111100");
 						updateLabels();
 						break;
 					case "z":
-						derp.addNext("/~disp-cell-pins", num + " " + "10101100");
+						derp.addNext("/~disp-cell-pins", location + " " + "10101100");
 						updateLabels();
 						break;
 					case "":
-						derp.addNext("/~disp-cell-pins", num + " " + "11111111");
+						derp.addNext("/~disp-cell-pins", location + " " + "11111111");
 						updateLabels();
 						break;
 					case " ":
-						derp.addNext("/~disp-cell-pins", num + " " + "11111111");
+						derp.addNext("/~disp-cell-pins", location + " " + "11111111");
 						updateLabels();
 						break;
 					default:
-						infoBox("Invalid 8-character Sequence", "Cancel");
+						infoBox("Invalid character. Please enter a single letter.", "Cancel");
 						break;
 					}
-				}
+				
 			} else {
-				infoBox("Invalid Braille cell index! Please enter a valid number", "Invalid!");
+				infoBox("Invalid Braille character location number! Please enter a valid number", "Invalid Braille character number! Please enter a valid number");
 			}
-		}
+		
 	}
 
 	public void clrPinButton() {
-		String num = null;
-		num = JOptionPane.showInputDialog(null, "Please enter a valid Braille cell index: ", "Index value ", -1);
+		JPanel p = new JPanel(new GridLayout(2, 2));
+		JLabel msg = new JLabel("Select a Braille Character below:");
+		msg.addAncestorListener(new RequestFocusListener());
+		p.add(msg);
+		p.add(new JLabel());
+		SpinnerNumberModel model1 = new SpinnerNumberModel();
+		model1.setValue(1);
+		model1.setMaximum(derp.cells);
+		model1.setMinimum(1);
+		JSpinner spinner1 = new JSpinner(model1);
+		spinner1.setToolTipText(
+				"Braille Location. Use the up & down arrow keys to set the Braille Location.");
+		spinner1.getAccessibleContext().setAccessibleName("Cells");
+		spinner1.getAccessibleContext().setAccessibleDescription(
+				"Braille Location. Use the up & down arrow keys to set the Braille Location.");
+		spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
+		JLabel cellsLabel = new JLabel("Braille Location: ");
+		cellsLabel.setLabelFor(spinner1);
+		p.add(cellsLabel);
+		p.add(spinner1);
 
-		if (num != null) {
-			if (isStringInt(num) && Integer.parseInt(num) <= this.cells) {
-				derp.addNext("/~disp-cell-clear", num);
+		
+		int result = JOptionPane.showConfirmDialog(null, p, "Select Braille Location", JOptionPane.PLAIN_MESSAGE);
+		System.out.println("User selected2: " + result);
+		// return back to welcome screen if X button
+		
+		String location = spinner1.getValue().toString();
+				derp.addNext("/~disp-cell-clear", location);
 				updateLabels();
-			} else {
-				infoBox("Invalid Braille cell index! Please enter a valid number", "Invalid!");
-			}
-		}
+			
+		
 	}
 
 	public void removeButton() {
@@ -698,8 +810,17 @@ public class Controller {
 	private int listSize() {
 		return derp.currentList.size();
 	}
-
+	
 	public void soundButton() {
+		JFileChooser open = new JFileChooser("FactoryScenarios/AudioFiles/");
+		int retrunVal = open.showOpenDialog(view.frame);
+		if (retrunVal == JFileChooser.APPROVE_OPTION) {
+			derp.addNext("/~sound", open.getSelectedFile().getName());
+			updateLabels();
+		}
+	}
+
+	public void recordSoundButton() {
 		SoundRecorder SR = new SoundRecorder(this);
 		SR.frmAudio.setVisible(true);
 		System.out.println("visible");

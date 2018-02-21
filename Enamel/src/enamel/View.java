@@ -71,12 +71,16 @@ public class View {
 	JTabbedPane tabbedPane_3;
 	JPanel panel_1;
 	JPanel panel_1B;
-	JPanel panel_2;
+	JPanel panel_create;
+	JPanel panel_braille;
+	JPanel panel_audio;
+	JPanel panel_;
 	JLabel label[];
 	JLabel labeltop;
 	JLabel labelbottom;
 	JTextArea textArea;
 	JScrollPane scrollPane;
+	JMenuBar menuBar;
 
 	JLabel currentNode;
 
@@ -96,7 +100,7 @@ public class View {
 
 		// Frame
 		frame = new JFrame("Treasure Box Braille");
-		frame.setBounds(100, 100, 800, 400);
+		frame.setBounds(100, 100, 883, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(new KeyPane());
@@ -111,7 +115,7 @@ public class View {
 				//currentNode.setRequestFocusEnabled(true);
 			}
 		});
-		btnNext.setBounds(452, 173, 42, 29);
+		btnNext.setBounds(470, 171, 42, 29);
 		frame.getContentPane().add(btnNext);
 
 		JButton btnPrev = new JButton("/\\");
@@ -122,11 +126,11 @@ public class View {
 				controller.prevButton();
 			}
 		});
-		btnPrev.setBounds(452, 139, 42, 29);
+		btnPrev.setBounds(470, 137, 42, 29);
 		frame.getContentPane().add(btnPrev);
 
 		// Menu
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		menuBar.getAccessibleContext().setAccessibleName("Menu Bar");
 		menuBar.getAccessibleContext().setAccessibleDescription("Contains options relevant to program");
 		frame.setJMenuBar(menuBar);
@@ -144,6 +148,7 @@ public class View {
 				controller.newMenuItem();
 			}
 		});
+		mnFile.add(mntmClear);
 
 		JMenuItem mntmOpen = new JMenuItem("Open");
 		// mntmOpen.getAccessibleContext().setAccessibleName("Open");
@@ -173,7 +178,7 @@ public class View {
 			}
 		});
 		mnFile.add(mntmSave);
-		mnFile.add(mntmClear);
+		
 
 		JMenu mnSimulate = new JMenu("Simulate");
 		menuBar.add(mnSimulate);
@@ -187,7 +192,7 @@ public class View {
 
 		// TabbedPane 1
 		navigationPanel = new JPanel();
-		navigationPanel.setBounds(10, 29, 442, 289);
+		navigationPanel.setBounds(10, 29, 459, 289);
 		navigationPanel.setFocusable(true);
 		navigationPanel.setToolTipText("Current Position ");
 		navigationPanel.getAccessibleContext().setAccessibleName("Navigation");
@@ -211,7 +216,7 @@ public class View {
 		naviLabel.setBackground(new Color(200,221,242));
 		naviLabel.setOpaque(true);
 		naviLabel.setFont(new Font("", Font.BOLD, 12));
-		naviLabel.setBounds(10, 5, 442, 23);
+		naviLabel.setBounds(10, 5, 459, 23);
 		frame.getContentPane().add(naviLabel);
 
 		// panel_1 = new JPanel();
@@ -244,18 +249,31 @@ public class View {
 		//currentNode.setFocusable(true);
 		currentNode.setBounds(10, 319, 770, 15);
 		currentNode.setForeground(Color.GRAY);
+		currentNode.setFocusable(false);
+		currentNode.getAccessibleContext().setAccessibleDescription("");
+		currentNode.getAccessibleContext().setAccessibleName("");
 		frame.getContentPane().add(currentNode);
 
 		// TabbedPane 2
 		tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_2.setBounds(494, 5, 280, 313);
+		tabbedPane_2.setBounds(511, 5, 333, 313);
 		frame.getContentPane().add(tabbedPane_2);
-		JPanel panel_2 = new JPanel();
-		tabbedPane_2.addTab("Create", null, panel_2, null);
-		panel_2.setLayout(null);
+		JPanel panel_create = new JPanel();
+		panel_create.setLayout(null);
+		tabbedPane_2.addTab("Create Events", null, panel_create, null);
+		
+		JPanel panel_braille = new JPanel();
+		panel_braille.setLayout(null);
+		tabbedPane_2.addTab("Create Braille", null, panel_braille, null);
 
-		JButton btnBranch = new JButton("User-Input");
-		btnBranch.getAccessibleContext().setAccessibleName("User-Input");
+		JPanel panel_audio = new JPanel();
+		panel_audio.setLayout(null);
+		tabbedPane_2.addTab("Create Audio", null, panel_audio, null);
+
+		
+
+		JButton btnBranch = new JButton("Add User-Input");
+		btnBranch.getAccessibleContext().setAccessibleName("Add User-Input");
 		btnBranch.getAccessibleContext().setAccessibleDescription("Creates a new Branch from current list");
 		btnBranch.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
 		btnBranch.addActionListener(new ActionListener() {
@@ -263,10 +281,10 @@ public class View {
 				controller.branchItButton();
 			}
 		});
-		btnBranch.setBounds(73, 12, 150, 25);
-		panel_2.add(btnBranch);
+		btnBranch.setBounds(90, 73, 150, 25);
+		panel_create.add(btnBranch);
 
-		JButton btnAdd = new JButton("Text");
+		JButton btnAdd = new JButton("Add Text");
 		btnAdd.getAccessibleContext().setAccessibleName("Add Text");
 		btnAdd.getAccessibleContext().setAccessibleDescription("Input new text");
 		btnAdd.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
@@ -275,21 +293,32 @@ public class View {
 				controller.addTextButton();
 			}
 		});
-		btnAdd.setBounds(73, 49, 150, 25);
-		panel_2.add(btnAdd);
-
-		JButton btnSound = new JButton("Audio Recording");
-		btnSound.getAccessibleContext().setAccessibleDescription("Record and import audio files to scenario file");
+		btnAdd.setBounds(90, 11, 150, 25);
+		panel_create.add(btnAdd);
+		
+		JButton btnSound = new JButton("Add Sound");
+		btnSound.getAccessibleContext().setAccessibleDescription("Add sound from an existing sound file.");
 		btnSound.addKeyListener(enter);
 		btnSound.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.soundButton();
 			}
 		});
-		btnSound.setBounds(73, 86, 150, 25);
-		panel_2.add(btnSound);
+		btnSound.setBounds(90, 197, 150, 25);
+		panel_create.add(btnSound);
 
-		JButton btnAddPause = new JButton("Pause");
+		JButton btnRecordSound = new JButton("Audio Recording");
+		btnRecordSound.getAccessibleContext().setAccessibleDescription("Record and import audio files to scenario file");
+		btnRecordSound.addKeyListener(enter);
+		btnRecordSound.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.recordSoundButton();
+			}
+		});
+		btnRecordSound.setBounds(90, 228, 150, 25);
+		panel_create.add(btnRecordSound);
+
+		JButton btnAddPause = new JButton("Add Pause");
 		btnAddPause.getAccessibleContext().setAccessibleDescription("Adds pause for a user specified duration");
 		btnAddPause.addKeyListener(enter);
 		btnAddPause.addActionListener(new ActionListener() {
@@ -298,11 +327,11 @@ public class View {
 			}
 		});
 
-		btnAddPause.setBounds(73, 123, 150, 25);
-		panel_2.add(btnAddPause);
+		btnAddPause.setBounds(90, 42, 150, 25);
+		panel_create.add(btnAddPause);
 
-		JButton btnPin = new JButton("Set Pins");
-		btnPin.getAccessibleContext().setAccessibleName("Set Pins");
+		JButton btnPin = new JButton("Set Braille Letter");
+		btnPin.getAccessibleContext().setAccessibleName("Set Braile Letter");
 		btnPin.getAccessibleContext().setAccessibleDescription("Set the cell pins to alphabet letters.");
 		btnPin.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
 		btnPin.addActionListener(new ActionListener() {
@@ -310,11 +339,23 @@ public class View {
 				controller.setPinButton();
 			}
 		});
-		btnPin.setBounds(73, 160, 150, 25);
-		panel_2.add(btnPin);
+		btnPin.setBounds(90, 104, 150, 25);
+		panel_create.add(btnPin);
+		
+		JButton btnDispString = new JButton("Set Braille Word");
+		btnDispString.getAccessibleContext().setAccessibleName("Set Braille Word");
+		btnDispString.getAccessibleContext().setAccessibleDescription("Set the braille characters to display a word.");
+		btnDispString.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
+		btnDispString.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.setDispStringButton();
+			}
+		});
+		btnDispString.setBounds(90, 135, 150, 25);
+		panel_create.add(btnDispString);
 
-		JButton btnClrPin = new JButton("Clear Pins");
-		btnClrPin.getAccessibleContext().setAccessibleName("Clear Pins");
+		JButton btnClrPin = new JButton("Clear Braille");
+		btnClrPin.getAccessibleContext().setAccessibleName("Clear Braille Character");
 		btnClrPin.getAccessibleContext().setAccessibleDescription("Clear all pins to the lowered position.");
 		btnClrPin.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
 		btnClrPin.addActionListener(new ActionListener() {
@@ -322,8 +363,8 @@ public class View {
 				controller.clrPinButton();
 			}
 		});
-		btnClrPin.setBounds(73, 197, 150, 25);
-		panel_2.add(btnClrPin);
+		btnClrPin.setBounds(90, 166, 150, 25);
+		panel_create.add(btnClrPin);
 		
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.getAccessibleContext().setAccessibleName("Remove");
@@ -334,8 +375,8 @@ public class View {
 				controller.removeButton();
 			}
 		});
-		btnRemove.setBounds(73, 234, 150, 25);
-		panel_2.add(btnRemove);
+		btnRemove.setBounds(90, 259, 150, 25);
+		panel_create.add(btnRemove);
 
 		// //Sample button: Adds "Sample Text" to the text field.
 		// JButton btnSample = new JButton("Sample");
@@ -362,14 +403,17 @@ public class View {
         order.add(navigationPanel);
         order.add(btnNext);
         order.add(btnPrev);
-        order.add(tabbedPane_2);
-        order.add(btnBranch);
-        order.add(btnAdd);
-        order.add(btnSound);
-        order.add(btnAddPause);
-        order.add(btnPin);
-        order.add(btnClrPin);
-        order.add(btnRemove);
+        order.add(tabbedPane_2.getComponentAt(1));
+        //order.add(tabbedPane_2);
+        //order.add(tabbedPane_2);
+        //order.add(btnAdd);
+        //order.add(btnAddPause);
+        //order.add(btnBranch);
+        //order.add(btnPin);
+        //order.add(btnDispString);
+        //order.add(btnClrPin);
+        //order.add(btnSound);
+        //order.add(btnRemove);
         FocusPolicy newPolicy = new FocusPolicy(order);
         frame.setFocusTraversalPolicy(newPolicy);
         
@@ -409,6 +453,9 @@ public class View {
 	        
 	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "Down");
 	        am.put("Down", new DownAction());
+	        
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 0, true), "Alt");
+	        am.put("Alt", new AltAction());
 
 	    }
 		
@@ -422,6 +469,12 @@ public class View {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            controller.nextButton();
+	        }
+	    }
+	    protected class AltAction extends AbstractAction {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            menuBar.getMenu(0).doClick();
 	        }
 	    }
 
