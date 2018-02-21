@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,10 +30,14 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -78,6 +84,7 @@ public class View {
 	EmptyBorder empty;
 
 	Controller controller;
+	
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -92,12 +99,12 @@ public class View {
 		frame.setBounds(100, 100, 800, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		frame.getContentPane().add(new KeyPane());
 		
 
 		JButton btnNext = new JButton("\\/");
 		btnNext.getAccessibleContext().setAccessibleName("Next");
-		btnNext.getAccessibleContext().setAccessibleDescription("Switches to next event in the list.");
+		btnNext.getAccessibleContext().setAccessibleDescription("Switches to next event in the list. Keyboard shortcut is Down Arrow Key");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.nextButton();
@@ -109,7 +116,7 @@ public class View {
 
 		JButton btnPrev = new JButton("/\\");
 		btnPrev.getAccessibleContext().setAccessibleName("Previous");
-		btnPrev.getAccessibleContext().setAccessibleDescription("Switches to previous event in the list.");
+		btnPrev.getAccessibleContext().setAccessibleDescription("Switches to previous event in the list. Keyboard shortcut is Up Arrow Key");
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.prevButton();
@@ -183,7 +190,7 @@ public class View {
 		navigationPanel.setBounds(10, 29, 442, 289);
 		navigationPanel.setFocusable(true);
 		navigationPanel.setToolTipText("Current Position ");
-		navigationPanel.getAccessibleContext().setAccessibleName("Navigation");
+		navigationPanel.getAccessibleContext().setAccessibleName("");
 		navigationPanel.getAccessibleContext().setAccessibleDescription("Current Position ");
 		frame.getContentPane().add(navigationPanel);
 		
@@ -352,7 +359,6 @@ public class View {
 		
 		//Set the focus order when using Tab or Shift+Tab
 		Vector<Component> order = new Vector<Component>();
-		
         order.add(navigationPanel);
         order.add(btnNext);
         order.add(btnPrev);
@@ -366,7 +372,10 @@ public class View {
         order.add(btnRemove);
         FocusPolicy newPolicy = new FocusPolicy(order);
         frame.setFocusTraversalPolicy(newPolicy);
-	}
+        
+  
+        
+	}// end of int()
 
 	public KeyListener enter = new KeyAdapter() {
 		@Override
@@ -386,6 +395,36 @@ public class View {
 	}
 	
 
+	//Add Key Bindings
+	public class KeyPane extends JPanel {
+		public KeyPane() {
 
+	        setFocusable(true);
+
+	        InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	        ActionMap am = getActionMap();
+
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "Up");
+	        am.put("Up", new UpAction());
+	        
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "Down");
+	        am.put("Down", new DownAction());
+
+	    }
+		
+	    protected class UpAction extends AbstractAction {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            controller.prevButton();
+	        }
+	    }
+	    protected class DownAction extends AbstractAction {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            controller.nextButton();
+	        }
+	    }
+
+	}
 
 }

@@ -823,7 +823,7 @@ public class Controller {
 
 	
 	public void focusCurrentPosition() {
-		String currentNodeText = "Current Position is called " + derp.getKeyPhrase() + " with data " + derp.getData();
+		String currentNodeText = "Current Position is called " + derp.getKeyPhrase() + " with data " + derp.getData() +".  "+ "Press Up or Down arrow keys to navigate.";
 		view.navigationPanel.getAccessibleContext().setAccessibleDescription(currentNodeText);
 		view.navigationPanel.requestFocusInWindow();
 	}
