@@ -212,7 +212,7 @@ public class Controller {
 		}
 		if (derp.index == 0) {
 			view.labeltop.setText(derp.getLabel(-1));
-			view.label[0].setText(derp.getLabel());
+			view.label[0].setText(derp.getLabel(0));
 			view.label[1].setText(derp.getLabel(1));
 			view.label[2].setText(derp.getLabel(2));
 			view.labelbottom.setText(derp.getLabel(3));

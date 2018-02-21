@@ -22,39 +22,39 @@ public class Node {
 		this.keyPhrase = k;
 		this.data = d;
 		
-		this.label = k + " " + d;
+		this.label ="<html>" +  k + " " + d + "</html>";
 		
 		//set labels
 		switch(k) {
 		case "#HEAD":
-			this.label = "LOCATION: Main Story Line";
+			this.label = "<html>" + "LOCATION: Main Story Line"+ "</html>";
 			break;
 		case "#TEXT":
-			this.label ="TEXT: " + "\""+ d +"\"";
+			this.label ="<html>" + "TEXT: " + "\""+ d +"\""+ "</html>";
 			break;
 		case "/~sound":
-			this.label = "EVENT: Play sound:  " + d;
+			this.label = "<html>" + "EVENT: Play sound:  " + d+ "</html>";
 			break;
 		case "/~disp-clear-cell":
-			this.label = "EVENT: Clears the following braille characters:  " + d;
+			this.label = "<html>" + "EVENT: Clears the following braille characters:  " + d+ "</html>";
 			break;
 		case "/~disp-cell-pins":
 			String[] data = d.split(" ", 2);
 			if(data.length == 2) {
-				this.label = "EVENT: Set braille '" + data[0] +"' to display letter  '" + brailleToLetter(data[1])+"'";
+				this.label = "<html>" + "EVENT: Set braille '" + data[0] +"' to display letter  '" + brailleToLetter(data[1])+"'"+ "</html>";
 			}
 			break;
 		case "/~pause":
-			this.label = "EVENT: Pause for " + d + " seconds";
+			this.label = "<html>" + "EVENT: Pause for " + d + " seconds"+ "</html>";
 			break;
 		case "/~reset-pins":
-			this.label = "EVENT: Reset all braille characters";
+			this.label ="<html>" +  "EVENT: Reset all braille characters"+ "</html>";
 			break;
 		case "/~disp-string":
-			this.label = "EVENT: Set braille to display word: " + d;
+			this.label = "<html>" + "EVENT: Set braille to display word: " + d+ "</html>";
 			break;
 		case "/~disp-cell-clear":
-			this.label = "EVENT: Clear all braille characters.";
+			this.label = "<html>" + "EVENT: Clear all braille characters."+ "</html>";
 			break;
 		}
 	}
@@ -65,7 +65,7 @@ public class Node {
 		Node a = new Node();
 		a.keyPhrase = "#JUNCTION";
 		a.data = "Question (choose an answer)";
-		a.label = "USER-INPUT: (Press Next again to choose an answer to continue).";
+		a.label = "<html>" + "USER-INPUT: (Press Next again to choose an answer to continue)."+ "</html>";
 		a.buttons = buttons;
 		a.buttonsNames = buttonsNames;
 		a.nextList = nextt;
@@ -79,7 +79,7 @@ public class Node {
 		// Constructor for BUTTON head.
 		a.keyPhrase = "#BUTTON";
 		a.data = name;
-		a.label ="LOCATION:  " + name;
+		a.label ="<html>" + "LOCATION:  " + name+ "</html>";
 		a.prevList = prev;
 		System.out.println("-new Button: " + name);
 		return a;
@@ -90,7 +90,7 @@ public class Node {
 		// Constructor for BUTTON head.
 		a.keyPhrase = "/~NEXTT";
 		a.data = "Nextt";
-		a.label ="LOCATION: Main Story Line. (Press previous to go back to USER-INPUT)";
+		a.label ="<html>" + "LOCATION: Main Story Line. (Press previous to go back to USER-INPUT)"+ "</html>";
 		a.prevList = prev;
 		System.out.println("-new Button: " + "/~NEXTT");
 		return a;
@@ -101,7 +101,7 @@ public class Node {
 		// Constructor for NEXT head.
 		a.keyPhrase = "/~skip:NEXTT";
 		a.data = "Skip to main branch";
-		a.label = "LOCATION: End of Answer.   (Press next again to return to the main story line.)";
+		a.label = "<html>" + "LOCATION: End of Answer.   (Press next again to return to the main story line.)"+ "</html>";
 		a.nextList = next;
 		return a;
 	}

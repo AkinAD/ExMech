@@ -60,6 +60,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 
 import org.apache.commons.io.FilenameUtils;
+import javax.swing.Box;
 
 public class View {
 
@@ -100,7 +101,7 @@ public class View {
 
 		// Frame
 		frame = new JFrame("Treasure Box Braille");
-		frame.setBounds(100, 100, 883, 400);
+		frame.setBounds(100, 100, 811, 544);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(new KeyPane());
@@ -116,7 +117,7 @@ public class View {
 				//currentNode.setRequestFocusEnabled(true);
 			}
 		});
-		btnNext.setBounds(470, 171, 42, 29);
+		btnNext.setBounds(504, 243, 42, 51);
 		frame.getContentPane().add(btnNext);
 
 		JButton btnPrev = new JButton("/\\");
@@ -127,7 +128,7 @@ public class View {
 				controller.prevButton();
 			}
 		});
-		btnPrev.setBounds(470, 137, 42, 29);
+		btnPrev.setBounds(504, 185, 42, 51);
 		frame.getContentPane().add(btnPrev);
 
 		// Menu
@@ -193,7 +194,7 @@ public class View {
 
 		// TabbedPane 1
 		navigationPanel = new JPanel();
-		navigationPanel.setBounds(10, 29, 459, 289);
+		navigationPanel.setBounds(10, 29, 493, 419);
 		navigationPanel.setFocusable(true);
 		navigationPanel.setToolTipText("Current Position ");
 		navigationPanel.getAccessibleContext().setAccessibleName("Navigation");
@@ -217,7 +218,7 @@ public class View {
 		naviLabel.setBackground(new Color(200,221,242));
 		naviLabel.setOpaque(true);
 		naviLabel.setFont(new Font("", Font.BOLD, 12));
-		naviLabel.setBounds(10, 5, 459, 23);
+		naviLabel.setBounds(10, 5, 525, 23);
 		frame.getContentPane().add(naviLabel);
 
 		// panel_1 = new JPanel();
@@ -238,17 +239,17 @@ public class View {
 		navigationPanel.setLayout(new GridLayout(5, 0));
 		// tabbedPane_1.setSelectedIndex(1);
 
-		labeltop = new JLabel();
-		labelbottom = new JLabel();
+		labeltop = new JLabel("", SwingConstants.CENTER);
+		labelbottom = new JLabel("", SwingConstants.CENTER);
 		label = new JLabel[3];
-		label[0] = new JLabel();
-		label[1] = new JLabel();
-		label[2] = new JLabel();
+		label[0] = new JLabel("", SwingConstants.CENTER);
+		label[1] = new JLabel("", SwingConstants.CENTER);
+		label[2] = new JLabel("", SwingConstants.CENTER);
 		label[0].setBorder(bevel);
 
 		currentNode = new JLabel();
 		//currentNode.setFocusable(true);
-		currentNode.setBounds(10, 319, 770, 15);
+		currentNode.setBounds(10, 458, 770, 15);
 		currentNode.setForeground(Color.GRAY);
 		currentNode.setFocusable(false);
 		currentNode.getAccessibleContext().setAccessibleDescription("");
@@ -257,7 +258,7 @@ public class View {
 
 		// TabbedPane 2
 		tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_2.setBounds(511, 5, 333, 313);
+		tabbedPane_2.setBounds(546, 5, 241, 442);
 		tabbedPane_2.getAccessibleContext().setAccessibleDescription("Create");
 		tabbedPane_2.getAccessibleContext().setAccessibleName("Create");
 		frame.getContentPane().add(tabbedPane_2);
@@ -284,7 +285,7 @@ public class View {
 				controller.branchItButton();
 			}
 		});
-		btnBranch.setBounds(90, 73, 150, 25);
+		btnBranch.setBounds(45, 80, 150, 25);
 		panel_create.add(btnBranch);
 
 		JButton btnAdd = new JButton("Add Text");
@@ -296,7 +297,7 @@ public class View {
 				controller.addTextButton();
 			}
 		});
-		btnAdd.setBounds(90, 11, 150, 25);
+		btnAdd.setBounds(45, 18, 150, 25);
 		panel_create.add(btnAdd);
 		
 		JButton btnSound = new JButton("Add Sound");
@@ -307,7 +308,7 @@ public class View {
 				controller.soundButton();
 			}
 		});
-		btnSound.setBounds(90, 197, 150, 25);
+		btnSound.setBounds(45, 264, 150, 25);
 		panel_create.add(btnSound);
 
 		JButton btnRecordSound = new JButton("Audio Recording");
@@ -318,7 +319,7 @@ public class View {
 				controller.recordSoundButton();
 			}
 		});
-		btnRecordSound.setBounds(90, 228, 150, 25);
+		btnRecordSound.setBounds(45, 300, 150, 25);
 		panel_create.add(btnRecordSound);
 
 		JButton btnAddPause = new JButton("Add Pause");
@@ -330,7 +331,7 @@ public class View {
 			}
 		});
 
-		btnAddPause.setBounds(90, 42, 150, 25);
+		btnAddPause.setBounds(45, 49, 150, 25);
 		panel_create.add(btnAddPause);
 
 		JButton btnPin = new JButton("Set Braille Letter");
@@ -342,7 +343,7 @@ public class View {
 				controller.setPinButton();
 			}
 		});
-		btnPin.setBounds(90, 104, 150, 25);
+		btnPin.setBounds(45, 137, 150, 25);
 		panel_create.add(btnPin);
 		
 		JButton btnDispString = new JButton("Set Braille Word");
@@ -354,7 +355,7 @@ public class View {
 				controller.setDispStringButton();
 			}
 		});
-		btnDispString.setBounds(90, 135, 150, 25);
+		btnDispString.setBounds(45, 173, 150, 25);
 		panel_create.add(btnDispString);
 
 		JButton btnClrPin = new JButton("Clear Braille");
@@ -366,7 +367,7 @@ public class View {
 				controller.clrPinButton();
 			}
 		});
-		btnClrPin.setBounds(90, 166, 150, 25);
+		btnClrPin.setBounds(45, 209, 150, 25);
 		panel_create.add(btnClrPin);
 		
 		JButton btnRemove = new JButton("Remove");
@@ -378,7 +379,7 @@ public class View {
 				controller.removeButton();
 			}
 		});
-		btnRemove.setBounds(90, 259, 150, 25);
+		btnRemove.setBounds(45, 364, 150, 25);
 		panel_create.add(btnRemove);
 
 		// //Sample button: Adds "Sample Text" to the text field.
@@ -481,5 +482,4 @@ public class View {
 	    }
 
 	}
-
 }
