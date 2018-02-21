@@ -104,6 +104,7 @@ public class View {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(new KeyPane());
+
 		
 
 		JButton btnNext = new JButton("\\/");
@@ -257,6 +258,8 @@ public class View {
 		// TabbedPane 2
 		tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_2.setBounds(511, 5, 333, 313);
+		tabbedPane_2.getAccessibleContext().setAccessibleDescription("Create");
+		tabbedPane_2.getAccessibleContext().setAccessibleName("Create");
 		frame.getContentPane().add(tabbedPane_2);
 		JPanel panel_create = new JPanel();
 		panel_create.setLayout(null);
@@ -264,11 +267,11 @@ public class View {
 		
 		JPanel panel_braille = new JPanel();
 		panel_braille.setLayout(null);
-		tabbedPane_2.addTab("Create Braille", null, panel_braille, null);
+		//tabbedPane_2.addTab("Create Braille", null, panel_braille, null);
 
 		JPanel panel_audio = new JPanel();
 		panel_audio.setLayout(null);
-		tabbedPane_2.addTab("Create Audio", null, panel_audio, null);
+		//tabbedPane_2.addTab("Create Audio", null, panel_audio, null);
 
 		
 
@@ -319,7 +322,7 @@ public class View {
 		panel_create.add(btnRecordSound);
 
 		JButton btnAddPause = new JButton("Add Pause");
-		btnAddPause.getAccessibleContext().setAccessibleDescription("Adds pause for a user specified duration");
+		btnAddPause.getAccessibleContext().setAccessibleDescription("Adds pause for a specified duration");
 		btnAddPause.addKeyListener(enter);
 		btnAddPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -403,17 +406,16 @@ public class View {
         order.add(navigationPanel);
         order.add(btnNext);
         order.add(btnPrev);
-        order.add(tabbedPane_2.getComponentAt(1));
-        //order.add(tabbedPane_2);
-        //order.add(tabbedPane_2);
-        //order.add(btnAdd);
-        //order.add(btnAddPause);
-        //order.add(btnBranch);
-        //order.add(btnPin);
-        //order.add(btnDispString);
-        //order.add(btnClrPin);
-        //order.add(btnSound);
-        //order.add(btnRemove);
+        order.add(tabbedPane_2);
+        order.add(btnAdd);
+        order.add(btnAddPause);
+        order.add(btnBranch);
+        order.add(btnPin);
+        order.add(btnDispString);
+        order.add(btnClrPin);
+        order.add(btnSound);
+        order.add(btnRecordSound);
+        order.add(btnRemove);
         FocusPolicy newPolicy = new FocusPolicy(order);
         frame.setFocusTraversalPolicy(newPolicy);
         
