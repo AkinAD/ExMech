@@ -171,9 +171,22 @@ public class Controller {
 			}
 
 			if (n == 1) {
-				openMenuItem();
-				skip = true;
-				break;
+				JFileChooser open = new JFileChooser("FactoryScenarios/");
+				int retrunVal = open.showOpenDialog(view.frame);
+				System.out.println(retrunVal);
+				if (retrunVal == JFileChooser.CANCEL_OPTION || retrunVal == -1) {
+					skip = false;
+					//break;
+				}
+				if (retrunVal == JFileChooser.APPROVE_OPTION) {
+					LoadParser parser = new LoadParser();
+					derp = parser.fromText(open.getSelectedFile().getAbsolutePath());
+					derp.goHome();
+					updateLabels();
+					skip = true;
+					break;
+				}
+				
 			}
 
 		}
@@ -609,6 +622,7 @@ public class Controller {
 
 				String text = null;
 				text = JOptionPane.showInputDialog(null, "Please enter a letter you would like to display on the braille character: ", "Please enter a letter you would like to display on the braille character", -1);
+				text = text.toLowerCase();
 				if (text != null) {
 					switch (text) {
 					case "a":

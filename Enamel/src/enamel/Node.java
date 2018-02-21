@@ -41,7 +41,7 @@ public class Node {
 		case "/~disp-cell-pins":
 			String[] data = d.split(" ", 2);
 			if(data.length == 2) {
-				this.label = "EVENT: Set braille " + data[0] +" to display letter  " + brailleToLetter(data[1]);
+				this.label = "EVENT: Set braille '" + data[0] +"' to display letter  '" + brailleToLetter(data[1])+"'";
 			}
 			break;
 		case "/~pause":
