@@ -197,7 +197,7 @@ public class Controller {
 		for (int k = 0; k < view.label.length; k++) {
 			view.label[k].setBorder(view.empty);
 		}
-		view.label[highlightPosition].setBorder(view.bevel);
+		view.label[highlightPosition].setBorder(view.compound1);
 	}
 
 	public void updateLabels() {
@@ -579,6 +579,11 @@ public class Controller {
 			derp.addNext("#TEXT", text);
 			updateLabels();
 		}
+	}
+	
+	public void addResetButtons(){
+		derp.addNext("/~reset-buttons", "/~reset-buttons");
+		updateLabels();
 	}
 	
 	public void setDispStringButton() {

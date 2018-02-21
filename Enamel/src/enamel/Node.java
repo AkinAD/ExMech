@@ -32,6 +32,9 @@ public class Node {
 		case "#TEXT":
 			this.label ="<html>" + "TEXT: " + "\""+ d +"\""+ "</html>";
 			break;
+		case "/~reset-buttons":
+			this.label = "<html>" + "EVENT: Reset Buttons" + "</html>";
+			break;
 		case "/~sound":
 			this.label = "<html>" + "EVENT: Play sound:  " + d+ "</html>";
 			break;
