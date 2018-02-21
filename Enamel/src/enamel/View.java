@@ -190,7 +190,7 @@ public class View {
 		navigationPanel.setBounds(10, 29, 442, 289);
 		navigationPanel.setFocusable(true);
 		navigationPanel.setToolTipText("Current Position ");
-		navigationPanel.getAccessibleContext().setAccessibleName("");
+		navigationPanel.getAccessibleContext().setAccessibleName("Navigation");
 		navigationPanel.getAccessibleContext().setAccessibleDescription("Current Position ");
 		frame.getContentPane().add(navigationPanel);
 		

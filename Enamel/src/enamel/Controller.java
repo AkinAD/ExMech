@@ -194,36 +194,36 @@ public class Controller {
 			}
 		}
 		if (derp.index == 0) {
-			view.labeltop.setText(derp.getData(-1));
-			view.label[0].setText(derp.getData());
-			view.label[1].setText(derp.getData(1));
-			view.label[2].setText(derp.getData(2));
-			view.labelbottom.setText(derp.getData(3));
+			view.labeltop.setText(derp.getLabel(-1));
+			view.label[0].setText(derp.getLabel());
+			view.label[1].setText(derp.getLabel(1));
+			view.label[2].setText(derp.getLabel(2));
+			view.labelbottom.setText(derp.getLabel(3));
 			setHighlightPos(0);
 			return;
 		}
 		if (highlightPosition == 0) {
-			view.labeltop.setText(derp.getData(-1));
-			view.label[0].setText(derp.getData());
-			view.label[1].setText(derp.getData(1));
-			view.label[2].setText(derp.getData(2));
-			view.labelbottom.setText(derp.getData(3));
+			view.labeltop.setText(derp.getLabel(-1));
+			view.label[0].setText(derp.getLabel());
+			view.label[1].setText(derp.getLabel(1));
+			view.label[2].setText(derp.getLabel(2));
+			view.labelbottom.setText(derp.getLabel(3));
 			return;
 		}
 		if (highlightPosition == 1) {
-			view.labeltop.setText(derp.getData(-2));
-			view.label[0].setText(derp.getData(-1));
-			view.label[1].setText(derp.getData());
-			view.label[2].setText(derp.getData(1));
-			view.labelbottom.setText(derp.getData(2));
+			view.labeltop.setText(derp.getLabel(-2));
+			view.label[0].setText(derp.getLabel(-1));
+			view.label[1].setText(derp.getLabel());
+			view.label[2].setText(derp.getLabel(1));
+			view.labelbottom.setText(derp.getLabel(2));
 			return;
 		}
 		if (highlightPosition == 2) {
-			view.labeltop.setText(derp.getData(-3));
-			view.label[0].setText(derp.getData(-2));
-			view.label[1].setText(derp.getData(-1));
-			view.label[2].setText(derp.getData(0));
-			view.labelbottom.setText(derp.getData(1));
+			view.labeltop.setText(derp.getLabel(-3));
+			view.label[0].setText(derp.getLabel(-2));
+			view.label[1].setText(derp.getLabel(-1));
+			view.label[2].setText(derp.getLabel(0));
+			view.labelbottom.setText(derp.getLabel(1));
 			return;
 		}
 	}
@@ -823,7 +823,7 @@ public class Controller {
 
 	
 	public void focusCurrentPosition() {
-		String currentNodeText = "Current Position is called " + derp.getKeyPhrase() + " with data " + derp.getData() +".  "+ "Press Up or Down arrow keys to navigate.";
+		String currentNodeText = "Current Position is "+ derp.getLabel();
 		view.navigationPanel.getAccessibleContext().setAccessibleDescription(currentNodeText);
 		view.navigationPanel.requestFocusInWindow();
 	}

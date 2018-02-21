@@ -15,7 +15,6 @@ public class ListManager {
 	int cells;
 	int buttons;
 
-	HashMap<Integer, String> stuff;
 
 	/*
 	 * #########################################################################
@@ -206,6 +205,18 @@ public class ListManager {
 		}
 		return currentList.get(this.index + i).getData();
 	}
+	
+	public String getLabel() {
+		return getNode().getLabel();
+	}
+
+	public String getLabel(int i) {
+		// get data shifted by index
+		if (this.index + i < 0 || this.index + i >= this.currentList.size()) {
+			return null;
+		}
+		return currentList.get(this.index + i).getLabel();
+	}
 
 	public void goHome() {
 		currentList = home;
@@ -258,7 +269,7 @@ public class ListManager {
 
 		// NEXTT creation
 		ArrayList<Node> nextt = new ArrayList<Node>();
-		Node nexttHead = Node.button("/~NEXTT", "NEXTT path", currentList);
+		Node nexttHead = Node.buttonNextt(currentList);
 		nextt.add(nexttHead);
 
 		// JUNCTION Creation.
