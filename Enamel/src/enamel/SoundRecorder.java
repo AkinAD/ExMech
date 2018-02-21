@@ -13,18 +13,18 @@ import org.apache.commons.io.FilenameUtils;
 
 public class SoundRecorder extends JFrame {
 
-	protected boolean active;
-	public JFrame frmAudio;
+	protected static boolean active;
+	public static JFrame frmAudio;
 	static File selectedWavFile;
-	ByteArrayOutputStream output;
-	int option;
+	static ByteArrayOutputStream output;
+	static int option;
 	static Controller controller;
-	AudioInputStream audioIS;
-	File exportFile;
+	static AudioInputStream audioIS;
+	static File exportFile;
 	AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
-	Boolean imported = false;
+	static Boolean imported = false;
 	//Boolean crashControl =  false;
-	Clip aClip;
+	static Clip aClip;
 
 	public SoundRecorder(Controller c) {
 		controller = c;
@@ -167,7 +167,7 @@ public class SoundRecorder extends JFrame {
 	}
 	// CONSTRUCTOR ENDS HERE
 
-	private void captureAudio() {
+	private static void captureAudio() {
 		imported = false;
 		try {
 			final AudioFormat format = getFormat();
@@ -213,12 +213,12 @@ public class SoundRecorder extends JFrame {
 		catch (LineUnavailableException e) // error testing here
 		{
 			System.err.println("Line unavailable: " + e);
-			this.setVisible(false);
+			frmAudio.setVisible(false);
 		}
 	}
 
 	// plays audio without saving file
-	private void playAudio() {
+	private static void playAudio() {
 		if (imported == false) {
 			try {
 				byte audio[] = output.toByteArray();
@@ -325,7 +325,7 @@ public class SoundRecorder extends JFrame {
 		}
 	}
 
-	public AudioFormat getFormat() {
+	public static AudioFormat getFormat() {
 		// defines file format used to record
 		float sampleRate = 44100;
 		int sampleSizeInBits = 16;
@@ -336,7 +336,7 @@ public class SoundRecorder extends JFrame {
 
 	}
 
-	public void save(File wavFile) throws IOException // error testing here
+	public static void save(File wavFile) throws IOException // error testing here
 	{
 		byte audio[] = output.toByteArray();
 		InputStream input = new ByteArrayInputStream(audio);
@@ -349,7 +349,7 @@ public class SoundRecorder extends JFrame {
 		output.close();
 	}
 
-	public void fileChooser() {
+	public static void fileChooser() {
 		JFileChooser wavSave = new JFileChooser("FactoryScenarios/AudioFiles/");
 		int returnVal = wavSave.showSaveDialog(frmAudio);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
