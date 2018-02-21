@@ -483,7 +483,7 @@ public class Controller {
 			// Get the buttonNames and create a dialog box to choose where to
 			// navigate to
 			HashMap<Integer, String> buttons = derp.getNode().buttonsNames;
-			int i = JOptionPane.showOptionDialog(null, "Choose which branch to go to:", "Choose Button",
+			int i = JOptionPane.showOptionDialog(null, "Choose which response you would like to go to:", "Choose Button",
 					JOptionPane.PLAIN_MESSAGE, 0, null, buttons.values().toArray(), buttons.values().toArray()[0]);
 			// Goto the selected branch based on the button press
 			if (i != -1) {
@@ -516,7 +516,7 @@ public class Controller {
 		if (num != null) {
 			if (isStringInt(num) && Integer.parseInt(num) <= this.cells) {
 				String text = null;
-				text = JOptionPane.showInputDialog(null, "Please set the cell pins: ", "Set pins ", -1);
+				text = JOptionPane.showInputDialog(null, "Please enter a letter you would like to display in braile on the cell: ", "Set pins ", -1);
 				if (text != null) {
 					switch (text) {
 					case "a":
@@ -703,11 +703,13 @@ public class Controller {
 		SoundRecorder SR = new SoundRecorder(this);
 		SR.frmAudio.setVisible(true);
 		System.out.println("visible");
+		updateLabels();
 
 	}
 
 	public static void setAudioFile(String Au) {
 		AudioFile = Au;
+		
 
 	}
 
@@ -715,6 +717,7 @@ public class Controller {
 		if (AudioFile != null) {
 			System.out.println(AudioFile);
 			derp.addNext("/~sound", AudioFile);
+			
 		}
 	}
 
