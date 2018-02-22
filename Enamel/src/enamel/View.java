@@ -147,10 +147,10 @@ public class View {
 		menuBar.add(mnFile);
 
 		JMenuItem mntmClear = new JMenuItem("New");
-		mntmClear.setAccelerator(KeyStroke.getKeyStroke('C', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); // Shortcut:
+		mntmClear.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); // Shortcut:
 																														// Control
 																														// +
-																														// C
+																														// N
 		mntmClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.newMenuItem();
