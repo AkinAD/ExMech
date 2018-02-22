@@ -189,7 +189,7 @@ public class ListManager {
 	public String getKeyPhrase(int i) {
 		// get keyPhrase shifted by index
 		if (this.index + i < 0 || this.index + i >= this.currentList.size()) {
-			return null;
+			throw new IndexOutOfBoundsException();
 		}
 		return currentList.get(this.index + i).getKeyPhrase();
 	}
@@ -201,7 +201,7 @@ public class ListManager {
 	public String getData(int i) {
 		// get data shifted by index
 		if (this.index + i < 0 || this.index + i >= this.currentList.size()) {
-			return null;
+			throw new IndexOutOfBoundsException();
 		}
 		return currentList.get(this.index + i).getData();
 	}
