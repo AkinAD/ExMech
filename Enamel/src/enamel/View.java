@@ -264,7 +264,7 @@ public class View {
 
 		// TabbedPane 2
 		tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_2.setBounds(547, 5, 240, 468);
+		tabbedPane_2.setBounds(547, 5, 240, 481);
 		tabbedPane_2.getAccessibleContext().setAccessibleDescription("Create");
 		tabbedPane_2.getAccessibleContext().setAccessibleName("Create");
 		frame.getContentPane().add(tabbedPane_2);
