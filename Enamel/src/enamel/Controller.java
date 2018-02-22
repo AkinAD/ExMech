@@ -627,8 +627,9 @@ public class Controller {
 
 				String text = null;
 				text = JOptionPane.showInputDialog(null, "Please enter a letter or 8-character sequence you would like to display on the braille character: ", "Please enter a letter or 8-character sequence you would like to display on the braille character", -1);
-				text = text.toLowerCase();
+				
 				if (text != null) {
+					text = text.toLowerCase();
 					if (text.length() == 1) {
 						switch (text) {
 						case "a":

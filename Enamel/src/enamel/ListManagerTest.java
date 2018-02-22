@@ -77,7 +77,7 @@ public class ListManagerTest {
 	 * Tests the isEmpty method.
 	 */
 	@Test
-	public void test02_index() {
+	public void test03_index() {
 		ListManager t = new ListManager(9,9);
 		for (int i = 0; i < 100; i++) {
 			assertEquals(i, t.index);
