@@ -147,10 +147,10 @@ public class View {
 		menuBar.add(mnFile);
 
 		JMenuItem mntmClear = new JMenuItem("New");
-		mntmClear.setAccelerator(KeyStroke.getKeyStroke('C', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); // Shortcut:
-																														// Control
-																														// +
-																														// C
+		mntmClear.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); // Shortcut:
+																													 // Control
+																												     // +
+																													 // N
 		mntmClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.newMenuItem();
@@ -358,8 +358,8 @@ public class View {
 		btnAddPause.setBounds(45, 49, 150, 25);
 		panel_create.add(btnAddPause);
 
-		JButton btnPin = new JButton("Set Braille");
-		btnPin.getAccessibleContext().setAccessibleName("Set Braile");
+		JButton btnPin = new JButton("Set Braille Pins");
+		btnPin.getAccessibleContext().setAccessibleName("Set Braile Pins");
 		btnPin.getAccessibleContext().setAccessibleDescription("Set the cell pins to an 8 character sequence.");
 		btnPin.setToolTipText("Set the cell pins to an 8 character sequence.");
 		btnPin.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
