@@ -364,10 +364,11 @@ public class Controller {
 		}
 
 		// check if end of list
-		if (derp.getKeyPhrase(1) == null) {
+		if (derp.index + 1 > derp.currentList.size() - 1) {
 			System.out.println("End of list (next node is null).");
 			return;
 		}
+		
 		for (int k = 0; k < view.label.length; k++) {
 			if (view.label[k].getBorder() == view.bevel) {
 				highlightPosition = k;
