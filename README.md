@@ -29,11 +29,11 @@ To add a voice recording to your story, click on the Audio Recording button, thi
 
 To get started, click the 'Capture' button. This will bring up a pop up message to let you know audio recording has begun, click 'ok'
 Now record the audio of your desired length and when you are completed click the 'Stop' button.
-To hear your newly recorded recording, click the 'Play' button and you'll have your audio played back to you. At the end of your recording , you will be prompted if you would like to save the recording~, if so  enter your desired name and save to the directory opened up by the file dialog box (saving it to this directory is necessary for exporting). Next you will be prompted if you would like to export the file to your story~~, if so, congratulations! The application is now done with its purpose and will exit. 
+To hear your newly recorded recording, click the 'Play' button and you'll have your audio played back to you. At the end of your recording , you will be prompted if you would like to save the recording~, if so  enter your desired name and save to the directory opened up by the file dialog box (saving it to this directory is necessary for exporting). Next you will be prompted if you would like to export the file to your story.
 
-~~If you would not like to export, you will be prompted if you would like to make a new recording, if so the process will begin again. Otherwise the application exits.
+If you would not like to export, you will be prompted if you would like to make a new recording, if so the process will begin again. Otherwise the application exits.
 
-~If you would not like to save your recording you will be prompted if you want to create a new recording and  you can begin the process again. Otherwise, the application exits.
+If you would not like to save your recording you will be prompted if you want to create a new recording and  you can begin the process again. Otherwise, the application exits.
 
 You are also able to directly access the 'save' feature from the drop down menu. You can also import external audio to be played and then exported from the 'Open' option of the drop down menu under 'File'. 
 
