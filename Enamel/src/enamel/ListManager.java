@@ -1,11 +1,8 @@
 package enamel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Scanner;
 
 public class ListManager {
 

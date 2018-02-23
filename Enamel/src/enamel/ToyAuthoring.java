@@ -1,8 +1,5 @@
 package enamel;
 
-import java.awt.EventQueue;
-import java.io.File;
-
 public class ToyAuthoring {
 
 	public static void main(String[] args) {

@@ -2,21 +2,12 @@ package enamel;
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Random;
 
-import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
-import org.junit.Rule;
-import org.junit.rules.Timeout;
 
 
 public class ListManagerTest {
