@@ -10,18 +10,18 @@ To get started, run the application and select 'New Story'. Next, select the num
 
 To add to your story, you can use the following buttons found under 'Create Event':
 
-Add Text: Add custom text to your story. 
-Add Pause: Add a pause duration to your story.
-Add User-Input: (Phil can explain this)
-Add Sound: Select a .wav file to add it to your story.
+-Add Text: Add custom text to your story. 
+-Add Pause: Add a pause duration to your story.
+-Add User-Input: Add an event in the story which asks the user for a button input.
+-Add Sound: Select a .wav file to add it to your story.
 
-Set Braille Pins: Set the pins of a specific cell to an 8 character sequence of your choice. You can enter any char from a-z or write your own custom sequence.
-Set Braille Word: Set braille to display a string of your choice.
-Clear Braille: Clear the pins of a specific cell.
+-Set Braille Pins: Set the pins of a specific cell to an 8 character sequence of your choice. You can enter any char from a-z or write your own custom sequence.
+-Set Braille Word: Set braille to display a string of your choice.
+-Clear Braille: Clear the pins of a specific cell.
 
-Reset Button: Reset the action listeners of all of the buttons.
+-Reset Button: Reset the action listeners of all of the buttons.
 
-Remove: Remove the selected element in the story.
+-Remove: Remove the selected element in the story.
 
 ### Audio Recording
 
