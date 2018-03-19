@@ -23,7 +23,7 @@ public class SoundRecorder extends JFrame {
 	static File exportFile;
 	AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
 	static Boolean imported = false;
-	//Boolean crashControl =  false;
+	// Boolean crashControl = false;
 	static Clip aClip;
 
 	public SoundRecorder(Controller c) {
@@ -31,7 +31,11 @@ public class SoundRecorder extends JFrame {
 		frmAudio = new JFrame();
 		frmAudio.setTitle("Audio Studio");
 		frmAudio.setBounds(100, 100, 249, 239);
-		frmAudio.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		frmAudio.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				close();
+			}
+		});
 		frmAudio.getContentPane().setLayout(null);
 
 		final JButton btnCapture = new JButton("Capture");
@@ -50,31 +54,37 @@ public class SoundRecorder extends JFrame {
 		});
 		btnExport.setEnabled(false);
 		btnExport.setBounds(12, 124, 207, 29);
-		btnExport.setToolTipText("<html>" + "Click this button only after you import an audio file you would like" + "<br>" + " to add to the scenario file" + "</html>");
+		btnExport.setToolTipText("<html>" + "Click this button only after you import an audio file you would like"
+				+ "<br>" + " to add to the scenario file" + "</html>");
 		btnExport.getAccessibleContext().setAccessibleName("Export selected wave file");
-		btnExport.getAccessibleContext().setAccessibleDescription("Click this button only after you import an audio file you would like to add to the scenario file");
+		btnExport.getAccessibleContext().setAccessibleDescription(
+				"Click this button only after you import an audio file you would like to add to the scenario file");
 		frmAudio.getContentPane().add(btnExport);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.getAccessibleContext().setAccessibleName("Menu Bar");
-		menuBar.getAccessibleContext().setAccessibleDescription("Contains operations for using certain actions in application");
+		menuBar.getAccessibleContext()
+				.setAccessibleDescription("Contains operations for using certain actions in application");
 		menuBar.setToolTipText("Contains operations for using certain actions in application");
 		frmAudio.setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("File");
 		mnFile.getAccessibleContext().setAccessibleName("File menu option");
-		mnFile.getAccessibleContext().setAccessibleDescription("Click here for a list of other performable action for the application");
+		mnFile.getAccessibleContext()
+				.setAccessibleDescription("Click here for a list of other performable action for the application");
 		mnFile.setToolTipText("Click here for a list of other performable action for the application");
 		menuBar.add(mnFile);
 
 		JMenuItem mntmOpen = new JMenuItem("Open");
 		mntmOpen.getAccessibleContext().setAccessibleName("Open, Import File");
-		mntmOpen.getAccessibleContext().setAccessibleDescription("Imports pre-exiting audio files into audio studio to be added to scenario File");
-		mntmOpen.setToolTipText("Imports pre-exiting audio files into audio studio to be added to scenario File");
+		mntmOpen.getAccessibleContext().setAccessibleDescription(
+				"Imports pre-existing audio files into audio studio to be added to scenario File");
+		mntmOpen.setToolTipText("Imports pre-existing audio files into audio studio to be added to scenario File");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser open = new JFileChooser("FactoryScenarios/AudioFiles/");
-				open.getAccessibleContext().setAccessibleDescription("Dialog box to choose a file to be imported into Audio Studio");
+				open.getAccessibleContext()
+						.setAccessibleDescription("Dialog box to choose a file to be imported into Audio Studio");
 				open.setToolTipText("Dialog box to choose a file to be imported into Audio Studio");
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV Files", "wav");
 				open.setFileFilter(filter);
@@ -101,13 +111,27 @@ public class SoundRecorder extends JFrame {
 		mntmSave.getAccessibleContext().setAccessibleName("Save File");
 		mntmSave.getAccessibleContext().setAccessibleDescription("Saves recorded audio files from audio studio");
 		mntmSave.setToolTipText("Saves recorded audio files from audio studio");
-		
+
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fileChooser();
 			}
 		});
 		mnFile.add(mntmSave);
+
+		JMenuItem mntmClose = new JMenuItem("Close");
+		mntmClose.getAccessibleContext().setAccessibleName("Close Audio Recorder");
+		mntmClose.getAccessibleContext().setAccessibleDescription("Closes the Audio Recorder window");
+		mntmClose.setToolTipText("Closes the Audio Recorder window");
+
+		mntmClose.addKeyListener(esc);
+
+		mntmClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		});
+		mnFile.add(mntmClose);
 
 		btnCapture.setEnabled(true);
 		btnStop.setEnabled(false);
@@ -118,6 +142,7 @@ public class SoundRecorder extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				btnCapture.setEnabled(false);
 				btnStop.setEnabled(true);
+				btnStop.requestFocusInWindow();
 				btnPlay.setEnabled(false);
 				mntmSave.setEnabled(true);
 				btnExport.setEnabled(false);
@@ -131,6 +156,7 @@ public class SoundRecorder extends JFrame {
 				btnCapture.setEnabled(true);
 				btnStop.setEnabled(false);
 				btnPlay.setEnabled(true);
+				btnPlay.requestFocusInWindow();
 				active = false;
 			}
 		};
@@ -145,20 +171,19 @@ public class SoundRecorder extends JFrame {
 
 		btnPlay.addActionListener(playListener);
 		btnPlay.setBounds(12, 0, 207, 29);
-		btnPlay.setToolTipText("Plays recorded or imported audio file back to user " );
+		btnPlay.setToolTipText("Plays recorded or imported audio file back to user ");
 		btnPlay.getAccessibleContext().setAccessibleName("Play Audio");
 		btnPlay.getAccessibleContext().setAccessibleDescription("Plays recorded or imported audio file back to user ");
-		
+
 		frmAudio.getContentPane().add(btnPlay);
 		btnCapture.setBounds(12, 42, 207, 29);
-		btnCapture.setToolTipText("Records user audio" );
+		btnCapture.setToolTipText("Records user audio");
 		btnCapture.getAccessibleContext().setAccessibleName("Record Audio");
 		btnCapture.getAccessibleContext().setAccessibleDescription("Records user audio");
 
-		
 		frmAudio.getContentPane().add(btnCapture);
 		btnStop.setBounds(12, 84, 207, 29);
-		btnStop.setToolTipText("Stops audio recording" );
+		btnStop.setToolTipText("Stops audio recording");
 		btnStop.getAccessibleContext().setAccessibleName("Stop audio Recording");
 		frmAudio.getContentPane().add(btnStop);
 
@@ -167,12 +192,12 @@ public class SoundRecorder extends JFrame {
 	}
 	// CONSTRUCTOR ENDS HERE
 
-	private static void captureAudio() {
+	public static void captureAudio() {
 		imported = false;
+		infoBox("You have clicked capture, audio recording will begin now", "Recording Started");
 		try {
 			final AudioFormat format = getFormat();
 			DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
-
 			TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info);
 
 			line.open();
@@ -199,8 +224,10 @@ public class SoundRecorder extends JFrame {
 						line.close();
 					} catch (IOException e) // error testing here
 					{
+						close();
 						System.err.println("I/O problems: " + e);
 						System.exit(-1);
+
 					}
 				}
 			};
@@ -212,13 +239,15 @@ public class SoundRecorder extends JFrame {
 
 		catch (LineUnavailableException e) // error testing here
 		{
+			close();
 			System.err.println("Line unavailable: " + e);
-			frmAudio.setVisible(false);
+
 		}
+
 	}
 
 	// plays audio without saving file
-	private static void playAudio() {
+	public static void playAudio() {
 		if (imported == false) {
 			try {
 				byte audio[] = output.toByteArray();
@@ -245,27 +274,28 @@ public class SoundRecorder extends JFrame {
 							}
 							line.drain();
 							line.close();
-							option = optionbox("Are you satisfied with your recording?", "Save Recording?");
-							
-							if (option == 0) {
-								fileChooser();
-								option = optionbox("Would you like to export recording to your scenario file?",
-										"Export?");
-								if (option == 0) {
-									Controller.setAudioFile(exportFile.getName());
-									Controller.appendSound();
-									infoBox("Audio File exported! \nExiting!", "Success!");
-									frmAudio.setVisible(false);
+							postRecordTasks();
 
-								} else {
-									option = optionbox("Would you like to make a new recording?", "New recording?");
-									if (option == 0) {
-										// Do nothing honestly
-									} else {
-										infoBox("Exiting..", "Program Exiting");
-										frmAudio.setVisible(false);
-									}
-								}
+						} catch (IOException e) // error testing here
+						{
+							System.err.println("I/O problems: " + e);
+							frmAudio.setVisible(false);
+						}
+					}
+
+					private void postRecordTasks() {
+						option = optionbox("Are you satisfied with your recording?", "Save Recording?");
+
+						if (option == 0) {
+							fileChooser();
+							option = optionbox("Would you like to export recording to your scenario file?",
+									"Export?");
+							if (option == 0) {
+								Controller.setAudioFile(exportFile.getName());
+								Controller.appendSound();
+								infoBox("Audio File exported! \nExiting!", "Success!");
+								frmAudio.setVisible(false);
+
 							} else {
 								option = optionbox("Would you like to make a new recording?", "New recording?");
 								if (option == 0) {
@@ -275,11 +305,14 @@ public class SoundRecorder extends JFrame {
 									frmAudio.setVisible(false);
 								}
 							}
-
-						} catch (IOException e) // error testing here
-						{
-							System.err.println("I/O problems: " + e);
-							frmAudio.setVisible(false);
+						} else {
+							option = optionbox("Would you like to make a new recording?", "New recording?");
+							if (option == 0) {
+								// Do nothing honestly
+							} else {
+								infoBox("Exiting..", "Program Exiting");
+								frmAudio.setVisible(false);
+							}
 						}
 					}
 				};
@@ -290,40 +323,53 @@ public class SoundRecorder extends JFrame {
 			} catch (LineUnavailableException e) // error testing here
 			{
 				System.err.println("Line unavailable: " + e);
-				frmAudio.setVisible(false);
+				close();
 			}
 
 		} else {
-			if (imported) {
-				try {
-					audioIS = AudioSystem.getAudioInputStream(selectedWavFile);
-				} catch (UnsupportedAudioFileException | IOException e1) {
-					e1.printStackTrace();
-				}
-				// create clip reference
-				try {
-					aClip = AudioSystem.getClip();
-				} catch (LineUnavailableException e1) // error testing here
-				{
-					e1.printStackTrace();
-				}
-				// open audioInputStream to the clip
-				try {
-					aClip.open(audioIS);
-				} catch (LineUnavailableException e1) // error testing here
-				{
-					e1.printStackTrace();
-				} catch (IOException e1) // error testing here
-				{
-					e1.printStackTrace();
-				}
-			}
-			// For imported wav files
-			aClip.start();
-			exportFile = selectedWavFile;
+			isImport();
 
 		}
 	}
+
+	private static void isImport() {
+		if (imported) {
+			try {
+				audioIS = AudioSystem.getAudioInputStream(selectedWavFile);
+			} catch (UnsupportedAudioFileException | IOException e1) {
+				e1.printStackTrace();
+			}
+			// create clip reference
+			try {
+				aClip = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) // error testing here
+			{
+				e1.printStackTrace();
+			}
+			// open audioInputStream to the clip
+			try {
+				aClip.open(audioIS);
+			} catch (LineUnavailableException e1) // error testing here
+			{
+				e1.printStackTrace();
+			} catch (IOException e1) // error testing here
+			{
+				e1.printStackTrace();
+			}
+		}
+		// For imported wav files
+		aClip.start();
+		exportFile = selectedWavFile;
+	}
+
+	public KeyListener esc = new KeyAdapter() {
+		@Override
+		public void keyTyped(KeyEvent e) {
+			if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+				((JMenuItem) e.getComponent()).doClick();
+			}
+		}
+	};
 
 	public static AudioFormat getFormat() {
 		// defines file format used to record
@@ -372,20 +418,10 @@ public class SoundRecorder extends JFrame {
 		}
 	}
 
-	// public String getFile()
-	// {
-	// if (exportFile != null) {
-	// System.out.println(exportFile.getName());
-	// return exportFile.getName();
-	// }
-	// else {
-	// return null;
-	// }
-	// }
 	public static int optionbox(String infoMessage, String titleBar) {
 		int dialogButton = JOptionPane.YES_NO_OPTION;
 		int dialogResult = JOptionPane.showConfirmDialog(null, infoMessage, "InfoBox: " + titleBar, dialogButton);
-		
+
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			return 0;
 		} else {
@@ -397,9 +433,60 @@ public class SoundRecorder extends JFrame {
 		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public void close() {
-		frmAudio.setVisible(false);
+	public static void close() {
+		active = false;
 		frmAudio.dispose();
+		frmAudio.setVisible(false);
+
+	}
+
+	public class KeyListenerTester extends JFrame implements KeyListener {
+
+		JLabel label;
+
+		public KeyListenerTester(String s) {
+			super(s);
+			JPanel p = new JPanel();
+			label = new JLabel("Key Listener!");
+			p.add(label);
+			add(p);
+			setSize(200, 100);
+			setVisible(true);
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				System.out.println("Right key typed");
+			}
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				System.out.println("Left key typed");
+			}
+
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				System.out.println("Right key pressed");
+			}
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				System.out.println("Left key pressed");
+			}
+
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				System.out.println("Right key Released");
+			}
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				System.out.println("Left key Released");
+			}
+		}
 	}
 
 	public static void main(String args[]) {
