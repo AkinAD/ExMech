@@ -609,7 +609,7 @@ public class Controller {
 		System.out.println("User selected2: " + result);
 		// return back to welcome screen if X button
 		
-		int location = Integer.parseInt(spinner1.getValue().toString());
+		int location = Integer.parseInt(spinner1.getValue().toString()) - 1;
 
 				String text = null;
 				text = JOptionPane.showInputDialog(null, "Please enter a letter or 8-character sequence you would like to display on the braille character: ", "Please enter a letter or 8-character sequence you would like to display on the braille character", -1);

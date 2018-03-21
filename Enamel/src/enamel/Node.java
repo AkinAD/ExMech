@@ -25,6 +25,10 @@ public class Node {
 		this.label ="<html>" +  k + " " + d + "</html>";
 		
 		//set labels
+		setLabels(k, d);
+	}
+
+	private void setLabels(String k, String d) {
 		switch(k) {
 		case "#HEAD":
 			this.label = "<html>" + "LOCATION: Main Story Line"+ "</html>";
@@ -44,7 +48,7 @@ public class Node {
 		case "/~disp-cell-pins":
 			String[] data = d.split(" ", 2);
 			if(data.length == 2) {
-				this.label = "<html>" + "EVENT: Set braille '" + data[0] +"' to display  '" + data[1] + "'" + "</html>";
+				this.label = "<html>" + "EVENT: Set braille '" + (Integer.parseInt(data[0]) + 1) +"' to display  '" + data[1] + "'" + "</html>";
 			}
 			break;
 		case "/~pause":
