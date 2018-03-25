@@ -31,7 +31,7 @@ public class Node {
 	private void setLabels(String k, String d) {
 		switch(k) {
 		case "#HEAD":
-			this.label = "<html>" + "LOCATION: Main Story Line"+ "</html>";
+			this.label = "<html>" + "LOCATION: Beginning of Story"+ "</html>";
 			break;
 		case "#TEXT":
 			this.label ="<html>" + "TEXT: " + "\""+ d +"\""+ "</html>";
@@ -72,7 +72,7 @@ public class Node {
 		Node a = new Node();
 		a.keyPhrase = "#JUNCTION";
 		a.data = "Question (choose an answer)";
-		a.label = "<html>" + "USER-INPUT: (Press Next again to choose an answer to continue)."+ "</html>";
+		a.label = "<html>" + "USER-INPUT.  Press 'Next' (or Control+N) to choose an answer to continue."+ "</html>";
 		a.buttons = buttons;
 		a.buttonsNames = buttonsNames;
 		a.nextList = nextt;
@@ -97,7 +97,7 @@ public class Node {
 		// Constructor for BUTTON head.
 		a.keyPhrase = "/~NEXTT";
 		a.data = "Nextt";
-		a.label ="<html>" + "LOCATION: Main Story Line. (Press previous to go back to USER-INPUT)"+ "</html>";
+		a.label ="<html>" + "LOCATION: Main Story Line.  Press 'Previous' (or Control+P) to go back to USER-INPUT"+ "</html>";
 		a.prevList = prev;
 		System.out.println("-new Button: " + "/~NEXTT");
 		return a;
@@ -108,7 +108,7 @@ public class Node {
 		// Constructor for NEXT head.
 		a.keyPhrase = "/~skip:NEXTT";
 		a.data = "Skip to main branch";
-		a.label = "<html>" + "LOCATION: End of Answer.   (Press next again to return to the main story line.)"+ "</html>";
+		a.label = "<html>" + "LOCATION: End of Answer.  Press 'Next' (or Control+N) to return to the main story line."+ "</html>";
 		a.nextList = next;
 		return a;
 	}

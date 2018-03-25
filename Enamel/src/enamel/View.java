@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -88,7 +89,7 @@ public class View {
 
 		JButton btnNext = new JButton("\\/");
 		btnNext.getAccessibleContext().setAccessibleName("Next");
-		btnNext.getAccessibleContext().setAccessibleDescription("Switches to next event in the list. Keyboard shortcut is Down Arrow Key");
+		btnNext.getAccessibleContext().setAccessibleDescription("Keyboard shortcut is Control + N. Switches to next event in the list.");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.nextButton();
@@ -100,7 +101,7 @@ public class View {
 
 		JButton btnPrev = new JButton("/\\");
 		btnPrev.getAccessibleContext().setAccessibleName("Previous");
-		btnPrev.getAccessibleContext().setAccessibleDescription("Switches to previous event in the list. Keyboard shortcut is Up Arrow Key");
+		btnPrev.getAccessibleContext().setAccessibleDescription("Keyboard shortcut is Control + P. Switches to previous event in the list.");
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.prevButton();
@@ -119,7 +120,7 @@ public class View {
 		menuBar.add(mnFile);
 
 		JMenuItem mntmClear = new JMenuItem("New");
-		mntmClear.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())); // Shortcut:
+		mntmClear.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK+ActionEvent.SHIFT_MASK)); // Shortcut:
 																													 // Control
 																												     // +
 																													 // N
@@ -163,6 +164,7 @@ public class View {
 		JMenu mnSimulate = new JMenu("Simulate");
 		menuBar.add(mnSimulate);
 		JMenuItem mntmSimulateScenario = new JMenuItem("Simulate Story");
+		mntmSimulateScenario.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK+ActionEvent.SHIFT_MASK));
 		mntmSimulateScenario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.simulateScenario();
@@ -452,10 +454,10 @@ public class View {
 	        InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 	        ActionMap am = getActionMap();
 
-	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "Up");
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK), "Up");
 	        am.put("Up", new UpAction());
 	        
-	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "Down");
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK), "Down");
 	        am.put("Down", new DownAction());
 	        
 	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 0, true), "Alt");
