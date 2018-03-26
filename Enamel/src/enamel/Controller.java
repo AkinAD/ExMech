@@ -176,8 +176,7 @@ public class Controller {
 					updateLabels();
 					//test
 					GenerateTree gentree = new GenerateTree();
-					DefaultMutableTreeNode poop = gentree.returnTree(derp);
-					view.model.setRoot(poop);
+					view.model.setRoot(gentree.returnTree(derp));
 					view.model.reload(view.top);
 					
 					
@@ -199,6 +198,12 @@ public class Controller {
 	}
 
 	public void updateLabels() {
+		//Jtree updates
+		GenerateTree gentree = new GenerateTree();
+		view.model.setRoot(gentree.returnTree(derp));
+		view.model.reload(view.top);
+		
+		
 		focusCurrentPosition();
 		
 		view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"' + " "
