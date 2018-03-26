@@ -95,7 +95,7 @@ public class View {
 
 		// Frame
 		frame = new JFrame("Treasure Box Braille");
-		frame.setBounds(100, 100, 1110, 556);
+		frame.setBounds(100, 100, 1213, 557);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(new KeyPane());
@@ -263,7 +263,7 @@ public class View {
 
 		// TabbedPane 2
 		tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_2.setBounds(844, 6, 240, 481);
+		tabbedPane_2.setBounds(844, 6, 339, 481);
 		tabbedPane_2.getAccessibleContext().setAccessibleDescription("Create");
 		tabbedPane_2.getAccessibleContext().setAccessibleName("Create");
 		frame.getContentPane().add(tabbedPane_2);
@@ -291,7 +291,7 @@ public class View {
 				controller.branchItButton();
 			}
 		});
-		btnBranch.setBounds(45, 82, 150, 25);
+		btnBranch.setBounds(12, 63, 150, 25);
 		panel_create.add(btnBranch);
 
 		JButton btnAdd = new JButton("Add Text");
@@ -304,7 +304,7 @@ public class View {
 				controller.addTextButton();
 			}
 		});
-		btnAdd.setBounds(45, 18, 150, 25);
+		btnAdd.setBounds(12, 13, 150, 25);
 		panel_create.add(btnAdd);
 		
 		JButton btnResetButtons = new JButton("Reset Buttons");
@@ -314,10 +314,10 @@ public class View {
 		btnResetButtons.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
 		btnResetButtons.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.addResetButtons();
+				controller.ResetAllButtons();
 			}
 		});
-		btnResetButtons.setBounds(45, 351, 150, 25);
+		btnResetButtons.setBounds(12, 300, 150, 25);
 		panel_create.add(btnResetButtons);
 		
 		JButton btnSound = new JButton("Add Sound");
@@ -329,7 +329,7 @@ public class View {
 				controller.soundButton();
 			}
 		});
-		btnSound.setBounds(45, 264, 150, 25);
+		btnSound.setBounds(12, 88, 150, 25);
 		panel_create.add(btnSound);
 
 		JButton btnRecordSound = new JButton("Audio Recording");
@@ -341,7 +341,7 @@ public class View {
 				controller.recordSoundButton();
 			}
 		});
-		btnRecordSound.setBounds(45, 300, 150, 25);
+		btnRecordSound.setBounds(12, 113, 150, 25);
 		panel_create.add(btnRecordSound);
 
 		JButton btnAddPause = new JButton("Add Pause");
@@ -354,10 +354,10 @@ public class View {
 			}
 		});
 
-		btnAddPause.setBounds(45, 49, 150, 25);
+		btnAddPause.setBounds(12, 38, 150, 25);
 		panel_create.add(btnAddPause);
 
-		JButton btnPin = new JButton("Set Braille Pins");
+		JButton btnPin = new JButton("Set Braille Letter");
 		btnPin.getAccessibleContext().setAccessibleName("Set Braile Pins");
 		btnPin.getAccessibleContext().setAccessibleDescription("Set the cell pins to an 8 character sequence.");
 		btnPin.setToolTipText("Set the cell pins to an 8 character sequence.");
@@ -367,7 +367,7 @@ public class View {
 				controller.setPinButton();
 			}
 		});
-		btnPin.setBounds(45, 137, 150, 25);
+		btnPin.setBounds(12, 162, 150, 25);
 		panel_create.add(btnPin);
 		
 		JButton btnDispString = new JButton("Set Braille Word");
@@ -380,20 +380,33 @@ public class View {
 				controller.setDispStringButton();
 			}
 		});
-		btnDispString.setBounds(45, 173, 150, 25);
+		btnDispString.setBounds(12, 187, 150, 25);
 		panel_create.add(btnDispString);
 
-		JButton btnClrPin = new JButton("Clear Braille");
-		btnClrPin.getAccessibleContext().setAccessibleName("Clear Braille Character");
-		btnClrPin.getAccessibleContext().setAccessibleDescription("Clear all pins to the lowered position.");
-		btnClrPin.setToolTipText("Clear all pins to the lowered position.");
+		JButton btnClrCell = new JButton("Clear a Braille Cell");
+		btnClrCell.getAccessibleContext().setAccessibleName("Clear Braille Character");
+		btnClrCell.getAccessibleContext().setAccessibleDescription("Clear all pins to the lowered position.");
+		btnClrCell.setToolTipText("Clear all pins to the lowered position.");
+		btnClrCell.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
+		btnClrCell.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.clearACell();
+			}
+		});
+		btnClrCell.setBounds(12, 212, 150, 25);
+		panel_create.add(btnClrCell);
+		
+		JButton btnClrPin = new JButton("Clear a Pin on a Cell");
+		btnClrPin.getAccessibleContext().setAccessibleName("Clear a pin on a Cell");
+		btnClrPin.getAccessibleContext().setAccessibleDescription("Sets one pin on one braille cell to the lowered position.");
+		btnClrPin.setToolTipText("Sets one pin on one braille cell to the lowered position.");
 		btnClrPin.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
 		btnClrPin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.clrPinButton();
+				controller.lowerOnePin();
 			}
 		});
-		btnClrPin.setBounds(45, 209, 150, 25);
+		btnClrPin.setBounds(12, 262, 150, 25);
 		panel_create.add(btnClrPin);
 		
 		JButton btnRepeat = new JButton("Repeat Instructions");
@@ -408,8 +421,21 @@ public class View {
 				controller.setRepeatButton();
 			}
 		});
-		btnRepeat.setBounds(45, 235, 150, 25);
+		btnRepeat.setBounds(12, 357, 150, 25);
 		panel_create.add(btnRepeat);
+		
+		JButton btnClearAllCells = new JButton("Clear All Cells");
+		btnRepeat.getAccessibleContext().setAccessibleName("Clear all Braille Cells");
+		btnRepeat.getAccessibleContext().setAccessibleDescription("Lowers all the pins for all braille cells.");
+		btnRepeat.setToolTipText("Lowers all the pins for all braille cells.");
+		btnRepeat.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
+		btnRepeat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.clearAllCells();;
+			}
+		});
+		btnClearAllCells.setBounds(12, 237, 150, 25);
+		panel_create.add(btnClearAllCells);
 		
 		
 		JButton btnRemove = new JButton("Remove");
@@ -422,7 +448,7 @@ public class View {
 				controller.removeButton();
 			}
 		});
-		btnRemove.setBounds(45, 404, 150, 25);
+		btnRemove.setBounds(12, 413, 150, 25);
 		panel_create.add(btnRemove);
 		
 		
@@ -458,7 +484,7 @@ public class View {
         order.add(btnBranch);
         order.add(btnPin);
         order.add(btnDispString);
-        order.add(btnClrPin);
+        order.add(btnClrCell);
         order.add(btnSound);
         order.add(btnRecordSound);
         order.add(btnResetButtons);
@@ -556,9 +582,4 @@ public class View {
 
 
 	}
-	
-
-
-	
-	
 }

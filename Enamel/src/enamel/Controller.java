@@ -596,7 +596,7 @@ public class Controller implements TreeSelectionListener{
 		}
 	}
 	
-	public void addResetButtons(){
+	public void ResetAllButtons(){
 		derp.addNext("/~reset-buttons", "");
 		updateLabels();
 	}
@@ -638,19 +638,97 @@ public class Controller implements TreeSelectionListener{
 
 		
 		int result = JOptionPane.showConfirmDialog(null, p, "Select one of your buttons", JOptionPane.PLAIN_MESSAGE);
-		System.out.println("User selected2: " + result);			
+		System.out.println("User selected: " + result);			
 		
 		int location = Integer.parseInt(spinner1.getValue().toString()) - 1;
-		addRepeat();
 		derp.addNext("/~repeat-button", String.valueOf(location));
+		addRepeat();
 		updateLabels();			
 
 			
 	}
+	
 	public void skipToAplace() {
 		// implements the Key phrase: /~skip-button:
 		// would need to be jumping to existing junctions
 		//would need to check if junctions are valid
+		
+	}
+	public void clearACell() {
+		String index = null;
+		JPanel p = new JPanel(new GridLayout(2, 2));
+		JLabel msg = new JLabel("Select which braile cell you would like to reset below:");
+		msg.addAncestorListener(new RequestFocusListener());
+		p.add(msg);
+		p.add(new JLabel());
+		SpinnerNumberModel model1 = new SpinnerNumberModel();
+		model1.setValue(1);
+		model1.setMaximum(derp.cells);
+		model1.setMinimum(1);
+		JSpinner spinner1 = new JSpinner(model1);
+		spinner1.setToolTipText(
+				"Select one of your braile cells. Use the up & down arrow keys to set which cell you would like to clear.");
+		spinner1.getAccessibleContext().setAccessibleName("Braille cells");
+		spinner1.getAccessibleContext().setAccessibleDescription(
+				"Select one of your braile cells. Use the up & down arrow keys to set which cell you would like to clear.");
+		spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
+		JLabel cellsLabel = new JLabel("Braile Cell: ");
+		cellsLabel.setLabelFor(spinner1);
+		p.add(cellsLabel);
+		p.add(spinner1);
+
+		
+		int result = JOptionPane.showConfirmDialog(null, p, "Select one of your buttons", JOptionPane.PLAIN_MESSAGE);
+		System.out.println("User selected: " + result);			
+		
+		int location = Integer.parseInt(spinner1.getValue().toString()) - 1;
+		derp.addNext("/~disp-clear-cell", String.valueOf(location));
+		updateLabels();
+	}
+	
+	public void lowerOnePin()
+	{
+		JPanel p = new JPanel(new GridLayout(3, 2));
+		JLabel msg = new JLabel("Select the braille cells number and which of 8 pin on the cell you want to lower");
+		msg.addAncestorListener(new RequestFocusListener());
+		p.add(msg);
+		p.add(new JLabel());
+		SpinnerNumberModel model1 = new SpinnerNumberModel();
+		model1.setValue(1);
+		model1.setMaximum(derp.cells);
+		model1.setMinimum(1);
+		SpinnerNumberModel model2 = new SpinnerNumberModel();
+		model2.setValue(1);
+		model2.setMaximum(8);
+		model2.setMinimum(1);
+		JSpinner spinner1 = new JSpinner(model1);
+		spinner1.setToolTipText(
+				"Cells. Use the up & down arrow keys to select one of "+ String.valueOf(derp.cells) + " cells.");
+		spinner1.getAccessibleContext().setAccessibleName("Cells");
+		spinner1.getAccessibleContext().setAccessibleDescription(
+				"Cells. Use the up & down arrow keys to select one of "+ String.valueOf(derp.cells) + " cells.");
+		JSpinner spinner2 = new JSpinner(model2);
+		spinner2.setToolTipText(
+				"Pins. Use the up & down arrow keys to select one of 8 pins on your selected braille cell");
+		spinner2.getAccessibleContext().setAccessibleName("Pins");
+		spinner2.getAccessibleContext().setAccessibleDescription(
+				"Pins. Use the up & down arrow keys to select one of 8 pins on your selected braille cell");
+		spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
+		spinner2.setEditor(new JSpinner.DefaultEditor(spinner2));
+		JLabel cellsLabel = new JLabel("Cells:");
+		cellsLabel.setLabelFor(spinner1);
+		p.add(cellsLabel);
+		p.add(spinner1);
+		JLabel buttonsLabel = new JLabel("Pins: ");
+		buttonsLabel.setLabelFor(spinner2);
+		p.add(buttonsLabel);
+		p.add(spinner2);
+		
+		int result = JOptionPane.showConfirmDialog(null, p, "Clear a pin on braille cell", JOptionPane.PLAIN_MESSAGE);
+		System.out.println("User selected: " + result);
+		int someCell = Integer.parseInt(spinner1.getValue().toString()) - 1;
+		int somePin = Integer.parseInt(spinner1.getValue().toString()) - 1;
+		derp.addNext("/~disp-cell-lower", String.valueOf(someCell) + " " + String.valueOf(somePin) );
 		
 	}
 	public void setDispStringButton() {
@@ -825,40 +903,6 @@ public class Controller implements TreeSelectionListener{
 			} else {
 				infoBox("Invalid Braille character location number! Please enter a valid number", "Invalid Braille character number! Please enter a valid number");
 			}
-		
-	}
-
-	public void clrPinButton() {
-		JPanel p = new JPanel(new GridLayout(2, 2));
-		JLabel msg = new JLabel("Select a Braille Character below:");
-		msg.addAncestorListener(new RequestFocusListener());
-		p.add(msg);
-		p.add(new JLabel());
-		SpinnerNumberModel model1 = new SpinnerNumberModel();
-		model1.setValue(1);
-		model1.setMaximum(derp.cells);
-		model1.setMinimum(1);
-		JSpinner spinner1 = new JSpinner(model1);
-		spinner1.setToolTipText(
-				"Braille Location. Use the up & down arrow keys to set the Braille Location.");
-		spinner1.getAccessibleContext().setAccessibleName("Cells");
-		spinner1.getAccessibleContext().setAccessibleDescription(
-				"Braille Location. Use the up & down arrow keys to set the Braille Location.");
-		spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
-		JLabel cellsLabel = new JLabel("Braille Location: ");
-		cellsLabel.setLabelFor(spinner1);
-		p.add(cellsLabel);
-		p.add(spinner1);
-
-		
-		int result = JOptionPane.showConfirmDialog(null, p, "Select Braille Location", JOptionPane.PLAIN_MESSAGE);
-		System.out.println("User selected2: " + result);
-		// return back to welcome screen if X button
-		
-		String location = spinner1.getValue().toString();
-				derp.addNext("/~disp-cell-clear", location);
-				updateLabels();
-			
 		
 	}
 
