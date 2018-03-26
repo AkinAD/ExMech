@@ -615,20 +615,37 @@ public class Controller implements TreeSelectionListener{
 		}
 	public void setRepeatButton() {		
 		String index = null;
-		index = JOptionPane.showInputDialog(null, "What button would you like to set as the repeat button?", "You have " + this.buttons + "buttons "
-				+ " that you can set as the repeat button, enter the index of one the one you would like" , -1);
-		if (index != null) {
-			if (isStringInt(index) && (Integer.parseInt(index) >= 0 && Integer.parseInt(index) <= this.buttons)) {
-				addRepeat();				
-				derp.addNext("/~repeat-button", String.valueOf(Integer.parseInt(index) -1));
-				updateLabels();			
+		JPanel p = new JPanel(new GridLayout(2, 2));
+		JLabel msg = new JLabel("Select which button you would like to set as the repeat button below:");
+		msg.addAncestorListener(new RequestFocusListener());
+		p.add(msg);
+		p.add(new JLabel());
+		SpinnerNumberModel model1 = new SpinnerNumberModel();
+		model1.setValue(1);
+		model1.setMaximum(derp.buttons);
+		model1.setMinimum(1);
+		JSpinner spinner1 = new JSpinner(model1);
+		spinner1.setToolTipText(
+				"Select one of your buttons. Use the up & down arrow keys to set which button you would like to set as the repeat button.");
+		spinner1.getAccessibleContext().setAccessibleName("Buttons");
+		spinner1.getAccessibleContext().setAccessibleDescription(
+				"Select one of your buttons. Use the up & down arrow keys to set which button you would like to set as the repeat button.");
+		spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
+		JLabel cellsLabel = new JLabel("Button Number: ");
+		cellsLabel.setLabelFor(spinner1);
+		p.add(cellsLabel);
+		p.add(spinner1);
 
-			} else {
-				infoBox("Invalid button index! Please enter a valid number", "Invalid!");
-			}
-		} else {
-			infoBox("No Repeat button set", "Exiting");
-		}
+		
+		int result = JOptionPane.showConfirmDialog(null, p, "Select one of your buttons", JOptionPane.PLAIN_MESSAGE);
+		System.out.println("User selected2: " + result);			
+		
+		int location = Integer.parseInt(spinner1.getValue().toString()) - 1;
+		addRepeat();
+		derp.addNext("/~repeat-button", String.valueOf(location));
+		updateLabels();			
+
+			
 	}
 	public void skipToAplace() {
 		// implements the Key phrase: /~skip-button:
