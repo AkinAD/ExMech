@@ -44,7 +44,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
-public class View implements TreeSelectionListener {
+public class View {
 
 	JFrame frame;
 
@@ -77,7 +77,7 @@ public class View implements TreeSelectionListener {
 	Controller controller;
 	
 	JPanel jtreePanel;
-    private JTree tree;
+    JTree tree;
     JScrollPane treeView;
     DefaultMutableTreeNode top;
     DefaultTreeModel model;
@@ -532,8 +532,6 @@ public class View implements TreeSelectionListener {
 	
 	//JTree stuff
 	public void initJTree() {
-		
-		
 		//Create the nodes.
         top = new DefaultMutableTreeNode("Beginning of Story");
         
@@ -549,10 +547,7 @@ public class View implements TreeSelectionListener {
         tree.getSelectionModel().setSelectionMode
                 (TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        //Listen for when the selection changes.
-        tree.addTreeSelectionListener(this);
-
-
+        
 
         //Create the scroll pane and add the tree to it. 
         treeView = new JScrollPane(tree);
@@ -561,11 +556,9 @@ public class View implements TreeSelectionListener {
 
 
 	}
+	
 
-	@Override
-	public void valueChanged(TreeSelectionEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+
+	
 	
 }

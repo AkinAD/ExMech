@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -26,7 +28,7 @@ import javax.swing.tree.TreeNode;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class Controller {
+public class Controller implements TreeSelectionListener{
 
 	static ListManager derp;
 	View view;
@@ -187,6 +189,9 @@ public class Controller {
 			}
 
 		}
+		
+		//set JTree listener to start running on controller.
+		view.tree.addTreeSelectionListener(this);
 	}
 
 	public void setHighlightPos(int highlightPosition) {
@@ -203,7 +208,11 @@ public class Controller {
 		view.model.setRoot(gentree.returnTree(derp));
 		view.model.reload(view.top);
 		
-		
+		//relocated outside so we can call only updateNav part.
+		updateNav();
+	}
+
+	public void updateNav() {
 		focusCurrentPosition();
 		
 		view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"' + " "
@@ -1009,6 +1018,32 @@ public class Controller {
 		String currentNodeText = "Current Position is "+ derp.getLabel();
 		view.navigationPanel.getAccessibleContext().setAccessibleDescription(currentNodeText);
 		view.navigationPanel.requestFocusInWindow();
+	}
+	
+	@Override
+	public void valueChanged(TreeSelectionEvent e) {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) view.tree.getLastSelectedPathComponent();
+
+		if (node == null)
+			// Nothing is selected.
+			return;
+
+		Object nodeIn = node.getUserObject();
+		if (nodeIn.getClass() == NodeInfo.class) {
+			NodeInfo nodeInfo = (NodeInfo) nodeIn;
+			if (node.isLeaf()) {
+				// set derp.currentlist and derp.index!
+				System.out.println("clicked leaf: " + nodeInfo);
+				derp.currentList = nodeInfo.currentList;
+				derp.index = nodeInfo.index;
+				updateNav();
+			} else {
+				System.out.println("clicked: " + nodeInfo);
+				derp.currentList = nodeInfo.currentList;
+				derp.index = nodeInfo.index;
+				updateNav();
+			}
+		}
 	}
 
 }
