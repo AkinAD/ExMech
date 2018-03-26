@@ -371,7 +371,7 @@ public class Controller implements TreeSelectionListener{
 		}
 		if (derp.getKeyPhrase().equals("/~skip:NEXTT")) {
 			derp.next();
-			updateLabels();
+			updateNav();
 			return;
 		}
 
@@ -398,7 +398,7 @@ public class Controller implements TreeSelectionListener{
 		} else {
 			if (listSize() > view.label.length) {
 				derp.next();
-				updateLabels();
+				updateNav();
 
 				String text = view.label[highlightPosition].getText();
 				System.out.println("Positon: " + highlightPosition + ", Data Type: " + derp.getData() + ", Index: "
@@ -407,7 +407,7 @@ public class Controller implements TreeSelectionListener{
 
 			}
 		}
-		updateLabels();
+		updateNav();
 	}
 
 	public void prevButton() {
@@ -415,13 +415,13 @@ public class Controller implements TreeSelectionListener{
 		if (derp.getKeyPhrase().equals("#BUTTON")) {
 			derp.prev();
 			setHighlightPos(2);
-			updateLabels();
+			updateNav();
 			return;
 		}
 		if (derp.getKeyPhrase().equals("/~NEXTT")) {
 			derp.prev();
 			setHighlightPos(2);
-			updateLabels();
+			updateNav();
 			return;
 		}
 
@@ -442,14 +442,14 @@ public class Controller implements TreeSelectionListener{
 		} else {
 
 			derp.prev();
-			updateLabels();
+			updateNav();
 			String text = view.label[highlightPosition].getText();
 			System.out.println("Positon: " + highlightPosition + ", Data Type: " + derp.getData() + ", Index: "
 					+ derp.index + "/" + (listSize() - 1));
 			view.currentNode.setText("Current Position: " + derp.getKeyPhrase() + " " + '"' + derp.getData() + '"');
 
 		}
-		updateLabels();
+		updateNav();
 	}
 
 	public void branchItButton() {
@@ -1002,6 +1002,7 @@ public class Controller implements TreeSelectionListener{
 			ScenarioComposer composer = new ScenarioComposer();
 			String result = composer.returnStringFile(derp);
 			bf.write(result);
+			updateLabels();
 			bf.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

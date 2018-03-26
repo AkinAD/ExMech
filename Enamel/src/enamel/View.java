@@ -192,7 +192,7 @@ public class View {
 		// TabbedPane 1
 		navigationPanel = new JPanel();
 		//navigationPanel.setBounds(289, 29, 493, 456);
-		navigationPanel.setMinimumSize(new Dimension(400, 50));
+		navigationPanel.setMinimumSize(new Dimension(500, 50));
 		navigationPanel.setFocusable(true);
 		navigationPanel.setToolTipText("Current Position ");
 		navigationPanel.getAccessibleContext().setAccessibleName("Navigation");
