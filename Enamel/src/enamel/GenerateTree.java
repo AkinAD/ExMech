@@ -42,12 +42,15 @@ public class GenerateTree {
 				} // end of JUNCTION
 				
 				else if(key == "/~NEXTT") {
-					result.add(new DefaultMutableTreeNode(new NodeInfo(aList.currentList,u,"End of USER-INPUT. Return to Main Story Line")));
+					//result.add(new DefaultMutableTreeNode(new NodeInfo(aList.currentList,0,"Return to Main Story Line.")));
 				}
 
 				else {
 					// generic node data
-					result.add(new DefaultMutableTreeNode(new NodeInfo(aList.currentList,u,label)));
+					if(key != "/~NEXTT") {
+						result.add(new DefaultMutableTreeNode(new NodeInfo(aList.currentList,u,label)));
+					}
+					
 					
 				}
 
@@ -97,8 +100,9 @@ public class GenerateTree {
 			//create Jtree branch for junction...
 			junc.add(genButtons(i,name));
 			
+			
 		}
-		
+		junc.add(new DefaultMutableTreeNode(new NodeInfo(aList.currentList,0,"End of USER-INPUT. Return to Main Story Line")));
 		return junc;
 	}
 }
