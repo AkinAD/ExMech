@@ -46,7 +46,7 @@ public class ScenarioComposer {
 					sb.append(data);
 					sb.append("\n");
 				}
-				else if ( key == "/~endrepeat")
+				else if ( key == "/~endrepeat" || key == "/~reset-buttons" || key == "/~disp-clearAll")
 				{
 					sb.append(key);
 					sb.append("\n");
