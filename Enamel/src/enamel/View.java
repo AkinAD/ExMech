@@ -2,6 +2,7 @@ package enamel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -20,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -27,19 +29,27 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
 
-public class View {
+public class View implements TreeSelectionListener {
 
 	JFrame frame;
 
 	JPanel navigationPanel;
+	
 	//JTabbedPane tabbedPane_1;
 	JTabbedPane tabbedPane_2;
 	JTabbedPane tabbedPane_3;
@@ -66,6 +76,11 @@ public class View {
 
 	Controller controller;
 	
+	JPanel jtreePanel;
+    private JTree tree;
+    JScrollPane treeView;
+    DefaultMutableTreeNode top;
+    DefaultTreeModel model;
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -80,7 +95,7 @@ public class View {
 
 		// Frame
 		frame = new JFrame("Treasure Box Braille");
-		frame.setBounds(100, 100, 811, 544);
+		frame.setBounds(100, 100, 1110, 556);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(new KeyPane());
@@ -96,7 +111,7 @@ public class View {
 				//currentNode.setRequestFocusEnabled(true);
 			}
 		});
-		btnNext.setBounds(504, 254, 42, 65);
+		btnNext.setBounds(792, 255, 42, 65);
 		frame.getContentPane().add(btnNext);
 
 		JButton btnPrev = new JButton("/\\");
@@ -107,7 +122,7 @@ public class View {
 				controller.prevButton();
 			}
 		});
-		btnPrev.setBounds(504, 182, 42, 65);
+		btnPrev.setBounds(792, 183, 42, 65);
 		frame.getContentPane().add(btnPrev);
 
 		// Menu
@@ -172,15 +187,25 @@ public class View {
 		});
 		mnSimulate.add(mntmSimulateScenario);
 
+		
+		initJTree();
 		// TabbedPane 1
 		navigationPanel = new JPanel();
-		navigationPanel.setBounds(10, 29, 493, 444);
+		//navigationPanel.setBounds(289, 29, 493, 456);
+		navigationPanel.setMinimumSize(new Dimension(400, 50));
 		navigationPanel.setFocusable(true);
 		navigationPanel.setToolTipText("Current Position ");
 		navigationPanel.getAccessibleContext().setAccessibleName("Navigation");
 		navigationPanel.getAccessibleContext().setAccessibleDescription("Current Position ");
-		frame.getContentPane().add(navigationPanel);
+		//frame.getContentPane().add(navigationPanel);
 		
+		//Add split pane.
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setBounds(21, 29, 761, 456);
+        splitPane.setLeftComponent(treeView);
+        splitPane.setRightComponent(navigationPanel);
+        frame.getContentPane().add(splitPane);
+        
 		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
 		Border bevel = BorderFactory.createCompoundBorder(
@@ -198,7 +223,7 @@ public class View {
 		naviLabel.setBackground(new Color(200,221,242));
 		naviLabel.setOpaque(true);
 		naviLabel.setFont(new Font("", Font.BOLD, 12));
-		naviLabel.setBounds(10, 5, 493, 23);
+		naviLabel.setBounds(21, 5, 761, 23);
 		frame.getContentPane().add(naviLabel);
 
 		// panel_1 = new JPanel();
@@ -238,7 +263,7 @@ public class View {
 
 		// TabbedPane 2
 		tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_2.setBounds(547, 5, 240, 481);
+		tabbedPane_2.setBounds(844, 6, 240, 481);
 		tabbedPane_2.getAccessibleContext().setAccessibleDescription("Create");
 		tabbedPane_2.getAccessibleContext().setAccessibleName("Create");
 		frame.getContentPane().add(tabbedPane_2);
@@ -485,4 +510,44 @@ public class View {
 	    }
 
 	}
+	
+	
+	//JTree stuff
+	public void initJTree() {
+		
+		
+		//Create the nodes.
+        top = new DefaultMutableTreeNode("Beginning of Story");
+        
+		model = new DefaultTreeModel(top);
+        top = (DefaultMutableTreeNode)model.getRoot();
+        top.add(new DefaultMutableTreeNode("did not update"));
+        model.reload(top);
+        
+        
+
+        //Create a tree that allows one selection at a time.
+        tree = new JTree(model);
+        tree.getSelectionModel().setSelectionMode
+                (TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+        //Listen for when the selection changes.
+        tree.addTreeSelectionListener(this);
+
+
+
+        //Create the scroll pane and add the tree to it. 
+        treeView = new JScrollPane(tree);
+        Dimension minimumSize = new Dimension(200, 50);
+        treeView.setMinimumSize(minimumSize);
+
+
+	}
+
+	@Override
+	public void valueChanged(TreeSelectionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

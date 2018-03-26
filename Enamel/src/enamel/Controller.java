@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -18,6 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
+
 import org.apache.commons.io.FilenameUtils;
 
 public class Controller {
@@ -168,6 +174,13 @@ public class Controller {
 					derp = parser.fromText(open.getSelectedFile().getAbsolutePath());
 					derp.goHome();
 					updateLabels();
+					//test
+					GenerateTree gentree = new GenerateTree();
+					DefaultMutableTreeNode poop = gentree.returnTree(derp);
+					view.model.setRoot(poop);
+					view.model.reload(view.top);
+					
+					
 					skip = true;
 					break;
 				}
