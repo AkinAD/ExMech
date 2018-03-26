@@ -595,7 +595,11 @@ public class Controller implements TreeSelectionListener{
 	}
 	
 	public void addResetButtons(){
-		derp.addNext("/~reset-buttons", "/~reset-buttons");
+		derp.addNext("/~reset-buttons", "");
+		updateLabels();
+	}
+	public void clearAllCells() {
+		derp.addNext("/~disp-clearAll", "");
 		updateLabels();
 	}
 	public void addRepeat() {
