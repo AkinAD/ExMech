@@ -584,7 +584,38 @@ public class Controller {
 		derp.addNext("/~reset-buttons", "/~reset-buttons");
 		updateLabels();
 	}
-	
+	public void addRepeat() {
+		String text = null;
+		text = JOptionPane.showInputDialog(null, "Please enter the text you would like repeated: ", "Add text (Please enter your text) ", -1);
+		if (text != null && !text.trim().isEmpty()) {
+			derp.addNext("/~repeat", text);
+			derp.addNext("/~endrepeat", "");
+			updateLabels();
+		}
+		}
+	public void setRepeatButton() {		
+		String index = null;
+		index = JOptionPane.showInputDialog(null, "What button would you like to set as the repeat button?", "You have " + this.buttons + "buttons "
+				+ " that you can set as the repeat button, enter the index of one the one you would like" , -1);
+		if (index != null) {
+			if (isStringInt(index) && (Integer.parseInt(index) >= 0 && Integer.parseInt(index) <= this.buttons)) {
+				addRepeat();				
+				derp.addNext("/~repeat-button", String.valueOf(Integer.parseInt(index) -1));
+				updateLabels();			
+
+			} else {
+				infoBox("Invalid button index! Please enter a valid number", "Invalid!");
+			}
+		} else {
+			infoBox("No Repeat button set", "Exiting");
+		}
+	}
+	public void skipToAplace() {
+		// implements the Key phrase: /~skip-button:
+		// would need to be jumping to existing junctions
+		//would need to check if junctions are valid
+		
+	}
 	public void setDispStringButton() {
 		String text = null;
 		text = JOptionPane.showInputDialog(null, "Please enter your text: ", "Add text (Please enter your text) ", -1);

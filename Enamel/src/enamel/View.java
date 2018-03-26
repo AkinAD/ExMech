@@ -396,6 +396,22 @@ public class View implements TreeSelectionListener {
 		btnClrPin.setBounds(45, 209, 150, 25);
 		panel_create.add(btnClrPin);
 		
+		JButton btnRepeat = new JButton("Repeat Instructions");
+		btnRepeat.getAccessibleContext().setAccessibleName("Repeat Instructions");
+		btnRepeat.getAccessibleContext().setAccessibleDescription("Allows you to set text, and a button that when  the button is pressed repeats "
+				+ "a set of instructions to the user until button is reassigned.");
+		btnRepeat.setToolTipText("Allows you to set text, and a button that when  the button is pressed repeats \"\n" + 
+				"				+ \"a set of instructions to the user until button is reassigned.");
+		btnRepeat.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
+		btnRepeat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.setRepeatButton();
+			}
+		});
+		btnRepeat.setBounds(45, 235, 150, 25);
+		panel_create.add(btnRepeat);
+		
+		
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.getAccessibleContext().setAccessibleName("Remove");
 		btnRemove.getAccessibleContext().setAccessibleDescription("Removes the current node. Can not undo this action.");
@@ -408,6 +424,8 @@ public class View implements TreeSelectionListener {
 		});
 		btnRemove.setBounds(45, 404, 150, 25);
 		panel_create.add(btnRemove);
+		
+		
 
 		// //Sample button: Adds "Sample Text" to the text field.
 		// JButton btnSample = new JButton("Sample");

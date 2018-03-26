@@ -40,7 +40,17 @@ public class ScenarioComposer {
 					sb.append(data); // assumes it is simply text
 					sb.append("\n");
 				}
-
+				else if (key == "/~repeat") {
+					sb.append(key);
+					sb.append("\n");
+					sb.append(data);
+					sb.append("\n");
+				}
+				else if ( key == "/~endrepeat")
+				{
+					sb.append(key);
+					sb.append("\n");
+				}
 				else if (key == "#JUNCTION") {
 					// create /~skip-buttons for every branch
 					for (Entry<Integer, String> entry : currentNode.buttonsNames.entrySet()) {
