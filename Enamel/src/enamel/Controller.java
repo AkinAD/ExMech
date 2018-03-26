@@ -408,6 +408,7 @@ public class Controller implements TreeSelectionListener{
 			}
 		}
 		updateNav();
+		view.tree.clearSelection();
 	}
 
 	public void prevButton() {
@@ -450,6 +451,7 @@ public class Controller implements TreeSelectionListener{
 
 		}
 		updateNav();
+		view.tree.clearSelection();
 	}
 
 	public void branchItButton() {
