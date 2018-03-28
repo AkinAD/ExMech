@@ -28,6 +28,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -42,6 +43,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+
 import javax.swing.tree.TreeSelectionModel;
 
 public class View {
@@ -267,9 +269,9 @@ public class View {
 		tabbedPane_2.getAccessibleContext().setAccessibleDescription("Create");
 		tabbedPane_2.getAccessibleContext().setAccessibleName("Create");
 		frame.getContentPane().add(tabbedPane_2);
-		JPanel panel_create = new JPanel();
-		panel_create.setLayout(null);
-		tabbedPane_2.addTab("Create Events", null, panel_create, null);
+		JPanel pnlCreate = new JPanel();
+		pnlCreate.setLayout(null);
+		tabbedPane_2.addTab("Create Events", null, pnlCreate, null);
 		
 		JPanel panel_braille = new JPanel();
 		panel_braille.setLayout(null);
@@ -292,7 +294,7 @@ public class View {
 			}
 		});
 		btnBranch.setBounds(12, 63, 150, 25);
-		panel_create.add(btnBranch);
+		pnlCreate.add(btnBranch);
 
 		JButton btnAdd = new JButton("Add Text");
 		btnAdd.getAccessibleContext().setAccessibleName("Add Text");
@@ -305,20 +307,20 @@ public class View {
 			}
 		});
 		btnAdd.setBounds(12, 13, 150, 25);
-		panel_create.add(btnAdd);
+		pnlCreate.add(btnAdd);
 		
-		JButton btnResetButtons = new JButton("Reset Buttons");
-		btnResetButtons.getAccessibleContext().setAccessibleName("Reset Buttons");
-		btnResetButtons.getAccessibleContext().setAccessibleDescription("Reset Buttons so that when you press one of the buttons, nothing will occur.");
-		btnResetButtons.setToolTipText("Reset Buttons so that when you press one of the buttons, nothing will occur.");
-		btnResetButtons.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
-		btnResetButtons.addActionListener(new ActionListener() {
+		JButton btnResetBtns = new JButton("Reset Buttons");
+		btnResetBtns.getAccessibleContext().setAccessibleName("Reset Buttons");
+		btnResetBtns.getAccessibleContext().setAccessibleDescription("Reset Buttons so that when you press one of the buttons, nothing will occur.");
+		btnResetBtns.setToolTipText("Reset Buttons so that when you press one of the buttons, nothing will occur.");
+		btnResetBtns.addKeyListener(enter); // Must be added to each button to execute it with the 'ENTER' key
+		btnResetBtns.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.ResetAllButtons();
 			}
 		});
-		btnResetButtons.setBounds(12, 300, 150, 25);
-		panel_create.add(btnResetButtons);
+		btnResetBtns.setBounds(12, 300, 150, 25);
+		pnlCreate.add(btnResetBtns);
 		
 		JButton btnSound = new JButton("Add Sound");
 		btnSound.getAccessibleContext().setAccessibleDescription("Add sound from an existing sound file.");
@@ -330,7 +332,7 @@ public class View {
 			}
 		});
 		btnSound.setBounds(12, 88, 150, 25);
-		panel_create.add(btnSound);
+		pnlCreate.add(btnSound);
 
 		JButton btnRecordSound = new JButton("Audio Recording");
 		btnRecordSound.getAccessibleContext().setAccessibleDescription("Record and import audio files to scenario file");
@@ -342,7 +344,7 @@ public class View {
 			}
 		});
 		btnRecordSound.setBounds(12, 113, 150, 25);
-		panel_create.add(btnRecordSound);
+		pnlCreate.add(btnRecordSound);
 
 		JButton btnAddPause = new JButton("Add Pause");
 		btnAddPause.getAccessibleContext().setAccessibleDescription("Adds pause for a specified duration");
@@ -355,7 +357,7 @@ public class View {
 		});
 
 		btnAddPause.setBounds(12, 38, 150, 25);
-		panel_create.add(btnAddPause);
+		pnlCreate.add(btnAddPause);
 
 		JButton btnPin = new JButton("Set Braille Letter");
 		btnPin.getAccessibleContext().setAccessibleName("Set Braile Pins");
@@ -368,7 +370,7 @@ public class View {
 			}
 		});
 		btnPin.setBounds(12, 162, 150, 25);
-		panel_create.add(btnPin);
+		pnlCreate.add(btnPin);
 		
 		JButton btnDispString = new JButton("Set Braille Word");
 		btnDispString.getAccessibleContext().setAccessibleName("Set Braille Word");
@@ -381,7 +383,7 @@ public class View {
 			}
 		});
 		btnDispString.setBounds(12, 187, 150, 25);
-		panel_create.add(btnDispString);
+		pnlCreate.add(btnDispString);
 
 		JButton btnClrCell = new JButton("Clear a Braille Cell");
 		btnClrCell.getAccessibleContext().setAccessibleName("Clear Braille Character");
@@ -394,7 +396,7 @@ public class View {
 			}
 		});
 		btnClrCell.setBounds(12, 212, 150, 25);
-		panel_create.add(btnClrCell);
+		pnlCreate.add(btnClrCell);
 		
 		JButton btnClrPin = new JButton("Clear a Pin on a Cell");
 		btnClrPin.getAccessibleContext().setAccessibleName("Clear a pin on a Cell");
@@ -407,7 +409,7 @@ public class View {
 			}
 		});
 		btnClrPin.setBounds(12, 262, 150, 25);
-		panel_create.add(btnClrPin);
+		pnlCreate.add(btnClrPin);
 		
 		JButton btnRepeat = new JButton("Repeat Instructions");
 		btnRepeat.getAccessibleContext().setAccessibleName("Repeat Instructions");
@@ -422,9 +424,9 @@ public class View {
 			}
 		});
 		btnRepeat.setBounds(12, 357, 150, 25);
-		panel_create.add(btnRepeat);
+		pnlCreate.add(btnRepeat);
 		
-		JButton btnClearAllCells = new JButton("Clear All Cells");
+		JButton btnClrAllCells = new JButton("Clear All Cells");
 		btnRepeat.getAccessibleContext().setAccessibleName("Clear all Braille Cells");
 		btnRepeat.getAccessibleContext().setAccessibleDescription("Lowers all the pins for all braille cells.");
 		btnRepeat.setToolTipText("Lowers all the pins for all braille cells.");
@@ -434,8 +436,8 @@ public class View {
 				controller.clearAllCells();;
 			}
 		});
-		btnClearAllCells.setBounds(12, 237, 150, 25);
-		panel_create.add(btnClearAllCells);
+		btnClrAllCells.setBounds(12, 237, 150, 25);
+		pnlCreate.add(btnClrAllCells);
 		
 		
 		JButton btnRemove = new JButton("Remove");
@@ -449,8 +451,29 @@ public class View {
 			}
 		});
 		btnRemove.setBounds(12, 413, 150, 25);
-		panel_create.add(btnRemove);
+		pnlCreate.add(btnRemove);
 		
+		JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setSize(183, 41);
+		popupMenu.setLocation(100, 0);
+		 
+		JMenuItem menuItemCreateSpringProject = new JMenuItem("Spring Project");
+		popupMenu.add(menuItemCreateSpringProject);
+		 
+		JMenuItem menuItemCreateHibernateProject = new JMenuItem("Hibernate Project");
+		popupMenu.add(menuItemCreateHibernateProject);
+		 
+		JMenuItem menuItemCreateStrutsProject = new JMenuItem("Struts Project");
+		popupMenu.add(menuItemCreateStrutsProject);
+		
+//		JPopupMenu popupMenu1 = createDropDownMenu(); // created above
+//		 
+//		ImageIcon icon = new ImageIcon(getClass().getResource("/net/codejava/swing/images/new.gif"));
+//		 
+//		JButton dropDownButton = DropDownButtonFactory.createDropDownButton(icon, popupMenu1);
+//
+		pnlCreate.add(popupMenu);
+
 		
 
 		// //Sample button: Adds "Sample Text" to the text field.
@@ -482,12 +505,15 @@ public class View {
         order.add(btnAdd);
         order.add(btnAddPause);
         order.add(btnBranch);
+        order.add(btnSound);
+        order.add(btnRecordSound);
         order.add(btnPin);
         order.add(btnDispString);
         order.add(btnClrCell);
-        order.add(btnSound);
-        order.add(btnRecordSound);
-        order.add(btnResetButtons);
+        order.add(btnClrAllCells);
+        order.add(btnClrPin);
+       
+        order.add(btnResetBtns);
         order.add(btnRemove);
         FocusPolicy newPolicy = new FocusPolicy(order);
         frame.setFocusTraversalPolicy(newPolicy);

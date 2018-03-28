@@ -146,6 +146,7 @@ public class SoundRecorder extends JFrame {
 				btnPlay.setEnabled(false);
 				mntmSave.setEnabled(true);
 				btnExport.setEnabled(false);
+				playDaBeep();
 				captureAudio();
 			}
 		};
@@ -153,11 +154,12 @@ public class SoundRecorder extends JFrame {
 
 		ActionListener stopListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				active = false;
 				btnCapture.setEnabled(true);
 				btnStop.setEnabled(false);
 				btnPlay.setEnabled(true);
-				btnPlay.requestFocusInWindow();
-				active = false;
+				btnPlay.requestFocusInWindow();				
+				playDaBeep();
 			}
 		};
 
@@ -194,7 +196,8 @@ public class SoundRecorder extends JFrame {
 
 	public static void captureAudio() {
 		imported = false;
-		infoBox("You have clicked capture, audio recording will begin now", "Recording Started");
+		//infoBox("You have clicked capture, audio recording will begin now", "Recording Started");
+		//	playDaBeep();
 		try {
 			final AudioFormat format = getFormat();
 			DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -245,6 +248,35 @@ public class SoundRecorder extends JFrame {
 		}
 
 	}
+	public static void playDaBeep()
+	{		  File ugh = new File("FactoryScenarios/AudioFiles/beep.wav");
+		try {
+		audioIS = AudioSystem.getAudioInputStream(ugh);
+		} catch (UnsupportedAudioFileException | IOException e1) {
+		e1.printStackTrace();
+		}
+	// create clip reference
+		try {
+		aClip = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) // error testing here
+		{
+		e1.printStackTrace();
+		}
+	// open audioInputStream to the clip
+		try {
+		aClip.open(audioIS);
+		} catch (LineUnavailableException e1) // error testing here
+		{
+		e1.printStackTrace();
+		} catch (IOException e1) // error testing here
+		{
+		e1.printStackTrace();
+		}
+		aClip.start();
+		
+}
+
+
 
 	// plays audio without saving file
 	public static void playAudio() {
@@ -282,9 +314,10 @@ public class SoundRecorder extends JFrame {
 							frmAudio.setVisible(false);
 						}
 					}
-
+					
 					private void postRecordTasks() {
-						option = optionbox("Are you satisfied with your recording?", "Save Recording?");
+						
+						option = optionboxYesNoCancel("Are you satisfied with your recording?\nIf you are happy with the recording press Yes. Press No to start again, press Cancel to quit", "Save Recording?");
 
 						if (option == 0) {
 							fileChooser();
@@ -305,14 +338,10 @@ public class SoundRecorder extends JFrame {
 									frmAudio.setVisible(false);
 								}
 							}
-						} else {
-							option = optionbox("Would you like to make a new recording?", "New recording?");
-							if (option == 0) {
-								// Do nothing honestly
-							} else {
-								infoBox("Exiting..", "Program Exiting");
-								frmAudio.setVisible(false);
-							}
+						} 
+						else if (option ==  2)
+						{
+							frmAudio.setVisible(false);
 						}
 					}
 				};
@@ -426,6 +455,21 @@ public class SoundRecorder extends JFrame {
 			return 0;
 		} else {
 			return 1;
+		}
+	}
+	public static int optionboxYesNoCancel(String infoMessage, String titleBar) {
+		int dialogButton = JOptionPane.YES_NO_CANCEL_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog(null, infoMessage, "InfoBox: " + titleBar, dialogButton);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			return 0;
+		} 
+		else if  (dialogResult == JOptionPane.NO_OPTION)
+		{
+			return 1;
+		}
+		else {
+			return 2;
 		}
 	}
 
