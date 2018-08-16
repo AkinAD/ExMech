@@ -63,9 +63,14 @@ public class Logger {
 
 	public static void main(String[] args) {
 		
-		Logger log = new Logger("Scenario_2.txt");
+		Logger log = new Logger("Scenario_1.txt");
+		Logger log2 = new Logger("Scenario_2.txt");
+		Logger log3 = new Logger("Scenario_3.txt");
 		
 		log.countKeyWords();
+		log2.countKeyWords();
+		log3.countKeyWords();
+
 
 	}
 

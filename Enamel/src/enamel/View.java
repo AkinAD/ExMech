@@ -293,7 +293,7 @@ public class View {
 				controller.branchItButton();
 			}
 		});
-		btnBranch.setBounds(12, 63, 150, 25);
+		btnBranch.setBounds(84, 120, 150, 35);
 		pnlCreate.add(btnBranch);
 
 		JButton btnAdd = new JButton("Add Text");
@@ -306,7 +306,7 @@ public class View {
 				controller.addTextButton();
 			}
 		});
-		btnAdd.setBounds(12, 13, 150, 25);
+		btnAdd.setBounds(84, 6, 150, 50);
 		pnlCreate.add(btnAdd);
 		
 		JButton btnResetBtns = new JButton("Reset Buttons");
@@ -319,7 +319,7 @@ public class View {
 				controller.ResetAllButtons();
 			}
 		});
-		btnResetBtns.setBounds(12, 300, 150, 25);
+		btnResetBtns.setBounds(84, 360, 150, 30);
 		pnlCreate.add(btnResetBtns);
 		
 		JButton btnSound = new JButton("Add Sound");
@@ -331,7 +331,7 @@ public class View {
 				controller.soundButton();
 			}
 		});
-		btnSound.setBounds(12, 88, 150, 25);
+		btnSound.setBounds(162, 68, 150, 40);
 		pnlCreate.add(btnSound);
 
 		JButton btnRecordSound = new JButton("Audio Recording");
@@ -343,7 +343,7 @@ public class View {
 				controller.recordSoundButton();
 			}
 		});
-		btnRecordSound.setBounds(12, 113, 150, 25);
+		btnRecordSound.setBounds(12, 68, 150, 40);
 		pnlCreate.add(btnRecordSound);
 
 		JButton btnAddPause = new JButton("Add Pause");
@@ -356,7 +356,7 @@ public class View {
 			}
 		});
 
-		btnAddPause.setBounds(12, 38, 150, 25);
+		btnAddPause.setBounds(84, 156, 150, 30);
 		pnlCreate.add(btnAddPause);
 
 		JButton btnPin = new JButton("Set Braille Letter");
@@ -369,7 +369,7 @@ public class View {
 				controller.setPinButton();
 			}
 		});
-		btnPin.setBounds(12, 162, 150, 25);
+		btnPin.setBounds(84, 184, 150, 30);
 		pnlCreate.add(btnPin);
 		
 		JButton btnDispString = new JButton("Set Braille Word");
@@ -382,7 +382,7 @@ public class View {
 				controller.setDispStringButton();
 			}
 		});
-		btnDispString.setBounds(12, 187, 150, 25);
+		btnDispString.setBounds(84, 213, 150, 30);
 		pnlCreate.add(btnDispString);
 
 		JButton btnClrCell = new JButton("Clear a Braille Cell");
@@ -395,7 +395,7 @@ public class View {
 				controller.clearACell();
 			}
 		});
-		btnClrCell.setBounds(12, 212, 150, 25);
+		btnClrCell.setBounds(84, 241, 150, 30);
 		pnlCreate.add(btnClrCell);
 		
 		JButton btnClrPin = new JButton("Clear a Pin on a Cell");
@@ -408,7 +408,7 @@ public class View {
 				controller.lowerOnePin();
 			}
 		});
-		btnClrPin.setBounds(12, 262, 150, 25);
+		btnClrPin.setBounds(84, 300, 150, 30);
 		pnlCreate.add(btnClrPin);
 		
 		JButton btnRepeat = new JButton("Repeat Instructions");
@@ -423,7 +423,7 @@ public class View {
 				controller.setRepeatButton();
 			}
 		});
-		btnRepeat.setBounds(12, 357, 150, 25);
+		btnRepeat.setBounds(84, 331, 150, 30);
 		pnlCreate.add(btnRepeat);
 		
 		JButton btnClrAllCells = new JButton("Clear All Cells");
@@ -436,7 +436,7 @@ public class View {
 				controller.clearAllCells();;
 			}
 		});
-		btnClrAllCells.setBounds(12, 237, 150, 25);
+		btnClrAllCells.setBounds(84, 271, 150, 30);
 		pnlCreate.add(btnClrAllCells);
 		
 		
@@ -450,7 +450,7 @@ public class View {
 				controller.removeButton();
 			}
 		});
-		btnRemove.setBounds(12, 413, 150, 25);
+		btnRemove.setBounds(84, 391, 150, 30);
 		pnlCreate.add(btnRemove);
 		
 		JPopupMenu popupMenu = new JPopupMenu();
