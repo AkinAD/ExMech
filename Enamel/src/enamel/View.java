@@ -532,6 +532,15 @@ public class View {
 		}
 	};
 	
+	public KeyListener one = new KeyAdapter() {
+		@Override
+		public void keyTyped(KeyEvent e) {
+			if (e.getKeyChar() == KeyEvent.VK_Q) {
+				((JButton) e.getComponent()).doClick();
+			}
+		}
+	};
+	
 
 	public void close() {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
@@ -557,8 +566,19 @@ public class View {
 	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK), "Down");
 	        am.put("Down", new DownAction());
 	        
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0, true), "One");
+	        am.put("One", new OneShortcut());
+	        
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_2, 0, true), "Two");
+	        am.put("Two", new TwoShortcut());
+	        
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_3, 0, true), "Three");
+	        am.put("Three", new ThreeShortcut());
+	        
 	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 0, true), "Alt");
 	        am.put("Alt", new AltAction());
+	        
+
 
 	    }
 		
@@ -574,13 +594,35 @@ public class View {
 	            controller.nextButton();
 	        }
 	    }
+	    
+	    protected class OneShortcut extends AbstractAction {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            controller.addTextButton();
+	        }
+	    }
+	    
+	    protected class TwoShortcut extends AbstractAction {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            controller.recordSoundButton();
+	        }
+	    }
+	    
+	    protected class ThreeShortcut extends AbstractAction {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            controller.soundButton();
+	        }
+	    }
+
 	    protected class AltAction extends AbstractAction {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            menuBar.getMenu(0).doClick();
 	        }
 	    }
-
+	    
 	}
 	
 	
