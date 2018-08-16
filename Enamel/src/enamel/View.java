@@ -308,6 +308,7 @@ public class View {
 		});
 		btnAdd.setBounds(84, 6, 150, 50);
 		pnlCreate.add(btnAdd);
+		 
 		
 		JButton btnResetBtns = new JButton("Reset Buttons");
 		btnResetBtns.getAccessibleContext().setAccessibleName("Reset Buttons");
@@ -503,16 +504,16 @@ public class View {
         order.add(btnPrev);
         order.add(tabbedPane_2);
         order.add(btnAdd);
-        order.add(btnAddPause);
-        order.add(btnBranch);
-        order.add(btnSound);
         order.add(btnRecordSound);
+        order.add(btnSound);
+        order.add(btnBranch);
+        order.add(btnAddPause);
         order.add(btnPin);
         order.add(btnDispString);
         order.add(btnClrCell);
         order.add(btnClrAllCells);
         order.add(btnClrPin);
-       
+        order.add(btnRepeat);
         order.add(btnResetBtns);
         order.add(btnRemove);
         FocusPolicy newPolicy = new FocusPolicy(order);
@@ -530,6 +531,7 @@ public class View {
 			}
 		}
 	};
+	
 
 	public void close() {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
