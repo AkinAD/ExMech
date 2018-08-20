@@ -560,20 +560,22 @@ public class View {
 	        InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 	        ActionMap am = getActionMap();
 
+	       //  mntmClear.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK+ActionEvent.SHIFT_MASK));
+	        
 	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK), "Up");
 	        am.put("Up", new UpAction());
 	        
 	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK), "Down");
 	        am.put("Down", new DownAction());
 	        
-	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0, true), "One");
-	        am.put("One", new OneShortcut());
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK), "Ctrl + R");
+	        am.put("Ctrl + R", new recordSoundShortcut());
 	        
-	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_2, 0, true), "Two");
-	        am.put("Two", new TwoShortcut());
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_MASK), "Ctrl + T");
+	        am.put("Ctrl + T", new addTextShortcut());
 	        
-	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_3, 0, true), "Three");
-	        am.put("Three", new ThreeShortcut());
+	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK), "Ctrl + I");
+	        am.put("Ctrl + I", new importSoundShortcut());
 	        
 	        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 0, true), "Alt");
 	        am.put("Alt", new AltAction());
@@ -595,21 +597,21 @@ public class View {
 	        }
 	    }
 	    
-	    protected class OneShortcut extends AbstractAction {
+	    protected class addTextShortcut extends AbstractAction {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            controller.addTextButton();
 	        }
 	    }
 	    
-	    protected class TwoShortcut extends AbstractAction {
+	    protected class recordSoundShortcut extends AbstractAction {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            controller.recordSoundButton();
 	        }
 	    }
 	    
-	    protected class ThreeShortcut extends AbstractAction {
+	    protected class importSoundShortcut extends AbstractAction {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            controller.soundButton();
