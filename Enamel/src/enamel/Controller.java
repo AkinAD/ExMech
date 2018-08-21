@@ -342,9 +342,14 @@ public class Controller implements TreeSelectionListener{
 		if (retrunVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				File file = save.getSelectedFile();
-
 				if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("txt")) {
 					// filename is OK as-is
+					BufferedWriter bf = new BufferedWriter(new FileWriter(file.getPath(), false));
+
+					ScenarioComposer composer = new ScenarioComposer();
+					String result = composer.returnStringFile(derp);
+					bf.write(result);
+					bf.close();
 				} else {
 					file = new File(file.toString() + ".txt"); // append .txt if
 																// "foo.jpg.txt"
